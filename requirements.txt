@@ -1,0 +1,5 @@
+Flask               # Web 框架
+pymongo             # MongoDB 連線
+folium              # 地圖產生（互動式地圖）
+werkzeug            # WSGI 工具（Flask依賴，密碼雜湊等）
+python-dotenv       # 環境變數管理
