@@ -121,3 +121,23 @@ def event():
 #In[4] Main function
 if __name__ == '__main__':
     app.run(debug=True)
+
+    from models.inventory import InventoryManager
+
+inventory_manager = InventoryManager(db)
+
+@app.route('/user/<user_id>/add_food', methods=['POST'])
+def add_food(user_id):
+    data = request.get_json()
+    name = data.get("name")
+    amount = float(data.get("amount", 0))
+    success, msg = inventory_manager.add_food(user_id, name, amount)
+    return jsonify({'status': 'success' if success else 'fail', 'msg': msg})
+
+@app.route('/user/<user_id>/consume_food', methods=['POST'])
+def consume_food(user_id):
+    data = request.get_json()
+    name = data.get("name")
+    amount = float(data.get("amount", 0))
+    success, msg = inventory_manager.consume_food(user_id, name, amount)
+    return jsonify({'status': 'success' if success else 'fail', 'msg': msg})
