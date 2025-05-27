@@ -51,11 +51,17 @@
         <a href="{{ url_for('reminder') }}">照護提醒</a>
         <a href="{{ url_for('medical') }}">醫療預約</a>
         <a href="{{ url_for('supplies') }}">用品存貨</a>
-        <a href="{{ url_for('place_view') }}">寵物場所</a>
+        <a href="{{ url_for('place_view') }}">寵物友善場所</a>
         <a href="{{ url_for('event') }}">活動專區</a>
     </div>
 
     <div class="main-content">
+        {% if session.get('user_name') %}
+        <div class="alert alert-info mb-4">
+            歡迎，{{ session['user_name'] }}！
+            <a href="{{ url_for('logout') }}" class="ms-2">登出</a>
+        </div>
+        {% endif %}
         <!-- 登入表單 -->
         <div id="login-form">
             <h2>登入</h2>

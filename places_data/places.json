@@ -1,0 +1,3946 @@
+[
+  {
+    "place_id": "park-1",
+    "place_name": "大安森林公園",
+    "place_type": "公園",
+    "location": "台北市大安區新生南路二段1號",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0333004000",
+    "longitude": "121.5358429000",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "park-2",
+    "place_name": "古風公園",
+    "place_type": "公園",
+    "location": "台北市大安區龍泉街",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0219707490",
+    "longitude": "121.5290527300",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "park-3",
+    "place_name": "居安公園",
+    "place_type": "公園",
+    "location": "台北市大安區敦化南路二段81巷",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0296802520",
+    "longitude": "121.5493316700",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "park-4",
+    "place_name": "富陽自然生態公園",
+    "place_type": "公園",
+    "location": "台北市大安區臥龍街272巷",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0166740000",
+    "longitude": "121.5574880000",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "park-5",
+    "place_name": "新龍公園",
+    "place_type": "公園",
+    "location": "台北市大安區瑞安街214巷",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0276508330",
+    "longitude": "121.5401611300",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "park-6",
+    "place_name": "福州山公園",
+    "place_type": "公園",
+    "location": "台北市大安區臥龍街195巷",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0158901210",
+    "longitude": "121.5516128500",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "park-7",
+    "place_name": "大安195號綠地",
+    "place_type": "公園",
+    "location": "台北市大安區羅斯福路三段269巷70號",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0200195310",
+    "longitude": "121.5314331100",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "park-8",
+    "place_name": "黎和綠地",
+    "place_type": "公園",
+    "location": "台北市大安區和平東路三段464巷旁",
+    "facilities": [
+      "綠地",
+      "寵物友善"
+    ],
+    "open_hours": "00:00-24:00",
+    "latitude": "25.0159301760",
+    "longitude": "121.5605697600",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-1",
+    "place_name": "賈福廚房 JFULL",
+    "place_type": "餐廳",
+    "location": "台北市大安區復興南路二段148巷27號",
+    "facilities": [
+      "提供簡餐與甜點",
+      "寵物可內用"
+    ],
+    "open_hours": "11:30–21:00",
+    "latitude": "25.028365",
+    "longitude": "121.541861",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-2",
+    "place_name": "光一肆號",
+    "place_type": "餐廳",
+    "location": "台北市大安區新生南路三段76巷2號",
+    "facilities": [
+      "玻璃屋風格早午餐店",
+      "空間寬敞"
+    ],
+    "open_hours": "10:00–20:00",
+    "latitude": "25.019248",
+    "longitude": "121.533545",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-3",
+    "place_name": "Toast Chat",
+    "place_type": "餐廳",
+    "location": "台北市大安區光復南路290巷58號",
+    "facilities": [
+      "歐式早午餐、甜點",
+      "寵物可自由活動"
+    ],
+    "open_hours": "12:00–22:00",
+    "latitude": "25.039466",
+    "longitude": "121.555527",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-4",
+    "place_name": "Become早午餐",
+    "place_type": "餐廳",
+    "location": "台北市大安區信義路四段30巷50弄3號",
+    "facilities": [
+      "健康早午餐",
+      "空間寬敞"
+    ],
+    "open_hours": "10:00–21:00",
+    "latitude": "25.031687",
+    "longitude": "121.544262",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-5",
+    "place_name": "貳樓咖啡（敦南店）",
+    "place_type": "餐廳",
+    "location": "台北市大安區敦化南路二段63巷14號",
+    "facilities": [
+      "提供毛孩專屬餐點",
+      "專設寵物座位"
+    ],
+    "open_hours": "08:00–22:00",
+    "latitude": "25.030861",
+    "longitude": "121.549995",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-6",
+    "place_name": "小春日和",
+    "place_type": "餐廳",
+    "location": "台北市大安區信義路三段153巷5號",
+    "facilities": [
+      "提供毛孩餐點與活動空間"
+    ],
+    "open_hours": "11:00–22:00",
+    "latitude": "25.033626",
+    "longitude": "121.542564",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-7",
+    "place_name": "Mianto 艾果豐",
+    "place_type": "餐廳",
+    "location": "台北市大安區仁愛路三段123巷26弄6號1樓",
+    "facilities": [
+      "純素健康餐",
+      "毛孩友善"
+    ],
+    "open_hours": "09:00–18:00",
+    "latitude": "25.039010",
+    "longitude": "121.541690",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-8",
+    "place_name": "PS Bubu 金屋藏車食堂",
+    "place_type": "餐廳",
+    "location": "台北市大安區溫州街26號",
+    "facilities": [
+      "懷舊車廂風格",
+      "適合與寵物共餐"
+    ],
+    "open_hours": "11:00–21:00",
+    "latitude": "25.023053",
+    "longitude": "121.533193",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-9",
+    "place_name": "Luigi 路易奇電力公司",
+    "place_type": "餐廳",
+    "location": "台北市大安區復興南路一段79巷4弄4號",
+    "facilities": [
+      "推車內寵物可用餐"
+    ],
+    "open_hours": "11:30–21:30",
+    "latitude": "25.044321",
+    "longitude": "121.544358",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-10",
+    "place_name": "舒服生活 Truffles Living",
+    "place_type": "餐廳",
+    "location": "台北市大安區文昌街66號",
+    "facilities": [
+      "簡約咖啡空間",
+      "毛孩友善"
+    ],
+    "open_hours": "12:00–20:00",
+    "latitude": "25.032717",
+    "longitude": "121.550901",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-11",
+    "place_name": "兔 Dreams 寵物餐廳",
+    "place_type": "餐廳",
+    "location": "台北市大安區新生南路一段161巷10號",
+    "facilities": [
+      "咖啡廳與寵物活動區結合"
+    ],
+    "open_hours": "11:00–20:00",
+    "latitude": "25.034545",
+    "longitude": "121.534662",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-12",
+    "place_name": "慵懶咖啡 Lazzy Cafe",
+    "place_type": "餐廳",
+    "location": "台北市大安區新生南路二段55號",
+    "facilities": [
+      "清新舒適環境"
+    ],
+    "open_hours": "09:00–18:00",
+    "latitude": "25.030152",
+    "longitude": "121.535351",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "restaurant-13",
+    "place_name": "The Antipodean",
+    "place_type": "餐廳",
+    "location": "台北市大安區復興南路一段107巷26號",
+    "facilities": [
+      "提供早午餐與甜點",
+      "寵物可進入"
+    ],
+    "open_hours": "07:30–16:00",
+    "latitude": "25.043506",
+    "longitude": "121.545152",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-1",
+    "place_name": "中心動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區仁愛路4段411之1號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.03828891205598",
+    "longitude": "121.5559251490566",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-2",
+    "place_name": "戴瑩乾動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區延吉街91號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.04368158424843",
+    "longitude": "121.5541046220755",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-3",
+    "place_name": "富康動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區建國南路1段298號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.03610008182419",
+    "longitude": "121.53721070487518",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-4",
+    "place_name": "上群動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區延吉街72之20號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.042598328231627",
+    "longitude": "121.5541952797541",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-5",
+    "place_name": "見安獸醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區四維路170巷45號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.02858744192177",
+    "longitude": "121.54635905091115",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-6",
+    "place_name": "五洲動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區新生南路一段137-2號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.037109034632334",
+    "longitude": "121.53299273557167",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-7",
+    "place_name": "敦化動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區敦化南路1段279號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.03622684894486",
+    "longitude": "121.54962386903358",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-8",
+    "place_name": "宏成動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區和平東路3段66之1號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.024596763946896",
+    "longitude": "121.54963177789291",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-9",
+    "place_name": "弘吉獸醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區市民大道3段238號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.044356",
+    "longitude": "121.541449",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-10",
+    "place_name": "名人維東尼動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區建國南路1段358號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.044599362964377",
+    "longitude": "121.5414906644079",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-11",
+    "place_name": "仁愛動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區仁愛路4段228之5號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.038339149461276",
+    "longitude": "121.55196635793281",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-12",
+    "place_name": "曾安動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區通化街148號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.028957262802816",
+    "longitude": "121.55358316070695",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-13",
+    "place_name": "沐恩動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區辛亥路1段86號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.021395060777284",
+    "longitude": "121.53152452208036",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-14",
+    "place_name": "常明動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區復興南路2段322號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.023428913821565",
+    "longitude": "121.54325135091398",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-15",
+    "place_name": "澄毅動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區安和路2段171巷13號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.028335363639258",
+    "longitude": "121.55056659139271",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-16",
+    "place_name": "明誠動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區瑞安街45號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.030181479379866",
+    "longitude": "121.54258947592166",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-17",
+    "place_name": "佑仁動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區和平東路1段200號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.026353946572133",
+    "longitude": "121.53127530673225",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-18",
+    "place_name": "敦品動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區瑞安街124號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.029792676555953",
+    "longitude": "121.54234859138566",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-19",
+    "place_name": "安庭動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區金山南路2段139號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.029830213167962",
+    "longitude": "121.52668878745838",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-20",
+    "place_name": "幸福動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區延吉街251號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.035075975424302",
+    "longitude": "121.55636638160742",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-21",
+    "place_name": "聖地牙哥動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區羅斯福路3段65號3樓之1",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.023151879664848",
+    "longitude": "121.52590026255736",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-22",
+    "place_name": "碩聯動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區復興南路2段342之1號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.022569540295407",
+    "longitude": "121.54314859138724",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-23",
+    "place_name": "極光動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區建國南路2段31號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.032564305395773",
+    "longitude": "121.53830692393039",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-24",
+    "place_name": "心傳動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區和平東路2段339號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.02513332464854",
+    "longitude": "121.54561971837134",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-25",
+    "place_name": "麟安動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區和平東路3段324號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.020010108677095",
+    "longitude": "121.55712416625731",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-26",
+    "place_name": "王樣動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區金華街217號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.03013086750395",
+    "longitude": "121.52898963557168",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-27",
+    "place_name": "萊特動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區辛亥路1段50號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.020424784419813",
+    "longitude": "121.53038039138863",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-28",
+    "place_name": "樂田動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區建國南路1段161號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.043969235038933",
+    "longitude": "121.53921558780013",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-29",
+    "place_name": "貓醫生的貓診所",
+    "place_type": "醫院",
+    "location": "台北市大安區忠孝東路3段194號2樓之1",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.041683427020008",
+    "longitude": "121.53928153557024",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-30",
+    "place_name": "寵樂動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區文昌街89號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.03300543184876",
+    "longitude": "121.55170815942084",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-31",
+    "place_name": "杜克動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區和平東路3段117號1樓及2樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.024866685072475",
+    "longitude": "121.55137706255344",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-32",
+    "place_name": "左岸動物醫院大安院",
+    "place_type": "醫院",
+    "location": "台北市大安區羅斯福路3段331號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.017278968136086",
+    "longitude": "121.53230064906228",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-33",
+    "place_name": "毛派樂動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區建國南路2段151巷47號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.02902858405039",
+    "longitude": "121.53996120488527",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-34",
+    "place_name": "國立臺灣大學生物資源暨農學院附設動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區基隆路3段153號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.01628325980837",
+    "longitude": "121.54285262613011",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-35",
+    "place_name": "遠見動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區和平東路2段68號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.02555530522099",
+    "longitude": "121.53904367975348",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-36",
+    "place_name": "樂膚莉動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區仁愛路3段82號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.037752692252294",
+    "longitude": "121.53890244906319",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-37",
+    "place_name": "亞洲獸醫專科醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區安和路2段171巷5號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.028451656004446",
+    "longitude": "121.55053063927295",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-38",
+    "place_name": "小王子貓專科醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區建國南路2段197號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.027326779094917",
+    "longitude": "121.53833151229442",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-39",
+    "place_name": "龐龐毛小孩動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區安和路2段68及70號",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.030546951691086",
+    "longitude": "121.55182930673936",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "hospital-40",
+    "place_name": "愛貓園動物醫院",
+    "place_type": "醫院",
+    "location": "台北市大安區基隆路2段124號1樓",
+    "facilities": [
+      "獸醫服務"
+    ],
+    "open_hours": null,
+    "latitude": "25.029094799289652",
+    "longitude": "121.55681672603721",
+    "methods": [
+      "viewDetails",
+      "reserveSpot"
+    ]
+  },
+  {
+    "place_id": "trashcan-1",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段225號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.04062",
+    "longitude": "121.54914",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-2",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段403號(站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037846",
+    "longitude": "121.555656",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-3",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段387號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037984",
+    "longitude": "121.555129",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-4",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段325號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03802",
+    "longitude": "121.553102",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-5",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段188號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.04268",
+    "longitude": "121.548586",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-6",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段151號(站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037942",
+    "longitude": "121.551633",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-7",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段137號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038067",
+    "longitude": "121.550887",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-8",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段85號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038411",
+    "longitude": "121.548088",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-9",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段79號(站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038009",
+    "longitude": "121.547507",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-10",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段37號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038164",
+    "longitude": "121.546244",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-11",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段3號(站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038073",
+    "longitude": "121.543921",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-12",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段1號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038204",
+    "longitude": "121.543998",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-13",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段205號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.042092",
+    "longitude": "121.549151",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-14",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段124號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041285",
+    "longitude": "121.54732",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-15",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段128號(公車)(狗便袋盒)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041386",
+    "longitude": "121.547824",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-16",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段4號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041345",
+    "longitude": "121.550338",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-17",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段122號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041314",
+    "longitude": "121.552802",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-18",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段162號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041708",
+    "longitude": "121.546952",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-19",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段212號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041227",
+    "longitude": "121.556131",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-20",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段71號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041501",
+    "longitude": "121.556227",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-21",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段300號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041602",
+    "longitude": "121.552396",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-22",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段325號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041643",
+    "longitude": "121.550184",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-23",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段59號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041748",
+    "longitude": "121.546501",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-24",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段219號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041771",
+    "longitude": "121.544096",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-25",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段167號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.042854",
+    "longitude": "121.549146",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-26",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段71號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.039254",
+    "longitude": "121.549132",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-27",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段3號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.042124",
+    "longitude": "121.548518",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-28",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段179號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.042349",
+    "longitude": "121.548739",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-29",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段245號(公車)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.040943",
+    "longitude": "121.548503",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-30",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段200號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.039014",
+    "longitude": "121.548718",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-31",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段200號(站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.039079",
+    "longitude": "121.548544",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-32",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段226號(狗便袋盒)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041382",
+    "longitude": "121.547569",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-33",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段262號(站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041419",
+    "longitude": "121.546509",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-34",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段262號右",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041729",
+    "longitude": "121.545806",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-35",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段270號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.041269",
+    "longitude": "121.554768",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-36",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段325號(站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037909",
+    "longitude": "121.553135",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-37",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "忠孝東路4段329號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.04149",
+    "longitude": "121.55695",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-38",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路一段177號旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.040532",
+    "longitude": "121.537895",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-39",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段1號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03839",
+    "longitude": "121.533023",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-40",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段160號對面公車道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037847",
+    "longitude": "121.543488",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-41",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段22號(二)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03800831",
+    "longitude": "121.5344728",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-42",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段22號右側",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03773127",
+    "longitude": "121.534435",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-43",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段22號(一)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038019",
+    "longitude": "121.534262",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-44",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段32號對面公車道(一)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038001",
+    "longitude": "121.536925",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-45",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段119號旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038473",
+    "longitude": "121.541177",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-46",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段160號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03774521",
+    "longitude": "121.5434511",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-47",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段55號對面公車道(一)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03816844",
+    "longitude": "121.5397038",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-48",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段55號對面公車道(二)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03815264",
+    "longitude": "121.5394825",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-49",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段1號對面公車道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03828924",
+    "longitude": "121.5331187",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-50",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段29號對面公車道(二)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03826737",
+    "longitude": "121.5349131",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-51",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路三段27號前",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033718",
+    "longitude": "121.534459",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-52",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路三段147巷口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03360478",
+    "longitude": "121.5417636",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-53",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生北路一段7號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.04515341",
+    "longitude": "121.532961",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-54",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路一段85號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.04211585",
+    "longitude": "121.532961",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-55",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段136號對面公車道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03788722",
+    "longitude": "121.5408729",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-56",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路一段131號對面公車道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03788255",
+    "longitude": "121.5328913",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-57",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段2號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0378867",
+    "longitude": "121.533094",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-58",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段55號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.038479",
+    "longitude": "121.539158",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-59",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路南往北空總旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03898",
+    "longitude": "121.53839",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-60",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路一段340號前",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03424724",
+    "longitude": "121.5375184",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-61",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段29號對面公車道(一)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03826615",
+    "longitude": "121.5348916",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-62",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "復興南路一段156號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.04228834",
+    "longitude": "121.5435851",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-63",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "復興南路一段204號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03961777",
+    "longitude": "121.5435741",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-64",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路三段32號對面公車道(二)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03800523",
+    "longitude": "121.5367913",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-65",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "復興南路一段318號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0369018",
+    "longitude": "121.5434824",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-66",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段成功國宅公車站前10公尺",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0276764",
+    "longitude": "121.5490461",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-67",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段81巷口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.029645",
+    "longitude": "121.549027",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-68",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段37巷口(平安公園前公車站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032065",
+    "longitude": "121.549062",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-69",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段283號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02483",
+    "longitude": "121.54909",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-70",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段281號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0357986",
+    "longitude": "121.5490388",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-71",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路1段337號前",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0335004",
+    "longitude": "121.5490216",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-72",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段130號旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0375262",
+    "longitude": "121.5513082",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-73",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段130號公車站牌",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0376584",
+    "longitude": "121.550684",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-74",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段222巷內人行道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037597",
+    "longitude": "121.551597",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-75",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段266巷口公車站牌",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0376012",
+    "longitude": "121.5524225",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-76",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段296號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0375768",
+    "longitude": "121.5536778",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-77",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段314號公車站牌",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037608",
+    "longitude": "121.554981",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-78",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段388號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03742947",
+    "longitude": "121.556346",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-79",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路4段416號(公車站牌前)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0375245",
+    "longitude": "121.5572633",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-80",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段63號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0246271",
+    "longitude": "121.5491468",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-81",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段85號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024626",
+    "longitude": "121.550123",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-82",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段113號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0245154",
+    "longitude": "121.5514396",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-83",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路2段166-1號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0270918",
+    "longitude": "121.555504",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-84",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路2段176號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0263776",
+    "longitude": "121.5547485",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-85",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "安和路2段50號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0311676",
+    "longitude": "121.5523623",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-86",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "安和路2段92號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0287558",
+    "longitude": "121.5504062",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-87",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "安和路2段150號遠企後門",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.026167",
+    "longitude": "121.549885",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-88",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "安和路2段151號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.028535",
+    "longitude": "121.550402",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-89",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "安和路2段225號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0255531",
+    "longitude": "121.5501715",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-90",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "安和路2段遠企旁綠地前",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.026151",
+    "longitude": "121.5498892",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-91",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "安和路1段仁愛國小旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0365639",
+    "longitude": "121.5520791",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-92",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "光復南路602號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032805",
+    "longitude": "121.557343",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-93",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路4段137號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033359",
+    "longitude": "121.549382",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-94",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路4段186巷口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033057",
+    "longitude": "121.551549",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-95",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路4段214號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033065",
+    "longitude": "121.552074",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-96",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路4段225號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033282",
+    "longitude": "121.552649",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-97",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路4段285號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033296",
+    "longitude": "121.554998",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-98",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路2段170號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0268584",
+    "longitude": "121.555168",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-99",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路4段374號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033012",
+    "longitude": "121.555644",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-100",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路4段378巷口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032966",
+    "longitude": "121.555799",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-101",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路3段99號(公車專用道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0223771",
+    "longitude": "121.5265817",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-102",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路3段125號(公車專用道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0220376",
+    "longitude": "121.5270024",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-103",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路1段74號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.026773",
+    "longitude": "121.524563",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-104",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路1段162號(大門右)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024922",
+    "longitude": "121.527913",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-105",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路3段9號(公車專用道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0241055",
+    "longitude": "121.5249663",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-106",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路二段186號(公車專用道)1",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0335933",
+    "longitude": "121.5293286",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-107",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路二段186號(公車專用道)2",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03379064",
+    "longitude": "121.5297133",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-108",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路1段162號(大門左)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02657",
+    "longitude": "121.527504",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-109",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路3段23號(公車專用道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0237351",
+    "longitude": "121.525052",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-110",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "杭州南路二段37號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0335042",
+    "longitude": "121.5233804",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-111",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "愛國東路35之1號(公車站牌)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.031913",
+    "longitude": "121.526135",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-112",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "杭州南路二段55號(公車站)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0325548",
+    "longitude": "121.522821",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-113",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路2段67號(公車專用道)1",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.026911",
+    "longitude": "121.522654",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-114",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "愛國東路31號(大門右)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032049",
+    "longitude": "121.524693",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-115",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路1段與溫州街交叉口高架下",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022375",
+    "longitude": "121.53317",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-116",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路2段32號(公車專用道)1",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.030745",
+    "longitude": "121.533516",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-117",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路2段67號(公車專用道)2",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02672",
+    "longitude": "121.522824",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-118",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路3段37號(公車專用道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0235425",
+    "longitude": "121.5253535",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-119",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路3段與辛亥路交叉口建高下",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022522",
+    "longitude": "121.534323",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-120",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "愛國東路31號(大門左)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032041",
+    "longitude": "121.524744",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-121",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "愛國東路244號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032032",
+    "longitude": "121.52534",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-122",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路2段32號(公車專用道)2",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.030674",
+    "longitude": "121.533532",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-123",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路2段86號(公車專用道)1",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0264",
+    "longitude": "121.534805",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-124",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "愛國東路南門市場中繼站旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032333",
+    "longitude": "121.523006",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-125",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "愛國東路21巷口旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.032199",
+    "longitude": "121.523946",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-126",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路2段86號(公車專用道)2",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.026449",
+    "longitude": "121.534777",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-127",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路2段134-29號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024627",
+    "longitude": "121.54567",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-128",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路2段363號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02479801",
+    "longitude": "121.5464859",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-129",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "復興南路2段315號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0240219",
+    "longitude": "121.5435097",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-130",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "復興南路2段387號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022096",
+    "longitude": "121.543496",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-131",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路2段134號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024679",
+    "longitude": "121.544806",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-132",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段14號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02452",
+    "longitude": "121.547146",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-133",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段46號 ",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024517",
+    "longitude": "121.547802",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-134",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段15號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02487",
+    "longitude": "121.547472",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-135",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路2段289號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02491026",
+    "longitude": "121.5445137",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-136",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段220號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02159",
+    "longitude": "121.548381",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-137",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦南街76巷,運動中心旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.020356",
+    "longitude": "121.54633",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-138",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段120號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0265281",
+    "longitude": "121.548455",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-139",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段162號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025086",
+    "longitude": "121.548418",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-140",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段196號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.023335",
+    "longitude": "121.548389",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-141",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段206號-北",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022714",
+    "longitude": "121.548344",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-142",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段234號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.021205",
+    "longitude": "121.548396",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-143",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路3段16號旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.020153",
+    "longitude": "121.547595",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-144",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路3段單號(和平高中站牌)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.019363",
+    "longitude": "121.547205",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-145",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路3段8號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.020502",
+    "longitude": "121.547911",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-146",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段319號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.023058",
+    "longitude": "121.549048",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-147",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段331巷口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022441",
+    "longitude": "121.549004",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-148",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路2段293巷口-北",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.023846",
+    "longitude": "121.549001",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-149",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段60號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024387",
+    "longitude": "121.549196",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-150",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段76號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024362",
+    "longitude": "121.550732",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-151",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路3段55號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.02017",
+    "longitude": "121.545999",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-152",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路2段224號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.023471",
+    "longitude": "121.551397",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-153",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路2段207號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.023681",
+    "longitude": "121.551963",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-154",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段168號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.023926",
+    "longitude": "121.55262",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-155",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路2段329號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.020687",
+    "longitude": "121.548689",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-156",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路3段168號-2",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.023979",
+    "longitude": "121.552341",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-157",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路3段單號(和平高中站牌-2)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.019804",
+    "longitude": "121.547714",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-158",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路二段70號對面",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.027922",
+    "longitude": "121.534841",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-159",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路三段43號對面森林公園捷運3號出口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033423",
+    "longitude": "121.53514",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-160",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路四段1~16號前公車道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0333798",
+    "longitude": "121.5441228",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-161",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路四段1~16號前公車道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.036246",
+    "longitude": "121.548446",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-162",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路一段294號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037514",
+    "longitude": "121.54532",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-163",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路四段10號(仁愛醫院正門口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0375",
+    "longitude": "121.5455556",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-164",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路仁愛路四段10號(大安路口公車道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03777778",
+    "longitude": "121.5444444",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-165",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路四段8巷口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.026491",
+    "longitude": "121.534793",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-166",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路二段86號對面(大安森林公園8號出口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03777778",
+    "longitude": "121.5475",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-167",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路四段62號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037781",
+    "longitude": "121.547511",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-168",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路四段64號(公車道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.029262",
+    "longitude": "121.534317",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-169",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路二段56號對面(大安森林公園9號出口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.035198",
+    "longitude": "121.548532",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-170",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路一段324號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033552",
+    "longitude": "121.543956",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-171",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路一段376號對面公車道",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.028901",
+    "longitude": "121.548495",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-172",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路二段76號(成功國宅站牌)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03341",
+    "longitude": "121.543857",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-173",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路四段1~16號前公車站亭",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037744",
+    "longitude": "121.544277",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-174",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路四段8巷口(6號前)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03341273",
+    "longitude": "121.548437",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-175",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路四段99巷口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025473",
+    "longitude": "121.543294",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-176",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "復興南路二段236號旁",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025033",
+    "longitude": "121.542962",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-177",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段225號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.027162",
+    "longitude": "121.5376",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-178",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路二段大安森林公園5號出口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025391",
+    "longitude": "121.54083",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-179",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段133號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025627",
+    "longitude": "121.539077",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-180",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段(瑞安街口)(公車站牌)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025691",
+    "longitude": "121.53868",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-181",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段63號(公車站牌)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025769",
+    "longitude": "121.538127",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-182",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段49號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.029857",
+    "longitude": "121.53745",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-183",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路二段117號對面(公車站牌)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025973",
+    "longitude": "121.536437",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-184",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段(大安森林公園站牌)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.030407",
+    "longitude": "121.533826",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-185",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路二段(金華街口公車道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.03333",
+    "longitude": "121.5327",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-186",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路二段(信義路口公車道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033463",
+    "longitude": "121.533065",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-187",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路三段(新生南路口大安森林公園)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.031721",
+    "longitude": "121.53742",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-188",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路二段大安森林公園3號出口",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0334302",
+    "longitude": "121.536379",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-189",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "信義路三段(捷運大安森林公園站5號出口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.033299",
+    "longitude": "121.537539",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-190",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路二段與信義路三段口(大安森林公園)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037531",
+    "longitude": "121.545566",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-191",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路四段10號(大安路口人行道)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.028192",
+    "longitude": "121.548495",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-192",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "敦化南路二段92號(台灣企銀)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.037289",
+    "longitude": "121.548537",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-193",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "仁愛路四段68號(仁愛圓環&四維路口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0257685",
+    "longitude": "121.537344",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-194",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段大安森林公園6號出口(與建國南路交叉口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.030679",
+    "longitude": "121.533893",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-195",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路金華街口(大安森林公園10號出口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.0333798",
+    "longitude": "121.5441228",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-196",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路二段29號(1)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022194",
+    "longitude": "121.53582",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-197",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段42-1號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025553",
+    "longitude": "121.537434",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-198",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路四段46號對面(公館捷運站三號出口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.015447",
+    "longitude": "121.533852",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-199",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路二段29號(2)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022176",
+    "longitude": "121.535925",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-200",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路二段109號對面(台大思亮館側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.021391",
+    "longitude": "121.538578",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-201",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路四段43號對面(台灣大學側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.014269",
+    "longitude": "121.540608",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-202",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福四段21號(銘傳國小附設幼兒園前)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.013531",
+    "longitude": "121.535856",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-203",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路三段85號對面(台灣大學側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.017528",
+    "longitude": "121.544424",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-204",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路三段82號對面(台灣大學側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.01941",
+    "longitude": "121.53642",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-205",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路四段68號對面(公館捷運站二號出口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.014714",
+    "longitude": "121.534383",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-206",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路四段107號(台大進修推廣部)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.012058",
+    "longitude": "121.536833",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-207",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路三段227號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.019771",
+    "longitude": "121.529427",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-208",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路三段19號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025049",
+    "longitude": "121.534894",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-209",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段20號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025722",
+    "longitude": "121.536181",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-210",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段12號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.025803",
+    "longitude": "121.53572",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-211",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路三段54之3號對面(台大棒球場側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.020565",
+    "longitude": "121.53424",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-212",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段110號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024938",
+    "longitude": "121.542447",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-213",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "建國南路二段306號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024084",
+    "longitude": "121.537389",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-214",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路二段169號對面(台灣大學側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.021049",
+    "longitude": "121.540962",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-215",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路三段94號對面(台大校門口側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.017282",
+    "longitude": "121.533516",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-216",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路四段83號(捷運公館站公車站)面",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.013161",
+    "longitude": "121.536063",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-217",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路三段88之2號對面(台大新月台側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.018142",
+    "longitude": "121.53357",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-218",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路三段66號對面(台大操場側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.019655",
+    "longitude": "121.534018",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-219",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路三段30號(台大國青萊爾富前)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.020597",
+    "longitude": "121.544711",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-220",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "和平東路二段108號",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.024875",
+    "longitude": "121.542188",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-221",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路二段臨136號(建國高架橋下)(1)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022804",
+    "longitude": "121.534648",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-222",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路二段111號對面(台大思亮館側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.021069",
+    "longitude": "121.53903",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-223",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "辛亥路二段臨136號(建國高架橋下)(2)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.022575",
+    "longitude": "121.534708",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-224",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路四段76號對面(公館捷運站二號出口)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.014528",
+    "longitude": "121.534724",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-225",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "新生南路三段52號對面(台大棒球場側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.021146",
+    "longitude": "121.534289",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-226",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "基隆路四段148號前(台大建築與城鄉發展大樓側)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.011887",
+    "longitude": "121.537783",
+    "methods": [
+      "viewDetails"
+    ]
+  },
+  {
+    "place_id": "trashcan-227",
+    "place_name": "垃圾桶",
+    "place_type": "垃圾桶",
+    "location": "羅斯福路羅斯福路三段201號(台電大樓捷運站2號出口對面)",
+    "facilities": [],
+    "open_hours": null,
+    "latitude": "25.01992",
+    "longitude": "121.529237",
+    "methods": [
+      "viewDetails"
+    ]
+  }
+]

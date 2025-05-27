@@ -24,6 +24,7 @@ def index():
 
 #In[1] User Management
 from models.user import User
+
 @app.route('/login', methods=['POST'])
 def login():
     user = User(db)
@@ -31,16 +32,22 @@ def login():
     password = request.form.get('password')
     success, msg = user.login(email, password)
     if success:
+        # 取得用戶資訊
+        user_info = user.get_user_by_email(email)
+        session['user_id'] = str(user_info['_id'])  # 已經有
+        session['user_name'] = user_info['name']    # 新增這行
         flash('登入成功', 'success')
         return redirect(url_for('index'))
     else:
         flash(msg, 'danger')
         return redirect(url_for('index'))
 
+
 @app.route('/logout')
 def logout():
     user = User(db)
     user.logout()
+    session.pop('user_name', None)
     flash('已登出', 'info')
     return redirect(url_for('index'))
 
