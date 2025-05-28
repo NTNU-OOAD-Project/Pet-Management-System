@@ -11,7 +11,7 @@ class User:
         # 檢查是否有重複 email
         if self.collection.find_one({"email": email}):
             return False, "Email 已被註冊"
-        hashed_pw = generate_password_hash(password)
+        hashed_pw = generate_password_hash(password, method="scrypt")
         user = {
             "name": name,
             "email": email,

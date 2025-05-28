@@ -1,11 +1,14 @@
 #In[0] Initialization
 from flask import Flask, render_template, session, jsonify, request, flash, redirect, url_for
+from flask_cors import CORS
 from pymongo import MongoClient
 from models.place import PlaceMap
 from dotenv import load_dotenv
+from datetime import datetime, timezone
 import os
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = 'your_secret_key'
 
 #.env file
@@ -17,6 +20,8 @@ MONGODB_DB = os.getenv('MONGODB_DB')
 
 client = MongoClient(MONGODB_URI)
 db = client[MONGODB_DB]
+
+messages_collection = db["messages"]
 
 @app.route('/')
 def index():
@@ -124,6 +129,56 @@ def supplies():
 @app.route('/event')
 def event():
     return render_template('event.html')
+
+@app.route("/api/messages", methods=["POST"])
+def save_message():
+    if 'user_id' not in session:
+        return jsonify({"error": "尚未登入"}), 401
+
+    data = request.json
+    required_fields = ("conversationId", "sender", "content", "timestamp")
+    if not data or not all(k in data for k in required_fields):
+        return jsonify({"error": "資料格式錯誤"}), 400
+
+    try:
+        utc_now = datetime.now(timezone.utc)
+        local_date = utc_now.strftime("%Y-%m-%d")
+        time_str = data["timestamp"]
+        datetime_str = f"{local_date} {time_str}"
+    except Exception as e:
+        return jsonify({"error": f"時間處理錯誤: {str(e)}"}), 400
+
+    message_doc = {
+        "conversationId": data["conversationId"],
+        "sender": data["sender"],
+        "content": data["content"],
+        "datetime": datetime_str,
+        "user_id": session["user_id"],
+        "title": data.get("title", "")
+    }
+
+    try:
+        result = messages_collection.insert_one(message_doc)
+        return jsonify({
+            "success": True,
+            "inserted_id": str(result.inserted_id)
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/api/messages", methods=["GET"])
+def get_message():
+    if 'user_id' not in session:
+        return jsonify({"error": "尚未登入"}), 401
+
+    user_id = session["user_id"]
+    try:
+        messages = list(messages_collection.find({"user_id": user_id}))
+        for msg in messages:
+            msg["_id"] = str(msg["_id"])  # 轉成字串避免 JSON 錯誤
+        return jsonify({"success": True, "messages": messages})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 #In[4] Main function
 if __name__ == '__main__':
