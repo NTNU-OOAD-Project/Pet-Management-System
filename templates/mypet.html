@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>我的寵物 - PetSync</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      background: #dceeff;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #000;
+      min-height: 100vh;
+    }
+    .main-content {
+      background-color: transparent;
+    }
+    .card-title {
+      font-weight: bold;
+    }
+    .icon-box {
+      font-size: 2rem;
+      color: #4a69bd;
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- 側邊欄 -->
+    <nav class="sidebar p-4">
+      <div class="logo mb-4 text-white text-center">
+        <i class="fa-solid fa-paw fa-2x mb-2"></i>
+        <a href="index.html" class="logo-text d-block mb-2"><i class="fa-solid fa-paw me-2"></i>PetSync</a>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="login.html"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+        <li class="nav-item"><a class="nav-link text-white active" href="mypet.html"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_place.html"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_event.html"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="ai_activity.html"><i class="fa-solid fa-robot me-2"></i>AI 活動</a></li>
+      </ul>
+    </nav>
+
+    <!-- 主內容 -->
+    <main class="main-content p-5 flex-grow-1">
+      <div class="card shadow-lg p-4 rounded-4 border-0" style="background-color: #ffffffc7;">
+        <h2 class="mb-4"><strong>🐶 我的寵物功能選單</strong></h2>
+        <div class="row g-4">
+          <!-- 健康紀錄 -->
+          <div class="col-md-4" data-aos="zoom-in">
+            <a href="health_record.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-heartbeat"></i></div>
+              <h5 class="card-title">健康紀錄</h5>
+              <p class="card-text">追蹤疫苗、身體狀況與健康報告。</p>
+            </a>
+          </div>
+          <!-- 飲食管理 -->
+          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+            <a href="food_record.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-bone"></i></div>
+              <h5 class="card-title">飲食管理</h5>
+              <p class="card-text">記錄每日飲食與偏好，建立餵食計畫。</p>
+            </a>
+          </div>
+          <!-- 照護提醒 -->
+          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+            <a href="care_reminder.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-bell"></i></div>
+              <h5 class="card-title">照護提醒</h5>
+              <p class="card-text">設定洗澡、剪指甲、驅蟲等定期提醒。</p>
+            </a>
+          </div>
+          <!-- 醫療預約 -->
+          <div class="col-md-6" data-aos="zoom-in" data-aos-delay="300">
+            <a href="medical_appointment.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-hospital"></i></div>
+              <h5 class="card-title">醫療預約</h5>
+              <p class="card-text">快速安排診療時間，並查看預約紀錄。</p>
+            </a>
+          </div>
+          <!-- 用品存貨 -->
+          <div class="col-md-6" data-aos="zoom-in" data-aos-delay="400">
+            <a href="supply_inventory.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-box-open"></i></div>
+              <h5 class="card-title">用品存貨</h5>
+              <p class="card-text">追蹤飼料、尿布、清潔用品等剩餘數量。</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>
