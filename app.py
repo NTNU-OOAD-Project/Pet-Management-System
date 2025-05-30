@@ -3,6 +3,7 @@ from flask import Flask, render_template, session, jsonify, request, flash, redi
 from pymongo import MongoClient
 from models.place import PlaceMap
 from dotenv import load_dotenv
+from models.services.notification_service import NotificationService
 import os
 
 app = Flask(__name__)
@@ -21,6 +22,19 @@ db = client[MONGODB_DB]
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.context_processor
+def inject_unread_notification_count():
+    user_service = User(db)
+    current_user = user_service.get_current_user()
+
+    if current_user:
+        notif_service = NotificationService(db)
+        unread_count = notif_service.get_unread_count(current_user['_id'])
+    else:
+        unread_count = 0
+
+    return dict(unread_count=unread_count)
 
 #In[1] User Management
 from models.user import User
@@ -122,7 +136,7 @@ def event():
 if __name__ == '__main__':
     app.run(debug=True)
 
-    from models.inventory import InventoryManager
+from models.food_inventory import InventoryManager
 
 inventory_manager = InventoryManager(db)
 
