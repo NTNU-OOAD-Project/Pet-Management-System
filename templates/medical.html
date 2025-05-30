@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>預約寵物醫療服務</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body { background: #eef3fa; }
+        .sidebar {
+            width: 200px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: #2e3a4d;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            padding-top: 40px;
+        }
+        .sidebar a {
+            color: #fff;
+            padding: 12px 24px;
+            display: block;
+            width: 100%;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background: #41516b;
+        }
+        .main-content {
+            margin-left: 220px;
+            padding: 40px 30px;
+            max-width: 640px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 側邊欄 -->
+    <div class="sidebar">
+        <h3 class="ps-4 mb-4">寵物管理系統</h3>
+        <a href="{{ url_for('index') }}">首頁</a>
+        <a href="{{ url_for('pets') }}">我的寵物</a>
+        <a href="{{ url_for('health') }}">健康紀錄</a>
+        <a href="{{ url_for('diet') }}">飲食管理</a>
+        <a href="{{ url_for('reminder') }}">照護提醒</a>
+        <a href="{{ url_for('medical') }}">醫療預約</a>
+        <a href="{{ url_for('supplies') }}">用品存貨</a>
+        <a href="{{ url_for('place_view') }}">寵物友善場所</a>
+        <a href="{{ url_for('event') }}">活動專區</a>
+    </div>
+
+    <!-- 主內容區 -->
+    <div class="main-content">
+        {% if session.get('user_name') %}
+        <div class="alert alert-info mb-4">
+            歡迎，{{ session['user_name'] }}！
+            <a href="{{ url_for('logout') }}" class="ms-2">登出</a>
+        </div>
+        {% endif %}
+
+        <h2>預約寵物醫療服務</h2>
+        <form method="POST" class="mb-4">
+            <div class="mb-3">
+                <label class="form-label">服務類型</label>
+                <select class="form-select" name="service_type" required>
+                    <option value="疫苗接種">疫苗接種</option>
+                    <option value="健康檢查">健康檢查</option>
+                    <option value="緊急處理">緊急處理</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">獸醫名稱</label>
+                <input type="text" class="form-control" name="vet_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">診所名稱</label>
+                <input type="text" class="form-control" name="clinic_name" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">預約時間</label>
+                <input type="datetime-local" class="form-control" name="appointment_time" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">服務地點</label>
+                <input type="text" class="form-control" name="service_location" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">提交預約</button>
+        </form>
+
+        <h4>我的醫療預約紀錄</h4>
+        <form method="GET" class="mb-4">
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <label class="form-label">服務類型</label>
+                    <select class="form-select" name="service_type">
+                        <option value="" {{ 'selected' if request.args.get('service_type') == '' else '' }}>全部</option>
+                        <option value="疫苗接種" {{ 'selected' if request.args.get('service_type') == '疫苗接種' else '' }}>疫苗接種</option>
+                        <option value="健康檢查" {{ 'selected' if request.args.get('service_type') == '健康檢查' else '' }}>健康檢查</option>
+                        <option value="緊急處理" {{ 'selected' if request.args.get('service_type') == '緊急處理' else '' }}>緊急處理</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">診所名稱</label>
+                    <input type="text" class="form-control" name="clinic_name" value="{{ request.args.get('clinic_name', '') }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">預約日期</label>
+                    <input type="date" class="form-control" name="appointment_date" value="{{ request.args.get('appointment_date', '') }}">
+                </div>
+            </div>
+            <div class="text-end mt-2">
+                <button type="submit" class="btn btn-outline-primary">篩選</button>
+                <a href="{{ url_for('medical') }}" class="btn btn-outline-secondary">清除</a>
+            </div>
+        </form>
+
+        <ul class="list-group">
+            {% for service in services %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ service.service_type }}</strong> - {{ service.clinic_name }} - 
+                    {{ service.appointment_time.strftime('%Y-%m-%d %H:%M') }}
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ service._id }}">查看詳情</button>
+                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal-{{ service._id }}">修改預約</button>
+                    <form method="POST" action="{{ url_for('cancel_medical', service_id=service._id) }}" onsubmit="return confirm('確定要取消這筆預約嗎？');">
+                        <button class="btn btn-sm btn-danger">取消預約</button>
+                    </form>
+                </div>
+            </li>
+
+            <!-- 詳情 Modal -->
+            <div class="modal fade" id="modal-{{ service._id }}" tabindex="-1" aria-labelledby="modalLabel{{ service._id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel{{ service._id }}">預約詳情</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>服務類型：</strong>{{ service.service_type }}</p>
+                            <p><strong>獸醫名稱：</strong>{{ service.vet_name }}</p>
+                            <p><strong>診所名稱：</strong>{{ service.clinic_name }}</p>
+                            <p><strong>預約時間：</strong>{{ service.appointment_time.strftime('%Y-%m-%d %H:%M') }}</p>
+                            <p><strong>服務地點：</strong>{{ service.service_location }}</p>
+                            <p><strong>預約 ID：</strong>{{ service._id }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 編輯 Modal -->
+            <div class="modal fade" id="editModal-{{ service._id }}" tabindex="-1" aria-labelledby="editModalLabel{{ service._id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form method="POST" action="{{ url_for('edit_medical', service_id=service._id) }}" class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel{{ service._id }}">修改預約</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">服務類型</label>
+                                <input type="text" name="service_type" class="form-control" value="{{ service.service_type }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">獸醫名稱</label>
+                                <input type="text" name="vet_name" class="form-control" value="{{ service.vet_name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">診所名稱</label>
+                                <input type="text" name="clinic_name" class="form-control" value="{{ service.clinic_name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">預約時間</label>
+                                <input type="datetime-local" name="appointment_time" class="form-control" value="{{ service.appointment_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">服務地點</label>
+                                <input type="text" name="service_location" class="form-control" value="{{ service.service_location }}" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">儲存變更</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
+<!-- AI智能助理 -->
+<script src="/static/ai_assistant/core.js"></script>
+</body>
+</html>

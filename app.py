@@ -117,9 +117,89 @@ def diet():
 def reminder():
     return render_template('reminder.html')
 
-@app.route('/medical')
+#In[5] 預約寵物醫療服務
+from models.medical_service import MedicalService
+
+# 新增預約
+@app.route('/medical', methods=['GET', 'POST'])
 def medical():
-    return render_template('medical.html')
+    service = MedicalService(db)
+    if request.method == 'POST':
+        if 'user_id' not in session:
+            flash("請先登入才能預約", "warning")
+            return redirect(url_for('index'))
+
+        service_type = request.form.get('service_type')
+        vet_name = request.form.get('vet_name')
+        clinic_name = request.form.get('clinic_name')
+        appointment_str = request.form.get('appointment_time')
+        appointment_time = datetime.strptime(appointment_str, "%Y-%m-%dT%H:%M")
+        service_location = request.form.get('service_location')
+
+        service.schedule_service(
+            session['user_id'], service_type, vet_name, clinic_name,
+            appointment_time, service_location
+        )
+        flash("預約成功", "success")
+        return redirect(url_for('medical'))
+
+    if 'user_id' in session:
+        user_id = session['user_id']
+        
+        filters = {
+            "service_type": request.args.get("service_type"),
+            "clinic_name": request.args.get("clinic_name"),
+            "appointment_date": request.args.get("appointment_date")
+        }
+        filters = {k: v for k, v in filters.items() if v}
+
+        services = service.list_user_services(user_id, filters)
+
+        for s in services:
+            s['_id'] = str(s['_id'])
+    else:
+        services = []
+
+    return render_template('medical.html', services=services)
+
+# 刪除預約
+@app.route('/medical/cancel/<service_id>', methods=['POST'])
+def cancel_medical(service_id):
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('index'))
+
+    service = MedicalService(db)
+    success = service.cancel_service_by_id(service_id, session['user_id'])
+    if success:
+        flash("預約已成功取消", "success")
+    else:
+        flash("取消失敗，請稍後再試", "danger")
+    return redirect(url_for('medical'))
+
+# 修改預約
+@app.route('/medical/edit/<service_id>', methods=['POST'])
+def edit_medical(service_id):
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('index'))
+
+    service_type = request.form.get('service_type')
+    vet_name = request.form.get('vet_name')
+    clinic_name = request.form.get('clinic_name')
+    appointment_str = request.form.get('appointment_time')
+    appointment_time = datetime.strptime(appointment_str, "%Y-%m-%dT%H:%M")
+    service_location = request.form.get('service_location')
+
+    service = MedicalService(db)
+    service.update_service_by_id(
+        service_id, session['user_id'],
+        service_type, vet_name, clinic_name,
+        appointment_time, service_location
+    )
+
+    flash("預約已更新", "success")
+    return redirect(url_for('medical'))
 
 @app.route('/supplies')
 def supplies():
@@ -130,6 +210,7 @@ def supplies():
 def event():
     return render_template('event.html')
 
+# AI智能助理
 @app.route("/api/messages", methods=["POST"])
 def save_message():
     if 'user_id' not in session:
@@ -175,7 +256,7 @@ def get_message():
     try:
         messages = list(messages_collection.find({"user_id": user_id}))
         for msg in messages:
-            msg["_id"] = str(msg["_id"])  # 轉成字串避免 JSON 錯誤
+            msg["_id"] = str(msg["_id"])
         return jsonify({"success": True, "messages": messages})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
