@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>我的寵物友善場所清單</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #fdfaf6;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .card {
+      margin-bottom: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .container {
+      padding-top: 2rem;
+    }
+    h2 {
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+    .back-btn {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center">我收藏的寵物友善場域 💖</h2>
+    <div id="placeList" class="row justify-content-center">
+      <!-- 收藏項目會自動加入 -->
+    </div>
+    <div class="text-center back-btn">
+      <a href="index.html" class="btn btn-secondary">← 回到地圖選擇</a>
+    </div>
+  </div>
+
+  <script>
+    const placeList = document.getElementById('placeList');
+    const likedPlaces = JSON.parse(localStorage.getItem('likedPlaces')) || [];
+
+    if (likedPlaces.length === 0) {
+      placeList.innerHTML = `<p class="text-center text-muted">尚未收藏任何場域喔！</p>`;
+    } else {
+      likedPlaces.forEach(place => {
+        const card = document.createElement('div');
+        card.className = 'col-md-6 col-lg-4';
+        card.innerHTML = `
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">${place}</h5>
+              <p class="card-text">這是一個寵物友善的好地方，適合你和毛孩一起造訪 🐾</p>
+            </div>
+          </div>
+        `;
+        placeList.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>寵物活動 - PetSync</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #000000;
+      height: 100vh;
+      position: fixed;
+    }
+
+    .sidebar .logo-text {
+      font-size: 1.5rem;
+      color: white;
+      text-decoration: none;
+    }
+
+    .sidebar .nav-link {
+      font-size: 1.1rem;
+    }
+
+    .sidebar .nav-link.active {
+      font-weight: bold;
+      background-color: #000000;
+      border-radius: 8px;
+    }
+
+    .main {
+      margin-left: 250px;
+      padding: 2rem;
+      width: 100%;
+      background-color: #f8f9fa;
+      min-height: 100vh;
+    }
+
+    .event-card {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-card h5 {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .event-card p {
+      margin-bottom: 0.3rem;
+    }
+
+    .joined-events {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- 側邊欄 -->
+  <nav class="sidebar p-4">
+    <div class="logo mb-4 text-white text-center">
+      <i class="fa-solid fa-paw fa-2x mb-2"></i>
+      <a href="index.html" class="logo-text d-block mb-2"><i class="fa-solid fa-paw me-2"></i>PetSync</a>
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a class="nav-link text-white" href="login.html"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="mypet.html"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="pet_place.html"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
+      <li class="nav-item"><a class="nav-link text-white active" href="pet_event.html"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
+      <li class="nav-item"><a class="nav-link text-white" href="ai_activity.html"><i class="fa-solid fa-robot me-2"></i>AI 活動</a></li>
+    </ul>
+  </nav>
+
+  <div class="main">
+    <h2 class="mb-4">寵物活動</h2>
+
+    <div class="event-card">
+      <h5>毛孩公園野餐日</h5>
+      <p><strong>日期：</strong>2025/06/15</p>
+      <p><strong>時間：</strong>14:00 - 17:00</p>
+      <p><strong>地點：</strong>大安森林公園</p>
+      <p><strong>簡介：</strong>帶著您的毛孩來享受戶外野餐活動，現場有寵物小遊戲與拍照區！</p>
+      <button class="btn btn-primary join-btn">我要參加</button>
+    </div>
+
+    <div class="event-card">
+      <h5>寵物健康講座</h5>
+      <p><strong>日期：</strong>2025/06/22</p>
+      <p><strong>時間：</strong>10:00 - 12:00</p>
+      <p><strong>地點：</strong>松山社區中心</p>
+      <p><strong>簡介：</strong>獸醫師帶您了解常見疾病與照護知識，適合所有飼主參加。</p>
+      <button class="btn btn-primary join-btn">我要參加</button>
+    </div>
+
+    <div class="joined-events">
+      <h4>我已報名的活動</h4>
+      <ul id="joinedList" class="list-group mt-2"></ul>
+    </div>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll('.join-btn');
+    const joinedList = document.getElementById('joinedList');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const card = button.parentElement;
+        const title = card.querySelector('h5').innerText;
+        const date = card.querySelectorAll('p')[0].innerText;
+        const location = card.querySelectorAll('p')[2].innerText;
+
+        const listItem = document.createElement('li');
+        listItem.className = 'list-group-item';
+        listItem.textContent = `${title} - ${date} @ ${location}`;
+
+        joinedList.appendChild(listItem);
+        button.disabled = true;
+        button.innerText = '已報名';
+      });
+    });
+  </script>
+</body>
+</html>
