@@ -1,59 +1,41 @@
-#In[0]  Initialization 
+#In[0] Initialization
 from flask import Flask, render_template, session, jsonify, request, flash, redirect, url_for
-from flask_cors import CORS  # aichat only
+from flask_cors import CORS
 from pymongo import MongoClient
 from models.place import PlaceMap
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 import os
 
-from models.user import User
-from models.services.notification_service import NotificationService
-from models.food_inventory import InventoryManager
-
 app = Flask(__name__)
-CORS(app)  
+CORS(app)
 app.secret_key = 'your_secret_key'
 
+#.env file
 load_dotenv()
 
+# MongoDB Configuration
 MONGODB_URI = os.getenv('MONGODB_URI')
 MONGODB_DB = os.getenv('MONGODB_DB')
 
 client = MongoClient(MONGODB_URI)
 db = client[MONGODB_DB]
 
-messages_collection = db["messages"]  # aichat
-inventory_manager = InventoryManager(db)  # kaitai
+messages_collection = db["messages"]
 
-# == [首頁] ==
 @app.route('/')
 def index():
     return render_template('index.html')
 
-#In[1] Notification: kaitai only
-@app.context_processor
-def inject_unread_notification_count():
-    user_service = User(db)
-    current_user = user_service.get_current_user() if hasattr(user_service, 'get_current_user') else None
-
-    if current_user:
-        notif_service = NotificationService(db)
-        unread_count = notif_service.get_unread_count(current_user['_id'])
-    else:
-        unread_count = 0
-    return dict(unread_count=unread_count)
-
-
-
-#In[2] User Management]
+#In[1] User Management
+from models.user import User
 
 # 登入頁面
 @app.route('/login', methods=['GET'])
 def login_page():
     return render_template('login.html')
 
-# 登入
+# 登入處理
 @app.route('/login', methods=['POST'])
 def login():
     user = User(db)
@@ -61,33 +43,30 @@ def login():
     password = request.form.get('password')
     success, msg = user.login(email, password)
     if success:
-        # aichat: 存 session, kaitai: 只 flash
-        user_info = user.get_user_by_email(email) if hasattr(user, 'get_user_by_email') else None
-        if user_info:
-            session['user_id'] = str(user_info['_id'])
-            session['user_name'] = user_info['name']
+        user_info = user.get_user_by_email(email)
+        session['user_id'] = str(user_info['_id'])
+        session['user_name'] = user_info['name']
         flash('登入成功', 'success')
         return redirect(url_for('index'))
     else:
         flash(msg, 'danger')
-        # aichat: 回登入頁；kaitai: 回首頁
-        return redirect(url_for('login_page'))
+        return redirect(url_for('login_page'))  # 登入失敗也回 login 頁
 
-# 登出（aichat 會 pop user_name, kaitai 沒有）
+# 登出
 @app.route('/logout')
 def logout():
     user = User(db)
     user.logout()
-    session.pop('user_name', None)  # aichat only
+    session.pop('user_name', None)
     flash('已登出', 'info')
     return redirect(url_for('index'))
 
-# 註冊頁面（aichat only）
+# 註冊頁面
 @app.route('/register', methods=['GET'])
 def register_page():
     return render_template('register.html')
 
-# 註冊處理（以 aichat 版本為主）
+# 註冊處理
 @app.route('/register', methods=['POST'])
 def register():
     user = User(db)
@@ -100,9 +79,9 @@ def register():
         flash('註冊成功，請登入', 'success')
     else:
         flash(msg, 'danger')
-    return redirect(url_for('login_page'))  # aichat 會回登入頁
-
-#In[3] Place
+    return redirect(url_for('login_page'))  # 註冊後回登入頁
+#In[2] Place
+# 展示場所地圖
 @app.route('/place')
 def place_view():
     place_map = PlaceMap(db)
@@ -110,6 +89,7 @@ def place_view():
     is_logged_in = 'user_id' in session
     return render_template('place.html', map_html=place_html, is_logged_in=is_logged_in)
 
+# 場所詳細資料
 @app.route('/place/detail/<place_id>')
 def place_detail(place_id):
     place_map = PlaceMap(db)
@@ -119,20 +99,21 @@ def place_detail(place_id):
         return jsonify({"status": "success", "data": place})
     return jsonify({"status": "fail", "msg": "Place not found"})
 
+# 預約場所
 @app.route('/place/reserve', methods=['POST'])
 def place_reserve():
     if 'user_id' not in session:
         return jsonify({'status': 'fail', 'msg': '請先登入'})
     place_id = request.json.get('place_id')
-    reserve_info = request.json.get('reserve_info')
+    reserve_info = request.json.get('reserve_info')  # {date, time, extra_info...}
     user_id = session['user_id']
     place_map = PlaceMap(db)
     place_map.reserve_spot(place_id, user_id, reserve_info)
     return jsonify({'status': 'success', 'msg': '預約成功！'})
 
-#In[4] 寵物管理
+#In[3] 寵物管理
 @app.route('/pets')
-def pets():    
+def pets():
     return render_template('mypet.html')
 
 @app.route('/health')
@@ -147,9 +128,10 @@ def diet():
 def reminder():
     return render_template('reminder.html')
 
-#In[5] 醫療服務
+#In[5] 預約寵物醫療服務
 from models.medical_service import MedicalService
 
+# 新增預約
 @app.route('/medical', methods=['GET', 'POST'])
 def medical():
     service = MedicalService(db)
@@ -174,7 +156,7 @@ def medical():
 
     if 'user_id' in session:
         user_id = session['user_id']
-
+        
         filters = {
             "service_type": request.args.get("service_type"),
             "clinic_name": request.args.get("clinic_name"),
@@ -191,6 +173,7 @@ def medical():
 
     return render_template('medical.html', services=services)
 
+# 刪除預約
 @app.route('/medical/cancel/<service_id>', methods=['POST'])
 def cancel_medical(service_id):
     if 'user_id' not in session:
@@ -205,6 +188,7 @@ def cancel_medical(service_id):
         flash("取消失敗，請稍後再試", "danger")
     return redirect(url_for('medical'))
 
+# 修改預約
 @app.route('/medical/edit/<service_id>', methods=['POST'])
 def edit_medical(service_id):
     if 'user_id' not in session:
@@ -228,20 +212,16 @@ def edit_medical(service_id):
     flash("預約已更新", "success")
     return redirect(url_for('medical'))
 
-
-#In[5] supplies
-'''
 @app.route('/supplies')
 def supplies():
     return render_template('supplies.html')
-'''
 
-#In[6] 活動預約
+#In[4] 活動預約
 @app.route('/event')
 def event():
     return render_template('event.html')
 
-#In[7] AI 智能助理 (aichat only)
+# AI智能助理
 @app.route("/api/messages", methods=["POST"])
 def save_message():
     if 'user_id' not in session:
@@ -292,23 +272,6 @@ def get_message():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-#In[5]  Food Inventory
-@app.route('/user/<user_id>/add_food', methods=['POST'])
-def add_food(user_id):
-    data = request.get_json()
-    name = data.get("name")
-    amount = float(data.get("amount", 0))
-    success, msg = inventory_manager.add_food(user_id, name, amount)
-    return jsonify({'status': 'success' if success else 'fail', 'msg': msg})
-
-@app.route('/user/<user_id>/consume_food', methods=['POST'])
-def consume_food(user_id):
-    data = request.get_json()
-    name = data.get("name")
-    amount = float(data.get("amount", 0))
-    success, msg = inventory_manager.consume_food(user_id, name, amount)
-    return jsonify({'status': 'success' if success else 'fail', 'msg': msg})
-
-# == [Main function] ==
+#In[4] Main function
 if __name__ == '__main__':
     app.run(debug=True)
