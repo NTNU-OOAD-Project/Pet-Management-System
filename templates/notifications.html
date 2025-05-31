@@ -1,0 +1,14 @@
+<!-- templates/notifications.html -->
+<h2>🔔 您的提醒通知</h2>
+<ul>
+  {% for n in notifications %}
+    <li>
+      <strong>{{ n.timestamp.strftime("%Y-%m-%d %H:%M") }}</strong>
+      {% if not n.is_read %}<span style="color: red;">[未讀]</span>{% endif %}
+      <br>{{ n.message }}
+    </li>
+  {% endfor %}
+</ul>
+<form action="{{ url_for('mark_all_notifications_read') }}" method="post">
+  <button type="submit" class="btn btn-secondary">全部標記為已讀</button>
+</form>
