@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>寵物日常管理系統 - 首頁</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <!-- AOS 動畫套件 -->
@@ -18,8 +18,8 @@
         <h4 class="fw-bold">PetSync</h4>
       </div>
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link text-white" href="login.html"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="mypet.html"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login_page') }}"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('pets') }}"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="pet_place.html"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="pet_event.html"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="ai_activity.html"><i class="fa-solid fa-robot me-2"></i>AI 活動</a></li>
@@ -28,6 +28,12 @@
 
     <!-- 主內容 -->
     <main class="main-content p-5 flex-grow-1">
+        {% if session.get('user_name') %}
+        <div class="alert alert-success mb-4">
+            歡迎，{{ session['user_name'] }}！
+            <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary ms-3">登出</a>
+        </div>
+        {% endif %}
       <div class="card shadow-lg p-4 rounded-4 border-0" style="background-color: #ffffffb2;">
         <h1 class="mb-4"><strong>歡迎來到寵物日常管理系統 🐾</strong></h1>
         <p class="lead"><strong>這是一個幫助您管理毛孩資訊的全方位平台，提供地點推薦、活動參與與 AI 智能互動體驗。</strong></p>
@@ -63,6 +69,8 @@
       </div>
     </main>
   </div>
+  <!-- AI智能助理 -->
+  <script src="/static/ai_assistant/core.js"></script>
 </body>
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>

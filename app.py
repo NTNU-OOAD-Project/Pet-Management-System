@@ -30,6 +30,12 @@ def index():
 #In[1] User Management
 from models.user import User
 
+# 登入頁面
+@app.route('/login', methods=['GET'])
+def login_page():
+    return render_template('login.html')
+
+# 登入處理
 @app.route('/login', methods=['POST'])
 def login():
     user = User(db)
@@ -37,17 +43,16 @@ def login():
     password = request.form.get('password')
     success, msg = user.login(email, password)
     if success:
-        # 取得用戶資訊
         user_info = user.get_user_by_email(email)
-        session['user_id'] = str(user_info['_id'])  # 已經有
-        session['user_name'] = user_info['name']    # 新增這行
+        session['user_id'] = str(user_info['_id'])
+        session['user_name'] = user_info['name']
         flash('登入成功', 'success')
         return redirect(url_for('index'))
     else:
         flash(msg, 'danger')
-        return redirect(url_for('index'))
+        return redirect(url_for('login_page'))  # 登入失敗也回 login 頁
 
-
+# 登出
 @app.route('/logout')
 def logout():
     user = User(db)
@@ -56,6 +61,12 @@ def logout():
     flash('已登出', 'info')
     return redirect(url_for('index'))
 
+# 註冊頁面
+@app.route('/register', methods=['GET'])
+def register_page():
+    return render_template('register.html')
+
+# 註冊處理
 @app.route('/register', methods=['POST'])
 def register():
     user = User(db)
@@ -68,7 +79,7 @@ def register():
         flash('註冊成功，請登入', 'success')
     else:
         flash(msg, 'danger')
-    return redirect(url_for('index'))
+    return redirect(url_for('login_page'))  # 註冊後回登入頁
 #In[2] Place
 # 展示場所地圖
 @app.route('/place')
@@ -103,7 +114,7 @@ def place_reserve():
 #In[3] 寵物管理
 @app.route('/pets')
 def pets():
-    return render_template('pets.html')
+    return render_template('mypet.html')
 
 @app.route('/health')
 def health():
