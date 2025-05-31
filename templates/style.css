@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #eaf6fb; /* 淡藍色背景 */
+}
+
+/* 側邊欄 */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #000; /* 黑色側邊欄 */
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .nav-link {
+  font-size: 1rem;
+  padding: 12px 20px;
+  transition: background 0.2s ease;
+  border-radius: 8px;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #1c1c1c;
+}
+
+.logo {
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 16px;
+}
+
+/* 主內容區 */
+.main-content {
+  background-color: transparent;
+}
+
+/* 卡片感內容 */
+.card {
+  border-radius: 16px;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}

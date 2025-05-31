@@ -1,120 +1,71 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <title>寵物管理系統 - 登入/註冊</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: #eef3fa; }
-        .sidebar {
-            width: 200px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            background-color: #2e3a4d;
-            color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            padding-top: 40px;
-        }
-        .sidebar a {
-            color: #fff;
-            padding: 12px 24px;
-            display: block;
-            width: 100%;
-            text-decoration: none;
-        }
-        .sidebar a:hover {
-            background: #41516b;
-        }
-        .main-content {
-            margin-left: 220px;
-            padding: 40px 30px;
-            max-width: 480px;
-        }
-        .switch-link {
-            color: #2463a1; 
-            cursor: pointer;
-        }
-        .switch-link:hover { text-decoration: underline; }
-    </style>
+  <meta charset="UTF-8">
+  <title>寵物日常管理系統 - 首頁</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- AOS 動畫套件 -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <div class="sidebar">
-        <h3 class="ps-4 mb-4">寵物管理系統</h3>
-        <a href="{{ url_for('index') }}">首頁</a>
-        <a href="{{ url_for('pets') }}">我的寵物</a>
-        <a href="{{ url_for('health') }}">健康紀錄</a>
-        <a href="{{ url_for('diet') }}">飲食管理</a>
-        <a href="{{ url_for('reminder') }}">照護提醒</a>
-        <a href="{{ url_for('medical') }}">醫療預約</a>
-        <a href="{{ url_for('supplies') }}">用品存貨</a>
-        <a href="{{ url_for('place_view') }}">寵物友善場所</a>
-        <a href="{{ url_for('event') }}">活動專區</a>
-    </div>
+  <div class="d-flex">
+    <!-- 側邊欄 -->
+    <nav class="sidebar p-4">
+      <div class="logo mb-4 text-white text-center">
+        <i class="fa-solid fa-paw fa-2x mb-2"></i>
+        <h4 class="fw-bold">PetSync</h4>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="login.html"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="mypet.html"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_place.html"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_event.html"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="ai_activity.html"><i class="fa-solid fa-robot me-2"></i>AI 活動</a></li>
+      </ul>
+    </nav>
 
-    <div class="main-content">
-        {% if session.get('user_name') %}
-        <div class="alert alert-info mb-4">
-            歡迎，{{ session['user_name'] }}！
-            <a href="{{ url_for('logout') }}" class="ms-2">登出</a>
+    <!-- 主內容 -->
+    <main class="main-content p-5 flex-grow-1">
+      <div class="card shadow-lg p-4 rounded-4 border-0" style="background-color: #ffffffb2;">
+        <h1 class="mb-4"><strong>歡迎來到寵物日常管理系統 🐾</strong></h1>
+        <p class="lead"><strong>這是一個幫助您管理毛孩資訊的全方位平台，提供地點推薦、活動參與與 AI 智能互動體驗。</strong></p>
+        <hr>
+        <div class="container mt-5">
+          <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-up">
+              <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><strong>我的寵物</strong></h5>
+                  <p class="card-text"><strong>記錄並管理您的毛孩資訊。</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><strong>寵物場所</strong></h5>
+                  <p class="card-text"><strong>探索寵物友善的地點與商家。</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                  <h5 class="card-title"><strong>AI 活動推薦</strong></h5>
+                  <p class="card-text"><strong> AI 推薦您與毛孩的互動活動。</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        {% endif %}
-        <!-- 登入表單 -->
-        <div id="login-form">
-            <h2>登入</h2>
-            <form action="{{ url_for('login') }}" method="POST">
-                <div class="mb-3">
-                    <label for="login-email" class="form-label">電子郵件</label>
-                    <input type="email" class="form-control" id="login-email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="login-password" class="form-label">密碼</label>
-                    <input type="password" class="form-control" id="login-password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">登入</button>
-            </form>
-            <p class="mt-3">還沒有帳號嗎？<span class="switch-link" onclick="switchForm('register')">註冊新帳號</span></p>
-        </div>
-
-        <!-- 註冊表單 -->
-        <div id="register-form" style="display: none;">
-            <h2>註冊新帳號</h2>
-            <form action="{{ url_for('register') }}" method="POST">
-                <div class="mb-3">
-                    <label for="reg-name" class="form-label">姓名</label>
-                    <input type="text" class="form-control" id="reg-name" name="name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="reg-email" class="form-label">電子郵件</label>
-                    <input type="email" class="form-control" id="reg-email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="reg-phone" class="form-label">電話</label>
-                    <input type="tel" class="form-control" id="reg-phone" name="phone" required>
-                </div>
-                <div class="mb-3">
-                    <label for="reg-password" class="form-label">密碼</label>
-                    <input type="password" class="form-control" id="reg-password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-success w-100">註冊</button>
-            </form>
-            <p class="mt-3">已經有帳號了？<span class="switch-link" onclick="switchForm('login')">回到登入</span></p>
-        </div>
-    </div>
-
-    <script>
-        function switchForm(form) {
-            if(form === 'register') {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('register-form').style.display = 'block';
-            } else {
-                document.getElementById('register-form').style.display = 'none';
-                document.getElementById('login-form').style.display = 'block';
-            }
-        }
-    </script>
+      </div>
+    </main>
+  </div>
 </body>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 </html>

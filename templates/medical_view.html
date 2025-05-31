@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>醫療預約檢視</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #eef7ff;">
+  <div class="container mt-5">
+    <div class="card p-4 shadow rounded-4">
+      <h2 class="mb-4 text-center">📋 醫療預約紀錄檢視</h2>
+      <table class="table table-striped table-bordered text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>看診時間</th>
+            <th>診所名稱</th>
+            <th>病症</th>
+            <th>下次看診時間</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 未來由後端動態渲染資料 -->
+          <tr>
+            <td>2025-06-01 10:00</td>
+            <td>貓貓狗狗動物醫院</td>
+            <td>嘔吐與食慾不振</td>
+            <td>2025-06-15 10:00</td>
+          </tr>
+          <tr>
+            <td>2025-04-12 15:30</td>
+            <td>寵愛動物診所</td>
+            <td>年度健康檢查</td>
+            <td>2026-04-12 15:30</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between mt-4">
+        <a href="medical_appointment.html" class="btn btn-outline-secondary">🔄 返回修改</a>
+        <a href="mypet.html" class="btn btn-outline-primary">🏠 返回我的寵物</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
