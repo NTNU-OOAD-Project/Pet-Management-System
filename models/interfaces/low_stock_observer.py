@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
+from models.record.inventory_record import InventoryRecord
+from models.inventory import Inventory
 
-class low_stock_observer(ABC):
+class LowStockObserver(ABC):
     @abstractmethod
-    def notify_low_stock(self, food: str, amount: float):
+    def notify_low_stock(self, inventory: Inventory):
         pass

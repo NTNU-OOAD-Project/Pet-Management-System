@@ -1,9 +1,10 @@
 #In[0] Initialization
 from flask import Flask, render_template, session, jsonify, request, flash, redirect, url_for
 from pymongo import MongoClient
+from bson import ObjectId
 from models.place import PlaceMap
 from dotenv import load_dotenv
-from models.services.notification_service import NotificationService
+from services.notification_service import NotificationService
 import os
 
 app = Flask(__name__)
@@ -16,8 +17,10 @@ load_dotenv()
 MONGODB_URI = os.getenv('MONGODB_URI')
 MONGODB_DB = os.getenv('MONGODB_DB')
 
+
 client = MongoClient(MONGODB_URI)
 db = client[MONGODB_DB]
+
 
 @app.route('/')
 def index():
@@ -132,26 +135,60 @@ def supplies():
 def event():
     return render_template('event.html')
 
+#In[5] 寵物飲食紀錄管理
+@app.route('/diet/view')
+def view_diet_records():
+    records_cursor = db.diet_records.find()
+    records = []
+    for rec in records_cursor:
+        rec['_id'] = str(rec['_id'])
+        records.append(rec)
+    return render_template('diet_records.html', records=records)
+
+@app.route('/diet/add', methods=['GET', 'POST'])
+def add_diet_record():
+    if request.method == 'POST':
+        pet_id = request.form.get('pet_id')
+        food = request.form.get('food')
+        amount = float(request.form.get('amount'))
+
+        record = record.record_manager.create_record("diet", pet_id=pet_id, food=food, amount=amount)
+        record.record_manager.add_record(record)
+        db.diet_records.insert_one(record.to_dict())
+
+        flash("飲食紀錄新增成功！", "success")
+        return redirect(url_for('view_diet_records'))
+
+    return render_template('diet_add.html')
+
+@app.route('/diet/delete/<record_id>', methods=['POST'])
+def delete_diet_record(record_id):
+    db.diet_records.delete_one({'_id': ObjectId(record_id)})
+    flash("記錄已刪除", "info")
+    return redirect(url_for('view_diet_records'))
+
+@app.route('/diet/edit/<record_id>', methods=['GET', 'POST'])
+def edit_diet_record(record_id):
+
+
+    if request.method == 'POST':
+        food = request.form.get('food')
+        amount = float(request.form.get('amount'))
+        db.diet_records.update_one(
+            {'_id': ObjectId(record_id)},
+            {'$set': {'food': food, 'amount': amount}}
+        )
+        flash("記錄已更新", "success")
+        return redirect(url_for('view_diet_records'))
+
+    # GET：顯示原始資料
+    record = db.diet_records.find_one({'_id': ObjectId(record_id)})
+    record['_id'] = str(record['_id'])
+    return render_template('diet_edit.html', record=record)
+
+
+
 #In[4] Main function
 if __name__ == '__main__':
     app.run(debug=True)
 
-from models.food_inventory import InventoryManager
-
-inventory_manager = InventoryManager(db)
-
-@app.route('/user/<user_id>/add_food', methods=['POST'])
-def add_food(user_id):
-    data = request.get_json()
-    name = data.get("name")
-    amount = float(data.get("amount", 0))
-    success, msg = inventory_manager.add_food(user_id, name, amount)
-    return jsonify({'status': 'success' if success else 'fail', 'msg': msg})
-
-@app.route('/user/<user_id>/consume_food', methods=['POST'])
-def consume_food(user_id):
-    data = request.get_json()
-    name = data.get("name")
-    amount = float(data.get("amount", 0))
-    success, msg = inventory_manager.consume_food(user_id, name, amount)
-    return jsonify({'status': 'success' if success else 'fail', 'msg': msg})

@@ -11,8 +11,13 @@ pet-management-system/
 │   ├── observer.py        # 實作 Observer/Subject（觀察者設計模式）基底類別
 │   ├── user.py            # User 相關物件與邏輯（如註冊、登入、用戶資料CRUD）
 │   ├── pet.py             # Pet 寵物物件與邏輯
-│   ├── health_record.py   # 寵物健康紀錄物件
-│   ├── diet_record.py     # 寵物飲食紀錄物件
+│   ├── record
+│   │   ├──base.py
+│   │   ├──record_manager.py
+│   │   ├──health_record.py   # 寵物健康紀錄物件
+│   │   └──diet_record.py     # 寵物飲食紀錄物件
+│   ├── 
+│   ├── 
 │   ├── care_reminder.py   # 照護提醒物件，支援 Observer
 │   ├── medical_service.py # 醫療預約服務相關物件
 │   ├── place.py           # 場所、地圖顯示、詳細、預約等功能封裝
