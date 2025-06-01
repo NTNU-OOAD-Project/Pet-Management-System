@@ -47,8 +47,24 @@
 
     <!-- 主內容 -->
     <main class="main-content p-5 flex-grow-1">
+      <div class="mb-3">
+        <span class="fs-4">你好！<strong>{{ session['user_name'] }}</strong>！</span>
+      </div>
       <div class="card shadow-lg p-4 rounded-4 border-0" style="background-color: #ffffffc7;">
-        <h2 class="mb-4"><strong>🐶 我的寵物功能選單</strong></h2>
+        <div class="d-flex align-items-center mb-4">
+          <h2 class="me-2"><strong>🐶 我的寵物功能選單</strong></h2>
+          <button class="btn btn-success btn-sm" id="add-pet-btn" data-bs-toggle="modal" data-bs-target="#addPetModal">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+        <!-- 寵物下拉選單與編輯 -->
+        <div class="mb-4">
+          <label class="me-2">目前寵物：</label>
+          <select class="form-select d-inline-block w-auto" id="pet-select"></select>
+          <button class="btn btn-primary btn-sm ms-2" id="edit-pet-btn" disabled>
+            <i class="fa fa-edit"></i> 編輯
+          </button>
+        </div>
         <div class="row g-4">
           <!-- 健康紀錄 -->
           <div class="col-md-4" data-aos="zoom-in">
@@ -95,9 +111,197 @@
     </main>
   </div>
 
+  <!-- 新增寵物 Modal -->
+  <div class="modal fade" id="addPetModal" tabindex="-1" aria-labelledby="addPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="add-pet-form">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPetModalLabel">新增寵物</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label>寵物名稱</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label>品種</label>
+              <input type="text" class="form-control" name="species" required>
+            </div>
+            <div class="mb-3">
+              <label>年齡</label>
+              <input type="number" class="form-control" name="age" min="0" required>
+            </div>
+            <div class="mb-3">
+              <label>健康狀況</label>
+              <select class="form-control" name="health_status" required>
+                <option value="">請選擇</option>
+                <option value="正常">正常</option>
+                <option value="需要醫療">需要醫療</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-success">新增</button>
+          </div>
+          <div id="add-pet-result" class="mt-2 ms-3"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 編輯寵物 Modal -->
+  <div class="modal fade" id="editPetModal" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="edit-pet-form">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editPetModalLabel">編輯寵物資訊</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="pet_id" id="edit-pet-id">
+            <div class="mb-3">
+              <label>寵物名稱</label>
+              <input type="text" class="form-control" name="name" id="edit-pet-name" required>
+            </div>
+            <div class="mb-3">
+              <label>品種</label>
+              <input type="text" class="form-control" name="species" id="edit-pet-species" required>
+            </div>
+            <div class="mb-3">
+              <label>年齡</label>
+              <input type="number" class="form-control" name="age" id="edit-pet-age" min="0" required>
+            </div>
+            <div class="mb-3">
+              <label>健康狀況</label>
+              <select class="form-control" name="health_status" id="edit-pet-health-status" required>
+                <option value="">請選擇</option>
+                <option value="正常">正常</option>
+                <option value="需要醫療">需要醫療</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary">儲存變更</button>
+          </div>
+          <div id="edit-pet-result" class="mt-2 ms-3"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
     AOS.init();
+    let petsData = [];
+
+    async function loadPets() {
+      const res = await fetch('/api/pets/list');
+      const data = await res.json();
+      if(data.success){
+        petsData = data.pets;
+        const select = document.getElementById('pet-select');
+        select.innerHTML = '';
+        petsData.forEach((pet, i) => {
+          const opt = document.createElement('option');
+          opt.value = pet.pet_id;
+          opt.textContent = pet.name;
+          select.appendChild(opt);
+        });
+        // 預設選第一隻
+        if (petsData.length) {
+          select.value = petsData[0].pet_id;
+          document.getElementById('edit-pet-btn').disabled = false;
+        } else {
+          document.getElementById('edit-pet-btn').disabled = true;
+        }
+      }
+    }
+    loadPets();
+
+    document.getElementById('pet-select').addEventListener('change', function(){
+      document.getElementById('edit-pet-btn').disabled = !this.value;
+    });
+
+    document.getElementById('add-pet-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      const resp = await fetch('/api/pets/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      const resultDiv = document.getElementById('add-pet-result');
+      if(result.success){
+        resultDiv.innerHTML = `<span class="text-success">新增成功！</span>`;
+        this.reset();
+        setTimeout(()=>{
+          document.getElementById('add-pet-result').innerHTML = '';
+          var addModal = bootstrap.Modal.getInstance(document.getElementById('addPetModal'));
+          addModal.hide();
+          loadPets();
+        }, 1000);
+      } else {
+        resultDiv.innerHTML = `<span class="text-danger">${result.msg || '新增失敗'}</span>`;
+      }
+    });
+
+    // 點擊編輯按鈕，帶出對應寵物資訊
+    document.getElementById('edit-pet-btn').addEventListener('click', function(){
+      const pet_id = document.getElementById('pet-select').value;
+      const pet = petsData.find(p=>p.pet_id===pet_id);
+      if(pet){
+        document.getElementById('edit-pet-id').value = pet.pet_id;
+        document.getElementById('edit-pet-name').value = pet.name;
+        document.getElementById('edit-pet-species').value = pet.species;
+        document.getElementById('edit-pet-age').value = pet.age;
+        document.getElementById('edit-pet-health-status').value = pet.health_status;
+        var editModal = new bootstrap.Modal(document.getElementById('editPetModal'));
+        editModal.show();
+      }
+    });
+
+    // 提交編輯寵物（update API）
+    document.getElementById('edit-pet-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const pet_id = document.getElementById('edit-pet-id').value;
+      const data = {
+        name: document.getElementById('edit-pet-name').value,
+        species: document.getElementById('edit-pet-species').value,
+        age: document.getElementById('edit-pet-age').value,
+        health_status: document.getElementById('edit-pet-health-status').value
+      };
+      const resp = await fetch(`/api/pets/update/${pet_id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      const resultDiv = document.getElementById('edit-pet-result');
+      if(result.success){
+        resultDiv.innerHTML = `<span class="text-success">更新成功！</span>`;
+        setTimeout(()=>{
+          var editModal = bootstrap.Modal.getInstance(document.getElementById('editPetModal'));
+          editModal.hide();
+          loadPets();
+        }, 1000);
+      } else {
+        resultDiv.innerHTML = `<span class="text-danger">${result.msg || '更新失敗'}</span>`;
+      }
+    });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AI智能助理 -->
+  <script src="/static/ai_assistant/core.js"></script>
 </body>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 </html>

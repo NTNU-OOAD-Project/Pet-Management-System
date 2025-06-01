@@ -112,9 +112,47 @@ def place_reserve():
     return jsonify({'status': 'success', 'msg': '預約成功！'})
 
 #In[3] 寵物管理
+from models.pets import PetManager
 @app.route('/pets')
 def pets():
-    return render_template('mypet.html')
+    if 'user_id' not in session:
+        flash('請先登入', 'warning')
+        return redirect(url_for('login_page'))
+    pet_manager = PetManager(db)
+    user_id = session['user_id']
+    pets = pet_manager.get_pets_of_user(user_id)
+    return render_template('mypet.html', pets=pets)
+# 寵物清單
+@app.route('/api/pets/list')
+def pet_list():
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'msg': '未登入'})
+    pets = PetManager(db).get_pets_of_user(session['user_id'])
+    return jsonify({'success': True, 'pets': pets})
+# 新增寵物
+@app.route('/api/pets/add', methods=['POST'])
+def add_pet():
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'msg': '請先登入'}), 401
+    data = request.get_json()
+    pet_manager = PetManager(db)
+    success, pet_id, msg = pet_manager.add_pet(session['user_id'], data)
+    if success:
+        return jsonify({'success': True, 'pet_id': pet_id})
+    else:
+        return jsonify({'success': False, 'msg': msg}), 400
+
+# 編輯寵物
+@app.route('/api/pets/update/<pet_id>', methods=['POST'])
+def update_pet(pet_id):
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'msg': '未登入'})
+    update_data = request.get_json()
+    result = PetManager(db).update_pet(session['user_id'], pet_id, update_data)
+    if result:
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'msg': '更新失敗'})
 
 @app.route('/health')
 def health():
