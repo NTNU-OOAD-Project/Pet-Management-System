@@ -82,12 +82,12 @@ def register():
     return redirect(url_for('login_page'))  # 註冊後回登入頁
 #In[2] Place
 # 展示場所地圖
-@app.route('/place')
-def place_view():
+@app.route('/place_display')
+def place_display():
     place_map = PlaceMap(db)
     place_html = place_map.generate_map_html()
     is_logged_in = 'user_id' in session
-    return render_template('place.html', map_html=place_html, is_logged_in=is_logged_in)
+    return render_template('pet_place.html', map_html=place_html, is_logged_in=is_logged_in)
 
 # 場所詳細資料
 @app.route('/place/detail/<place_id>')
