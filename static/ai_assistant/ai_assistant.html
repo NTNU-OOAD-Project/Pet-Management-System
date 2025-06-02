@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 聊天室</title>
+    <link rel="stylesheet" href="../styles.css">
+    <!-- 引入 marked.js 和 DOMPurify -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script type="text/javascript" src="purify.min.js"></script>  
+</head>
+<body>
+    <div class="chat-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>對話紀錄</h3>
+                <button type="button" id="new-conversation-btn">新對話</button>
+            </div>
+            <ul id="conversation-list"></ul>
+        </div>
+        <div class="chat-area">
+            <button type="button" id="toggle-sidebar-btn">☰</button>
+            <div class="conversation-header">
+                <span id="current-conversation-title" class="conversation-title">選擇或建立一段對話</span>
+            </div>
+            <div id="chat-messages"></div>
+            <div class="input-area">
+                <div class="input-column">
+                    <textarea id="user-input" placeholder="輸入訊息..."></textarea>
+                </div>
+                <div class="controls-column">
+                    <button type="button" id="send-btn">Enter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content">
+            <p id="modal-text"></p>
+            <div class="modal-buttons">
+                <button type="button" id="confirm-delete-btn">確認</button>
+                <button type="button" id="cancel-delete-btn">取消</button>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

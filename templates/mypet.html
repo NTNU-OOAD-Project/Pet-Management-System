@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>我的寵物 - PetSync</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      background: #dceeff;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #000;
+      min-height: 100vh;
+    }
+    .main-content {
+      background-color: transparent;
+    }
+    .card-title {
+      font-weight: bold;
+    }
+    .icon-box {
+      font-size: 2rem;
+      color: #4a69bd;
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- 側邊欄 -->
+    <nav class="sidebar p-4">
+      <div class="logo mb-4 text-white text-center">
+        <i class="fa-solid fa-paw fa-2x mb-2"></i>
+        <a href="{{ url_for('index') }}" class="logo-text d-block mb-2"><i class="fa-solid fa-paw me-2"></i>PetSync</a>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login_page') }}"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+        <li class="nav-item"><a class="nav-link text-white active" href="{{ url_for('pets') }}"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_place.html"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_event.html"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="ai_activity.html"><i class="fa-solid fa-robot me-2"></i>AI 活動</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('inventory') }}"><i class="fa-solid fa-robot me-2"></i>用品存貨</a></li>
+      </ul>
+    </nav>
+
+    <!-- 主內容 -->
+    <main class="main-content p-5 flex-grow-1">
+      <div class="mb-3">
+        <span class="fs-4">你好！<strong>{{ session['user_name'] }}</strong>！</span>
+      </div>
+      <div class="card shadow-lg p-4 rounded-4 border-0" style="background-color: #ffffffc7;">
+        <div class="d-flex align-items-center mb-4">
+          <h2 class="me-2"><strong>🐶 我的寵物功能選單</strong></h2>
+          <button class="btn btn-success btn-sm" id="add-pet-btn" data-bs-toggle="modal" data-bs-target="#addPetModal">
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
+        <!-- 寵物下拉選單與編輯 -->
+        <div class="mb-4">
+          <label class="me-2">目前寵物：</label>
+          <select class="form-select d-inline-block w-auto" id="pet-select"></select>
+          <button class="btn btn-primary btn-sm ms-2" id="edit-pet-btn" disabled>
+            <i class="fa fa-edit"></i> 編輯
+          </button>
+        </div>
+        <div class="row g-4">
+          <!-- 健康紀錄 -->
+          <div class="col-md-4" data-aos="zoom-in">
+            <a href="{{ url_for('health') }}?pet_id=683c7ee2a5bc7f66eaa38d78" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-heartbeat"></i></div>
+              <h5 class="card-title">健康紀錄</h5>
+              <p class="card-text">追蹤疫苗、身體狀況與健康報告。</p>
+            </a>
+          </div>
+          <!-- 飲食管理 -->
+          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+            <a href="food_record.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-bone"></i></div>
+              <h5 class="card-title">飲食管理</h5>
+              <p class="card-text">記錄每日飲食與偏好，建立餵食計畫。</p>
+            </a>
+          </div>
+          <!-- 照護提醒 -->
+          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+            <a href="care_reminder.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-bell"></i></div>
+              <h5 class="card-title">照護提醒</h5>
+              <p class="card-text">設定洗澡、剪指甲、驅蟲等定期提醒。</p>
+            </a>
+          </div>
+          <!-- 醫療預約 -->
+          <div class="col-md-6" data-aos="zoom-in" data-aos-delay="300">
+            <a href="medical_appointment.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-hospital"></i></div>
+              <h5 class="card-title">醫療預約</h5>
+              <p class="card-text">快速安排診療時間，並查看預約紀錄。</p>
+            </a>
+          </div>
+          <!-- 用品存貨 -->
+          <div class="col-md-6" data-aos="zoom-in" data-aos-delay="400">
+            <a href="supply_inventory.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-box-open"></i></div>
+              <h5 class="card-title">用品存貨</h5>
+              <p class="card-text">追蹤飼料、尿布、清潔用品等剩餘數量。</p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 新增寵物 Modal -->
+  <div class="modal fade" id="addPetModal" tabindex="-1" aria-labelledby="addPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="add-pet-form">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPetModalLabel">新增寵物</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label>寵物名稱</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="mb-3">
+              <label>品種</label>
+              <input type="text" class="form-control" name="species" required>
+            </div>
+            <div class="mb-3">
+              <label>年齡</label>
+              <input type="number" class="form-control" name="age" min="0" required>
+            </div>
+            <div class="mb-3">
+              <label>健康狀況</label>
+              <select class="form-control" name="health_status" required>
+                <option value="">請選擇</option>
+                <option value="正常">正常</option>
+                <option value="需要醫療">需要醫療</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-success">新增</button>
+          </div>
+          <div id="add-pet-result" class="mt-2 ms-3"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 編輯寵物 Modal -->
+  <div class="modal fade" id="editPetModal" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="edit-pet-form">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editPetModalLabel">編輯寵物資訊</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="pet_id" id="edit-pet-id">
+            <div class="mb-3">
+              <label>寵物名稱</label>
+              <input type="text" class="form-control" name="name" id="edit-pet-name" required>
+            </div>
+            <div class="mb-3">
+              <label>品種</label>
+              <input type="text" class="form-control" name="species" id="edit-pet-species" required>
+            </div>
+            <div class="mb-3">
+              <label>年齡</label>
+              <input type="number" class="form-control" name="age" id="edit-pet-age" min="0" required>
+            </div>
+            <div class="mb-3">
+              <label>健康狀況</label>
+              <select class="form-control" name="health_status" id="edit-pet-health-status" required>
+                <option value="">請選擇</option>
+                <option value="正常">正常</option>
+                <option value="需要醫療">需要醫療</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="submit" class="btn btn-primary">儲存變更</button>
+          </div>
+          <div id="edit-pet-result" class="mt-2 ms-3"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+    let petsData = [];
+
+    async function loadPets() {
+      const res = await fetch('/api/pets/list');
+      const data = await res.json();
+      if(data.success){
+        petsData = data.pets;
+        const select = document.getElementById('pet-select');
+        select.innerHTML = '';
+        petsData.forEach((pet, i) => {
+          const opt = document.createElement('option');
+          opt.value = pet.pet_id;
+          opt.textContent = pet.name;
+          select.appendChild(opt);
+        });
+        // 預設選第一隻
+        if (petsData.length) {
+          select.value = petsData[0].pet_id;
+          document.getElementById('edit-pet-btn').disabled = false;
+        } else {
+          document.getElementById('edit-pet-btn').disabled = true;
+        }
+      }
+    }
+    loadPets();
+
+    document.getElementById('pet-select').addEventListener('change', function(){
+      document.getElementById('edit-pet-btn').disabled = !this.value;
+    });
+
+    document.getElementById('add-pet-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      const resp = await fetch('/api/pets/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      const resultDiv = document.getElementById('add-pet-result');
+      if(result.success){
+        resultDiv.innerHTML = `<span class="text-success">新增成功！</span>`;
+        this.reset();
+        setTimeout(()=>{
+          document.getElementById('add-pet-result').innerHTML = '';
+          var addModal = bootstrap.Modal.getInstance(document.getElementById('addPetModal'));
+          addModal.hide();
+          loadPets();
+        }, 1000);
+      } else {
+        resultDiv.innerHTML = `<span class="text-danger">${result.msg || '新增失敗'}</span>`;
+      }
+    });
+
+    // 點擊編輯按鈕，帶出對應寵物資訊
+    document.getElementById('edit-pet-btn').addEventListener('click', function(){
+      const pet_id = document.getElementById('pet-select').value;
+      const pet = petsData.find(p=>p.pet_id===pet_id);
+      if(pet){
+        document.getElementById('edit-pet-id').value = pet.pet_id;
+        document.getElementById('edit-pet-name').value = pet.name;
+        document.getElementById('edit-pet-species').value = pet.species;
+        document.getElementById('edit-pet-age').value = pet.age;
+        document.getElementById('edit-pet-health-status').value = pet.health_status;
+        var editModal = new bootstrap.Modal(document.getElementById('editPetModal'));
+        editModal.show();
+      }
+    });
+
+    // 提交編輯寵物（update API）
+    document.getElementById('edit-pet-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const pet_id = document.getElementById('edit-pet-id').value;
+      const data = {
+        name: document.getElementById('edit-pet-name').value,
+        species: document.getElementById('edit-pet-species').value,
+        age: document.getElementById('edit-pet-age').value,
+        health_status: document.getElementById('edit-pet-health-status').value
+      };
+      const resp = await fetch(`/api/pets/update/${pet_id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      const resultDiv = document.getElementById('edit-pet-result');
+      if(result.success){
+        resultDiv.innerHTML = `<span class="text-success">更新成功！</span>`;
+        setTimeout(()=>{
+          var editModal = bootstrap.Modal.getInstance(document.getElementById('editPetModal'));
+          editModal.hide();
+          loadPets();
+        }, 1000);
+      } else {
+        resultDiv.innerHTML = `<span class="text-danger">${result.msg || '更新失敗'}</span>`;
+      }
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AI智能助理 -->
+  <script src="/static/ai_assistant/core.js"></script>
+</body>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+</html>

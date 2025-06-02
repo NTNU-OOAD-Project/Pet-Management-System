@@ -17,7 +17,8 @@ class User:
             "email": email,
             "phone": phone,
             "password": hashed_pw,
-            "pets": []
+            "pets": [],
+            "inventory":[]
         }
         result = self.collection.insert_one(user)
         return True, str(result.inserted_id)
@@ -42,6 +43,6 @@ class User:
                 return user
         return None
 
-    def _str_to_objectid(self, s):        
-        from bson import ObjectId
-        return ObjectId(s)
+    def get_user_by_email(self, email):
+        user = self.collection.find_one({'email': email})
+        return user

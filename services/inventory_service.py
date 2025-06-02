@@ -1,28 +1,43 @@
-from models.inventory import Inventory
 from models.record.inventory_record import InventoryRecord
+from bson import ObjectId
+from models.inventory import Inventory  # 引入方便組裝 inv
 
 class InventoryService:
-    def __init__(self, observers=None, record_manager=None):
-        self.observers = observers or []
-        self.record_manager = record_manager
+    observers = []
 
+    @staticmethod
+    def apply_inventory_record(record: InventoryRecord, db):
+        if not record.user_id:
+            raise ValueError("InventoryRecord 缺少 user_id")
 
-    def apply_inventory_record(self, record: InventoryRecord, db):
-        inventory_data = db.inventory.find_one({"item_name": record.item_name})
-        if inventory_data:
-            inv = Inventory.from_dict(inventory_data)
+        user = db.users.find_one({"_id": ObjectId(record.user_id)})
+        if not user:
+            raise ValueError("找不到對應的使用者")
+
+        inventory = user.get("inventory", [])
+        matched = next((item for item in inventory if item["item_name"] == record.item_name), None)
+
+        if matched:
+            matched["quantity"] += record.delta_quantity
+            matched.setdefault("records", []).append(record.to_dict())
         else:
-            inv = Inventory(item_name=record.item_name, quantity=0)
+            matched = {
+                "item_name": record.item_name,
+                "quantity": record.delta_quantity,
+                "threshold": 10,
+                "records": [record.to_dict()]
+            }
+            inventory.append(matched)
 
-        inv.quantity += record.delta_quantity
-
-        db.inventory.update_one(
-            {"item_name": inv.item_name},
-            {"$set": inv.to_dict()},
-            upsert=True
+        # 寫回資料庫
+        db.users.update_one(
+            {"_id": ObjectId(record.user_id)},
+            {"$set": {"inventory": inventory}}
         )
 
-        # ✅ 加上庫存警戒線檢查與通知
+        # 包裝為 Inventory 物件以便傳給 observer
+        inv = Inventory.from_dict(matched)
+
         if inv.threshold is not None and inv.quantity < inv.threshold:
-            for observer in self.observers:
+            for observer in InventoryService.observers:
                 observer.notify_low_stock(inv)

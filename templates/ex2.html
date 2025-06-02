@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寵物友善場所地圖</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      body {
+        background-image: url('{{ url_for("static", filename="image/back.png") }}');
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #ccc;
+      }
+      .header-link {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+      }
+      .header-logo {
+        width: 80px;
+        height: 80px;
+        margin-right: 15px;
+      }
+      .header-title {
+        font-weight: bold;
+        font-size: 32px;
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+      }
+      .logout-button, .modify-button, .login-button, .favorites-button {
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-left: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        height: 40px;
+        line-height: 1.5;
+      }
+      .logout-button { background-color: #dc3545; }
+      .logout-button:hover { background-color: #bd2130; }
+      .modify-button { background-color: #1e6831; }
+      .modify-button:hover { background-color: #145922; }
+      .login-button { background-color: #007bff; }
+      .login-button:hover { background-color: #0056b3; }
+      .favorites-button { background-color: #ff9800; }
+      .favorites-button:hover { background-color: #e68900; }
+
+      #map-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px auto;
+        max-width: 90%;
+      }
+      #map {
+        width: 100%;
+        height: 500px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+      }
+      #info-panel {
+        position: fixed;
+        top: 100px;
+        right: 40px;
+        width: 350px;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        z-index: 2000;
+        display: none;
+      }
+      #info-panel h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+      }
+      #place-detail p {
+        margin: 8px 0;
+      }
+      #info-panel button {
+        margin-top: 10px;
+        background-color: #ffcc00;
+        color: black;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-right: 10px;
+      }
+      #info-panel button:hover {
+        background-color: #e6b800;
+      }
+      #reserve-modal {
+        display: none;
+        position: fixed;
+        top: 130px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 350px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        padding: 30px 20px 20px 20px;
+        z-index: 3000;
+      }
+      #reserve-modal h3 {
+        margin-top: 0;
+      }
+      #reserve-form label {
+        display: block;
+        margin-top: 8px;
+      }
+      #reserve-form input {
+        width: 90%;
+        padding: 6px;
+        margin-top: 4px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      #reserve-form button {
+        background: #2196F3;
+        color: #fff;
+        border: none;
+        margin: 15px 6px 0 0;
+        padding: 9px 18px;
+        border-radius: 7px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      #reserve-form button[type=button] {
+        background: #aaa;
+      }
+      #reserve-form button[type=button]:hover {
+        background: #888;
+      }
+      #reserve-form button[type=submit]:hover {
+        background: #1976D2;
+      }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header-container">
+      <a href="{{ url_for('index') }}" class="header-link">
+        <img 
+          src="{{ url_for('static', filename='image/logo_white.png') }}" 
+          alt="Wonder Fur Logo" 
+          class="header-logo">
+        <h1 class="header-title">寵物友善場所地圖</h1>
+      </a>
+      <div class="user-info">
+        <span>Hello, {{ session.get('username', 'Guest') }}!</span>
+        {% if session.get('username') %}
+        <form action="{{ url_for('logout') }}" method="POST" style="display: inline;">
+          <button type="submit" class="logout-button">Log out</button>
+        </form>
+        <button id="modifyButton" class="modify-button" data-url="{{ url_for('modify') }}">Modify Account</button>
+        <button id="favoritesButton" class="favorites-button" data-url="{{ url_for('favorites_view') }}">Favorites</button>
+        {% else %}
+        <button id="loginButton" class="login-button" data-url="{{ url_for('login') }}">Login</button>
+        {% endif %}
+      </div>
+      <script>
+        const modifyButton = document.getElementById('modifyButton');
+        if (modifyButton) modifyButton.addEventListener('click', function () {
+          location.href = this.getAttribute('data-url');
+        });
+        const loginButton = document.getElementById('loginButton');
+        if (loginButton) loginButton.addEventListener('click', function () {
+          location.href = this.getAttribute('data-url');
+        });
+        const favoritesButton = document.getElementById('favoritesButton');
+        if (favoritesButton) favoritesButton.addEventListener('click', function () {
+          location.href = this.getAttribute('data-url');
+        });
+      </script>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <div id="map-container">
+        <div id="map">
+          {{ place_html|safe }}
+        </div>
+      </div>
+    </main>
+
+    <!-- 詳細資料面板 -->
+    <div id="info-panel">
+      <h2 id="place-title"></h2>
+      <div id="place-detail"></div>
+      <button id="reserveBtn" type="button">預約場所</button>
+      <button type="button" onclick="closePanel()">關閉</button>
+    </div>
+    <!-- 預約表單 modal -->
+    <div id="reserve-modal">
+      <h3>場所預約</h3>
+      <form id="reserve-form">
+        <label>日期: <input type="date" name="date" required></label>
+        <label>時間: <input type="time" name="time" required></label>
+        <label>備註: <input type="text" name="extra_info"></label>
+        <button type="submit">送出預約</button>
+        <button type="button" onclick="closeReserveModal()">取消</button>
+      </form>
+    </div>
+<script>
+  // 彈出詳細 panel
+  function showPlaceDetail(place_id) {
+    $.get(`/place/detail/${place_id}`, function(res){
+      if(res.status === "success"){
+        const data = res.data;
+        $("#place-title").text(data.place_name || "場所");
+        $("#place-detail").html(`
+        <p>場所類型：${data.place_type || ''}</p>
+        <p>地址：${data.location || ''}</p>
+        <p>開放時間：${data.open_hours || ''}</p>
+        <p>設施：${data.facilities || ''}</p>
+        `);
+
+        $("#reserveBtn").data("place-id", data._id);
+        $("#info-panel").show();
+      } else {
+        alert(res.msg);
+      }
+    });
+  }
+  function closePanel() { $("#info-panel").hide(); }
+
+  // 預約按鈕 → 開 modal
+  $("#reserveBtn").on("click", function(){
+    $("#reserve-modal").show();
+  });
+  function closeReserveModal() { $("#reserve-modal").hide(); }
+
+  // 預約表單送出
+  $("#reserve-form").on("submit", function(e){
+    e.preventDefault();
+    const place_id = $("#reserveBtn").data("place-id");
+    const data = {
+      place_id: place_id,
+      reserve_info: {
+        date: this.date.value,
+        time: this.time.value,
+        extra_info: this.extra_info.value
+      }
+    };
+    $.ajax({
+      url: '/place/reserve',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function(res){
+        alert(res.msg);
+        if(res.status === "success"){
+          closeReserveModal();
+          closePanel();
+        }
+      }
+    });
+  });
+
+  // 【重點】folium 產生 popup 時，記得加按鈕（例如：）
+  // <button onclick="showPlaceDetail('PLACE_ID')">詳細資訊</button>
+  // PLACE_ID 替換為場所 MongoDB _id
+</script>
+
+<!-- AI智能助理 -->
+<script src="/static/ai_assistant/core.js"></script>
+</body>
+</html>

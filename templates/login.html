@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>登入 / 註冊 - PetSync</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #e0f4ff; /* 淡藍色背景 */
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #000; /* 黑色側邊欄 */
+      height: 100vh;
+    }
+    .main-content {
+      min-height: 100vh;
+    }
+    .form-card {
+      background-color: #ffffffcc;
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+    .nav-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- 側邊欄 -->
+    <nav class="sidebar p-4">
+      <div class="logo mb-4 text-white text-center">
+        <i class="fa-solid fa-paw fa-2x mb-2"></i>
+        <a href="{{ url_for('index') }}" class="logo-text d-block mb-2"><i class="fa-solid fa-paw me-2"></i>PetSync</a>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="#"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('pets') }}"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_place.html"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_event.html"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="ai_activity.html"><i class="fa-solid fa-robot me-2"></i>AI 活動</a></li>
+      </ul>
+    </nav>
+
+    <!-- 主內容 -->
+    <main class="main-content p-5 flex-grow-1 d-flex justify-content-center align-items-center">
+      <div class="form-card w-100" style="max-width: 500px;" data-aos="zoom-in">
+        <h3 class="text-center mb-4 fw-bold">登入您的帳號</h3>
+        <form method="POST" action="{{ url_for('login') }}">
+          <div class="mb-3">
+            <label for="email" class="form-label">電子信箱</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="example@email.com" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">密碼</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="請輸入密碼" required>
+          </div>
+          <div class="d-grid mb-3">
+            <button type="submit" class="btn btn-primary">登入</button>
+          </div>
+          <p class="text-center">還沒有帳號？<a href="{{ url_for('register_page') }}" class="text-decoration-none">註冊新帳號</a></p>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>

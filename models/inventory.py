@@ -1,9 +1,11 @@
+from models.record.inventory_record import InventoryRecord
+from bson import ObjectId
 class Inventory:
-    def __init__(self, item_name, quantity=0, threshold=10, _id=None):
+    def __init__(self, item_name, quantity=0, threshold=10, records=None):
         self.item_name = item_name
         self.quantity = quantity
         self.threshold = threshold
-        self._id = _id
+        self.records = records if records is not None else []  # 儲存 InventoryRecord 的 list
 
     def is_below_threshold(self) -> bool:
         return self.quantity < self.threshold
@@ -17,20 +19,37 @@ class Inventory:
 
     @classmethod
     def from_dict(cls, data: dict):
+        records_data = data.get("records", [])
+        records = [InventoryRecord.from_dict(r) for r in records_data]
         return cls(
             item_name=data["item_name"],
             quantity=data.get("quantity", 0),
             threshold=data.get("threshold", 10),
-            _id=data.get("_id")
+            records=records,
         )
 
     def view_status(self) -> str:
         status = "⚠️ 低庫存警告" if self.is_below_threshold() else "✅ 正常"
         return f"{self.item_name}：{self.quantity}（警戒線 {self.threshold}）{status}"
 
-    def set_threshold(self, new_threshold: float, db):
-        self.threshold = new_threshold
-        self.save_to_db(db)
+    @classmethod
+    def update_threshold_by_item_name(cls, db, user_id: str, item_name: str, new_threshold: float):
+
+        result = db.users.update_one(
+            {
+                "_id": ObjectId(user_id),
+                "inventory.item_name": item_name
+            },
+            {
+                "$set": {"inventory.$.threshold": new_threshold}
+            }
+        )
+
+        if result.modified_count > 0:
+            print(f"✅ [{item_name}] 警戒線已更新為 {new_threshold}")
+        else:
+            raise ValueError(f"找不到 {item_name} 或警戒線未變更")
+
 
     def save_to_db(self, db):
         db.inventory.update_one(
