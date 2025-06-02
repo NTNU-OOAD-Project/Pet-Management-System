@@ -17,6 +17,13 @@ class Inventory:
             "threshold": self.threshold
         }
 
+    @staticmethod
+    def delete_by_id(db, inventory_id: str):
+        result = db.inventory.delete_one({"_id": ObjectId(inventory_id)})
+        if result.deleted_count == 0:
+            raise ValueError("找不到指定的 inventory_id")
+
+
     @classmethod
     def from_dict(cls, data: dict):
         records_data = data.get("records", [])
@@ -49,6 +56,7 @@ class Inventory:
             print(f"✅ [{item_name}] 警戒線已更新為 {new_threshold}")
         else:
             raise ValueError(f"找不到 {item_name} 或警戒線未變更")
+    
 
 
     def save_to_db(self, db):

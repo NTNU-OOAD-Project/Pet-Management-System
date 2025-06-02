@@ -161,7 +161,10 @@ def update_pet(pet_id):
     else:
         return jsonify({'success': False, 'msg': '更新失敗'})
 
+
+
 #In[4] 寵物健康紀錄
+##################################################################################################################
 from bson import ObjectId
 @app.route('/health')
 def health():
@@ -235,11 +238,145 @@ def update_health_record():
 
 
 
+#In[] 用品庫存
+#########################################################################################################
+@app.route("/supply")
+def supply_view():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("login"))
 
-@app.route('/inventory')
-def inventory():
-    return render_template('supply_view.html')
+    user = db.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return "找不到使用者", 404
 
+    inventories = user.get("inventory", [])
+    inventory_data = []
+
+    for inv in inventories:
+        _id = str(inv.get("_id"))
+        item_name = inv.get("item_name")
+        quantity = inv.get("quantity")
+        threshold = inv.get("threshold")
+
+        inventory_data.append({
+            "_id": _id,
+            "item_name": item_name,
+            "quantity": quantity,
+            "threshold": threshold,
+        })
+
+    return render_template("supply_view.html", inventory_list=inventory_data)
+
+
+#歷史紀錄清單
+@app.route("/supply/history")
+def supply_history():
+    user_id = session.get("user_id")
+    inventory_id = request.args.get("inventory_id") 
+
+    if not user_id or not inventory_id:
+        return "缺少參數或未登入", 400
+
+    try:
+        records = RecordManager().view_by_type(db, inventory_id, "inventory", user_id)
+    except ValueError as e:
+        return str(e), 404
+
+    parsed_records = []
+
+    for record in records:
+        parsed_records.append({
+            "record_id": str(record.get("_id", "")),
+            "delta_quantity": record.get("delta_quantity"),
+            "reason": record.get("reason"),
+            "date": record.get("date"),
+            "user_id": str(record.get("user_id", ""))
+        })
+
+    return render_template("supply_history.html", records=parsed_records, inventory_id=inventory_id)
+
+#刪除歷史紀錄
+@app.route('/api/supply/delete', methods=['POST'])
+def delete_supply_record():
+    data = request.get_json()
+    record_id = data.get("record_id")
+
+    if not record_id:
+        return jsonify({'success': False, 'msg': '缺少 record_id'}), 400
+
+    try:
+        record_manager.delete_record(ObjectId(record_id), "inventory", db)
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'msg': str(e)}), 500
+
+#回傳需編輯的資料
+@app.route("/supply/history/edit")
+def supply_edit():
+    record_id = request.args.get("record_id")
+    user_id = session.get("user_id")
+    if not record_id or not user_id:
+        return "缺少 record_id 或未登入", 400
+    try:
+        record = record_manager.find_record_by_id(ObjectId(record_id), "inventory", db)
+        if not record:
+            return "找不到紀錄", 404
+
+        return render_template("supply_edit.html", record=record.to_dict())
+    except Exception as e:
+        return f"發生錯誤：{str(e)}", 500
+    
+#儲存編輯
+@app.route("/api/supply/update", methods=["POST"])
+def update_supply_record():
+    data = request.get_json()
+    record_id = data.get("record_id")
+    update_fields = {
+        "reason": data.get("reason"),
+        "delta_quantity": data.get("delta_quantity"),
+        "date": data.get("date")
+    }
+
+    try:
+        record_manager.update_record(ObjectId(record_id), "inventory", update_fields, db)
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)})
+
+#新增庫存
+@app.route("/api/supply/add", methods=["POST"])
+def add_inventory_record():
+    data = request.get_json()
+    try:
+        record_manager.add_record_by_type("inventory", data, db)
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)})
+
+#刪除庫存
+@app.route('/api/inventory/delete', methods=['POST'])
+def delete_inventory():
+    data = request.get_json()
+    inventory_id = data.get('inventory_id')
+
+    if not inventory_id:
+        return jsonify({"success": False, "msg": "缺少 inventory_id"})
+
+    try:
+        result = db.users.update_one(
+            {"inventory._id": ObjectId(inventory_id)},
+            {"$pull": {"inventory": {"_id": ObjectId(inventory_id)}}}
+        )
+        if result.modified_count > 0:
+            return jsonify({"success": True})
+        else:
+            return jsonify({"success": False, "msg": "刪除失敗或找不到紀錄"})
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)})
+
+
+####################################################################################################
 @app.route('/diet')
 def diet():
     return render_template('diet.html')

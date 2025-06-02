@@ -133,7 +133,7 @@ class RecordManager:
             raise ValueError(f"尚未支援類型：{type_str}")
 
 
-    #尋找紀錄(by id and type)
+    #(從id、type >> 單筆資料)
     def find_record_by_id(self, record_id: str, type_str: str, db):
         obj_id = ObjectId(record_id)
 
@@ -155,22 +155,24 @@ class RecordManager:
             for item in user["inventory"]:
                 for record in item.get("records", []):
                     if record["_id"] == obj_id:
-                        return record, str(user["_id"]), item["item_name"]
+                        return record, str(user["_id"]), item["_id"]
 
         return None
 
-    def view_by_type(self, db, id: str, type_str: str):
-        user = db.users.find_one({"_id": ObjectId(id)})
+    #(從id(pet_id、inventory_id)、type >> 所有資料)
+    def view_by_type(self, db, id: str, type_str: str, user_id: str):
+        user = db.users.find_one({"_id": ObjectId(user_id)})
         if not user:
             raise ValueError("找不到使用者")
 
         if type_str == "inventory":
-            inventory_records = []
             for item in user.get("inventory", []):
-                for record in item.get("records", []):
-                    record["item_name"] = item["item_name"]  # 加上 item 名稱
-                    inventory_records.append(record)
-            return inventory_records
+                if str(item.get("_id")) == id:  # 用 item 的 _id 做比對
+                    # 加上 item 名稱給每筆 record
+                    for record in item.get("records", []):
+                        record["item_name"] = item["item_name"]
+                    return item.get("records", [])
+            raise ValueError("找不到該項目的 inventory")
 
         elif type_str in ["diet", "health"]:
             for pet in user.get("pets", []):
@@ -181,6 +183,7 @@ class RecordManager:
 
         else:
             raise ValueError(f"不支援的紀錄類型：{type_str}")
+
 
 
     def _get_record_class(self, type_str: str):

@@ -8,9 +8,9 @@ class InventoryRecord(Record):
         self.item_name = item_name              # 品項名稱
         self.delta_quantity = delta_quantity    # 加(+)、減(-)
         self.reason = reason                    # 例如：進貨、食用、報廢
-        self.user_id = user_id    
+        self.user_id = user_id
         self.date = datetime.fromisoformat(date) if isinstance(date, str) else date or datetime.now()              
-        self._id = _id# 對應使用者 ID
+        self._id = _id
 
     def update_record(self, item_name=None, delta_quantity=None, reason=None,date=None):
         if item_name:
