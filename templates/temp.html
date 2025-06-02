@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>寵物友善場所地圖 - PetSync</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <style>
+    body {
+      background: #dceeff;
+    }
+    .sidebar {
+      width: 220px;
+      background-color: #000;
+      min-height: 100vh;
+    }
+    .main-content {
+      background-color: transparent;
+    }
+    .card-title {
+      font-weight: bold;
+    }
+    .icon-box {
+      font-size: 2rem;
+      color: #4a69bd;
+    }
+  </style>
+</head>
+<body>
+  <div class="d-flex">
+    <!-- 側邊欄 -->
+    <nav class="sidebar p-4">
+      <div class="logo mb-4 text-white text-center">
+        <i class="fa-solid fa-paw fa-2x mb-2"></i>
+        <a href="{{ url_for('index') }}" class="logo-text d-block mb-2"><i class="fa-solid fa-paw me-2"></i>PetSync</a>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login_page') }}"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+        <li class="nav-item"><a class="nav-link text-white active" href="{{ url_for('pets') }}"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('place_display') }}"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="pet_event.html"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
+        
+      </ul>
+    </nav>
+
+    <!-- 主內容 -->
+    <main class="main-content p-5 flex-grow-1">
+      <div class="mb-3">
+        <span class="fs-4">你好！<strong>{{ session['user_name'] }}</strong>！</span>
+      </div>
+      <div id="map-container">
+        <div id="map">
+            {{ map_html|safe }}
+        </div>
+        </div>
+        <div id="info-panel" style="display:none; position:absolute; top:100px; right:50px; width:300px;">
+        <h2>場所詳細資訊</h2>
+        <div id="info-content">
+            <p>請點擊地圖標記後再點「詳細」</p>
+        </div>
+        </div>
+
+        <script>
+        function showPlaceDetail(place_id) {
+            fetch(`/api/place/${place_id}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'error') {
+                alert('找不到場所！');
+                return;
+                }
+                document.getElementById('info-content').innerHTML = `
+                <b>場所名稱：</b>${data.place_name}<br>
+                <b>地址：</b>${data.location}<br>
+                <b>類型：</b>${data.place_type}<br>
+                <b>設施：</b>${data.facilities.join(', ')}<br>
+                <b>開放時間：</b>${data.open_hours}<br>
+                <b>經緯度：</b>${data.latitude}, ${data.longitude}<br>
+                `;
+                document.getElementById('info-panel').style.display = 'block';
+            });
+        }
+        </script>
+
+                
+            
+    </main>
+  </div>  
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+    let petsData = [];
+
+    async function loadPets() {
+      const res = await fetch('/api/pets/list');
+      const data = await res.json();
+      if(data.success){
+        petsData = data.pets;
+        const select = document.getElementById('pet-select');
+        select.innerHTML = '';
+        petsData.forEach((pet, i) => {
+          const opt = document.createElement('option');
+          opt.value = pet.pet_id;
+          opt.textContent = pet.name;
+          select.appendChild(opt);
+        });
+        // 預設選第一隻
+        if (petsData.length) {
+          select.value = petsData[0].pet_id;
+          document.getElementById('edit-pet-btn').disabled = false;
+        } else {
+          document.getElementById('edit-pet-btn').disabled = true;
+        }
+      }
+    }
+    loadPets();
+
+    document.getElementById('pet-select').addEventListener('change', function(){
+      document.getElementById('edit-pet-btn').disabled = !this.value;
+    });
+
+    document.getElementById('add-pet-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      const resp = await fetch('/api/pets/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      const resultDiv = document.getElementById('add-pet-result');
+      if(result.success){
+        resultDiv.innerHTML = `<span class="text-success">新增成功！</span>`;
+        this.reset();
+        setTimeout(()=>{
+          document.getElementById('add-pet-result').innerHTML = '';
+          var addModal = bootstrap.Modal.getInstance(document.getElementById('addPetModal'));
+          addModal.hide();
+          loadPets();
+        }, 1000);
+      } else {
+        resultDiv.innerHTML = `<span class="text-danger">${result.msg || '新增失敗'}</span>`;
+      }
+    });
+
+    // 點擊編輯按鈕，帶出對應寵物資訊
+    document.getElementById('edit-pet-btn').addEventListener('click', function(){
+      const pet_id = document.getElementById('pet-select').value;
+      const pet = petsData.find(p=>p.pet_id===pet_id);
+      if(pet){
+        document.getElementById('edit-pet-id').value = pet.pet_id;
+        document.getElementById('edit-pet-name').value = pet.name;
+        document.getElementById('edit-pet-species').value = pet.species;
+        document.getElementById('edit-pet-age').value = pet.age;
+        document.getElementById('edit-pet-health-status').value = pet.health_status;
+        var editModal = new bootstrap.Modal(document.getElementById('editPetModal'));
+        editModal.show();
+      }
+    });
+
+    // 提交編輯寵物（update API）
+    document.getElementById('edit-pet-form').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const pet_id = document.getElementById('edit-pet-id').value;
+      const data = {
+        name: document.getElementById('edit-pet-name').value,
+        species: document.getElementById('edit-pet-species').value,
+        age: document.getElementById('edit-pet-age').value,
+        health_status: document.getElementById('edit-pet-health-status').value
+      };
+      const resp = await fetch(`/api/pets/update/${pet_id}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+      const result = await resp.json();
+      const resultDiv = document.getElementById('edit-pet-result');
+      if(result.success){
+        resultDiv.innerHTML = `<span class="text-success">更新成功！</span>`;
+        setTimeout(()=>{
+          var editModal = bootstrap.Modal.getInstance(document.getElementById('editPetModal'));
+          editModal.hide();
+          loadPets();
+        }, 1000);
+      } else {
+        resultDiv.innerHTML = `<span class="text-danger">${result.msg || '更新失敗'}</span>`;
+      }
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- AI智能助理 -->
+  <script src="/static/ai_assistant/core.js"></script>
+</body>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+</html>

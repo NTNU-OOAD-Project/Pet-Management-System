@@ -2,7 +2,6 @@
 from flask import Flask, render_template, session, jsonify, request, flash, redirect, url_for
 from flask_cors import CORS
 from pymongo import MongoClient
-from models.place import PlaceMap
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 import os
@@ -82,22 +81,39 @@ def register():
     return redirect(url_for('login_page'))  # 註冊後回登入頁
 #In[2] Place
 # 展示場所地圖
+from models.place import PlaceManager
+place_manager = PlaceManager(db)
 @app.route('/place_display')
 def place_display():
-    place_map = PlaceMap(db)
-    place_html = place_map.generate_map_html()
+    # 使用 PlaceManager 產生 folium map html
+    place_html = place_manager.generate_folium_map()
     is_logged_in = 'user_id' in session
     return render_template('pet_place.html', map_html=place_html, is_logged_in=is_logged_in)
 
 # 場所詳細資料
 @app.route('/place/detail/<place_id>')
 def place_detail(place_id):
-    place_map = PlaceMap(db)
-    place = place_map.get_place_detail(place_id)
-    if place:
-        place['_id'] = str(place['_id'])
-        return jsonify({"status": "success", "data": place})
+    place = place_manager.get_place_by_id(place_id)
+    if place:        
+        data = {
+            "_id": place._id,
+            "place_id": place.place_id,
+            "place_name": place.place_name,
+            "place_type": place.place_type,
+            "location": place.location,
+            "facilities": place.facilities,
+            "open_hours": place.open_hours,
+            "latitude": place.latitude,
+            "longitude": place.longitude
+        }
+        return jsonify({"status": "success", "data": data})
     return jsonify({"status": "fail", "msg": "Place not found"})
+# 場所分類
+@app.route('/api/places/filter/<place_type>')
+def filter_places(place_type):
+    # place_type 分類 "公園", "醫院", "餐廳", "垃圾桶", "全部"
+    map_html = place_manager.generate_folium_map(place_type=place_type)
+    return jsonify({"map_html": map_html})
 
 # 預約場所
 @app.route('/place/reserve', methods=['POST'])
