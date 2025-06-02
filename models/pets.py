@@ -7,7 +7,8 @@ class PetManager:
         self.users = db['users']
 
     def get_pets_of_user(self, user_id):
-        user = self.users.find_one({'_id': ObjectId(user_id)})
+        obj_id = ObjectId(user_id)
+        user = self.users.find_one({'_id': obj_id})
         if user and 'pets' in user:
             return user['pets']
         return []

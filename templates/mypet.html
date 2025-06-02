@@ -69,7 +69,7 @@
         <div class="row g-4">
           <!-- 健康紀錄 -->
           <div class="col-md-4" data-aos="zoom-in">
-            <a href="{{ url_for('health') }}?pet_id=683c7ee2a5bc7f66eaa38d78" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+            <a href="{{ url_for('health') }}" id="health-record-link" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
               <div class="icon-box mb-3"><i class="fa-solid fa-heartbeat"></i></div>
               <h5 class="card-title">健康紀錄</h5>
               <p class="card-text">追蹤疫苗、身體狀況與健康報告。</p>
@@ -217,6 +217,10 @@
         if (petsData.length) {
           select.value = petsData[0].pet_id;
           document.getElementById('edit-pet-btn').disabled = false;
+          const healthLink = document.getElementById('health-record-link');
+          if (healthLink) {
+            healthLink.href = `/health?pet_id=${petsData[0].pet_id}`;
+          }
         } else {
           document.getElementById('edit-pet-btn').disabled = true;
         }
@@ -225,7 +229,13 @@
     loadPets();
 
     document.getElementById('pet-select').addEventListener('change', function(){
+      const selectedPetId = this.value;
       document.getElementById('edit-pet-btn').disabled = !this.value;
+
+      const healthLink = document.getElementById('health-record-link');
+      if (healthLink) {
+        healthLink.href = `/health?pet_id=${selectedPetId}`;
+      }
     });
 
     document.getElementById('add-pet-form').addEventListener('submit', async function(e){

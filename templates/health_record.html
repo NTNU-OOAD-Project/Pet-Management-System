@@ -44,36 +44,50 @@
   <div class="container">
     <h2 class="mb-4 text-center">健康紀錄</h2>
     <form id="healthRecordForm">
+      <input type="hidden" id="_id" name="_id" value="{{ record._id }}">
+      <input type="hidden" id="pet_id" name="pet_id" value="{{ record.pet_id }}">
       <div class="mb-3">
-        <label for="petBreed" class="form-label">寵物品種</label>
-        <input type="text" class="form-control" id="petBreed" name="petBreed" placeholder="例如：虎斑貓" required />
+        <label for="species" class="form-label">寵物品種</label>
+        <input type="text" class="form-control" id="species" name="species" placeholder="例如：虎斑貓" value="{{ record.species }}" required>
       </div>
       <div class="mb-3">
-        <label for="petName" class="form-label">寵物名稱</label>
-        <input type="text" class="form-control" id="petName" name="petName" required />
+        <label for="name" class="form-label">寵物名稱</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="例如：咪咪" value="{{ record.name }}" required>
       </div>
       <div class="mb-3">
-        <label for="petAge" class="form-label">年齡（歲）</label>
-        <input type="number" class="form-control" id="petAge" name="petAge" min="0" max="50" placeholder="例如：3" required />
+        <label for="age" class="form-label">年齡（歲）</label>
+        <input type="number" class="form-control" id="age" name="age" min="0" max="50" placeholder="例如：3" value="{{ record.age }}" required>
       </div>
       <div class="mb-3">
-        <label for="healthStatus" class="form-label">身體狀況</label>
-        <textarea class="form-control" id="healthStatus" name="healthStatus" rows="3" placeholder="描述寵物的身體狀況" required></textarea>
+        <label for="details" class="form-label">身體狀況</label>
+        <textarea class="form-control" id="details" name="details" rows="3" placeholder="描述寵物的身體狀況"  required>{{ record.details }}</textarea>
       </div>
       <div class="mb-3">
-        <label for="lastVaccineDate" class="form-label">上次疫苗接種日期</label>
-        <input type="date" class="form-control" id="lastVaccineDate" name="lastVaccineDate" required />
+        <label for="vaccine" class="form-label">上次疫苗接種日期</label>
+        <input type="date" class="form-control" id="vaccine" name="vaccine" value="{{ record.vaccine }}" required />
       </div>
 
       <div class="mb-3">
         <label class="form-label">藥物清單</label>
         <div id="medList">
-          <!-- 動態新增藥物項目 -->
+          {% if record.medications %}
+            {% for med in record.medications %}
+              <div class="input-group mb-2">
+                <input type="text" name="medications" class="form-control" value="{{ med }}" required>
+                <button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">刪除</button>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="input-group mb-2">
+              <input type="text" name="medications" class="form-control" placeholder="藥物名稱">
+              <button type="button" class="btn btn-outline-danger" onclick="this.parentElement.remove()">刪除</button>
+            </div>
+          {% endif %}
         </div>
         <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addMedBtn">＋新增藥物</button>
       </div>
 
-      <button type="button" class="btn btn-primary w-100" onclick="window.location.href='health_record_view.html'">儲存紀錄</button>
+      <button type="submit" class="btn btn-primary w-100" >儲存紀錄</button>
     </form>
   </div>
 
@@ -115,16 +129,18 @@
     });
 
     // 表單送出處理
-    document.getElementById('healthRecordForm').addEventListener('submit', function (e) {
+    document.getElementById('healthRecordForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
       // 組裝資料物件
       const data = {
-        petBreed: this.petBreed.value.trim(),
-        petName: this.petName.value.trim(),
-        petAge: Number(this.petAge.value),
-        healthStatus: this.healthStatus.value.trim(),
-        lastVaccineDate: this.lastVaccineDate.value,
+        _id: this._id?.value,
+        pet_id: this.pet_id?.value,
+        species: this.species.value.trim(),
+        name: this.name.value.trim(),
+        age: Number(this.age.value),
+        details: this.details.value.trim(),
+        vaccine: this.vaccine.value,
         medications: []
       };
 
@@ -138,11 +154,23 @@
 
       console.log('送出資料:', data);
 
-      // TODO: 這裡之後會連接後端API做資料儲存
-      alert('健康紀錄已儲存（示範用，尚未連接後端）');
-      this.reset();
-      medList.innerHTML = '';
-      medList.appendChild(createMedItem());
+      try {
+        const res = await fetch('/api/health/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert("健康紀錄已更新！");
+          window.location.href = `/health?pet_id=${data.pet_id}`;  // 導回檢視頁面
+        } else {
+          alert("更新失敗：" + (result.msg || ''));
+        }
+      } catch (err) {
+        alert("發生錯誤：" + err.message);
+      }
     });
   </script>
 </body>

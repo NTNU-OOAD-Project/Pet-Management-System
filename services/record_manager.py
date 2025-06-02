@@ -27,14 +27,11 @@ class RecordManager:
             pet_id = record_dict.get("pet_id")
             if not pet_id:
                 raise ValueError("紀錄中缺少 pet_id，無法儲存到指定寵物下")
-
             field_map = {
                 "diet": "diet_records",
                 "health": "health_records"
             }
-
             field = field_map.get(record_type)
-
             db.users.update_one(
                 {"pets.pet_id": pet_id},
                 {"$push": {f"pets.$.{field}": record_dict}}
@@ -162,8 +159,8 @@ class RecordManager:
 
         return None
 
-    def view_by_type(self, db, user_id: str, pet_id: str, type_str: str):
-        user = db.users.find_one({"_id": ObjectId(user_id)})
+    def view_by_type(self, db, id: str, type_str: str):
+        user = db.users.find_one({"_id": ObjectId(id)})
         if not user:
             raise ValueError("找不到使用者")
 
@@ -177,7 +174,7 @@ class RecordManager:
 
         elif type_str in ["diet", "health"]:
             for pet in user.get("pets", []):
-                if pet["pet_id"] == pet_id:
+                if pet["pet_id"] == id:
                     return pet.get(f"{type_str}_records", [])
 
             raise ValueError("找不到該寵物")

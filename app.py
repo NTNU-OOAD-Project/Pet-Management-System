@@ -23,6 +23,7 @@ client = MongoClient(MONGODB_URI)
 db = client[MONGODB_DB]
 
 messages_collection = db["messages"]
+record_manager = RecordManager() 
 
 @app.route('/')
 def index():
@@ -126,10 +127,15 @@ def pets():
 # 寵物清單
 @app.route('/api/pets/list')
 def pet_list():
-    if 'user_id' not in session:
-        return jsonify({'success': False, 'msg': '未登入'})
-    pets = PetManager(db).get_pets_of_user(session['user_id'])
-    return jsonify({'success': True, 'pets': pets})
+    user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({'success': False, 'msg': '未登入'}), 401
+
+    try:
+        pets = PetManager(db).get_pets_of_user(user_id)
+        return jsonify({'success': True, 'pets': pets})
+    except Exception as e:
+        return jsonify({'success': False, 'msg': str(e)}), 500
 # 新增寵物
 @app.route('/api/pets/add', methods=['POST'])
 def add_pet():
@@ -160,46 +166,72 @@ from bson import ObjectId
 @app.route('/health')
 def health():
     pet_id = request.args.get('pet_id')
-
-    if 'user_id' not in session:
+    user_id = session.get('user_id')
+    pet_id = "683d8682e35c1796af94e22b"
+    if not user_id:
         return "未登入", 401
+    if not pet_id:
+        return "缺少 pet_id", 400
 
-    user_id = session['user_id']
     user = db.users.find_one({'_id': ObjectId(user_id)})
-
     if not user:
         return "找不到使用者", 404
 
-    pet = None
-    for p in user.get('pets', []):
-        if p['pet_id'] == pet_id:
-            pet = p
-            break
-
+    # 找出目前的寵物物件
+    pet = next((p for p in user.get("pets", []) if p["pet_id"] == pet_id), None)
     if not pet:
         return "找不到寵物", 404
-    health_records = pet.get('health_records', [])
-    latest_health = health_records[-1] if health_records else {}
 
-    return render_template('health_record_view.html', health=latest_health)
+    health_records = pet.get("health_records", [])
+    health = health_records[-1] if health_records else {}
+    return render_template("health_record_view.html", health=health)
 
 
-record_manager = RecordManager()
-@app.route("/api/pet/health_records", methods=["GET"])
-def get_health_records():
-    user_id = request.args.get("user_id")
+@app.route("/health/edit")
+def health_edit():
     pet_id = request.args.get("pet_id")
-
-    if not user_id or not pet_id:
-        return jsonify({"error": "Missing user_id or pet_id"}), 400
-
+    user_id = session.get("user_id")
+    if not pet_id or not user_id:
+        return redirect(url_for("pets"))  # 或導向登入頁
     try:
-        records = record_manager.view_by_type(db, user_id, pet_id, "health")
-        return jsonify({"health_records": records}), 200
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 404
+        user = db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            return redirect(url_for("pets"))
+
+        for pet in user.get("pets", []):
+            if pet["pet_id"] == pet_id:
+                health_records = pet.get("health_records", [])
+                if not health_records:
+                    return render_template("health_record.html", health=None)
+
+                latest = health_records[-1]
+                latest["_id"] = str(latest.get("_id", ""))
+                return render_template("health_record.html", record=latest)
+
+        return redirect(url_for("pets"))
+
     except Exception as e:
-        return jsonify({"error": "Internal server error"}), 500
+        return f"Error: {e}", 500
+    
+
+@app.route("/api/health/update", methods=["POST"])
+def update_health_record():
+    try:
+        data = request.get_json()
+        record_id = data.get("_id")
+
+        record_id = data.get("_id")
+        if not record_id:
+            return jsonify({"success": False, "msg": "缺少紀錄 ID (_id)"})
+        record_manager.update_record(
+            record_id=ObjectId(record_id),
+            type_str="health",
+            update_fields=data,
+            db=db
+        )
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)})
 
 
 

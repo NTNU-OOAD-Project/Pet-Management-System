@@ -42,8 +42,10 @@
     </div>
 
     <div class="mt-4">
-      <a href="health_record.html" class="btn btn-outline-primary me-2"><i class="fa-solid fa-arrow-left"></i> 編輯</a>
-      <a href="{{ url_for('pets') }}" class="btn btn-primary"><i class="fa-solid fa-house"></i> 回到我的寵物</a>
+      <a href="{{url_for('health_edit')}}?pet_id={{ health.pet_id }}" class="btn btn-outline-primary me-2">
+        <i class="fa-solid fa-arrow-left"></i> 編輯</a>
+      <a href="{{ url_for('pets') }}" class="btn btn-primary">
+        <i class="fa-solid fa-house"></i> 回到我的寵物</a>
     </div>
   </div>
 </body>
