@@ -186,14 +186,46 @@ def reminder():
 #In[5] 預約寵物醫療服務
 from models.medical_service import MedicalService
 
-# 新增預約
-@app.route('/medical', methods=['GET', 'POST'])
-def medical():
+# 顯示和新增預約
+@app.route('/medical/view', methods=['GET'])
+def medical_view():
+    if 'user_id' not in session:
+        flash("請先登入查看預約", "warning")
+        return redirect(url_for('login_page'))
+
+    pet_id = request.args.get("pet_id")
+    if not pet_id:
+        flash("請選擇要查看的寵物", "warning")
+        return redirect(url_for('pets'))
+
     service = MedicalService(db)
+
+    filters = {
+        "service_type": request.args.get("service_type"),
+        "clinic_name": request.args.get("clinic_name"),
+        "appointment_date": request.args.get("appointment_date")
+    }
+    filters = {k: v for k, v in filters.items() if v}
+
+    services = service.list_pet_services(pet_id, filters)
+    for s in services:
+        s['_id'] = str(s['_id'])
+
+    return render_template('medical_view.html', services=services, pet_id=pet_id)
+
+@app.route('/medical/appointment', methods=['GET', 'POST'])
+def medical_appointment():
+    if 'user_id' not in session:
+        flash("請先登入才能預約", "warning")
+        return redirect(url_for('login_page'))
+
     if request.method == 'POST':
-        if 'user_id' not in session:
-            flash("請先登入才能預約", "warning")
-            return redirect(url_for('index'))
+        service = MedicalService(db)
+
+        pet_id = request.form.get('pet_id')
+        if not pet_id:
+            flash("缺少寵物資訊", "danger")
+            return redirect(url_for('pets'))
 
         service_type = request.form.get('service_type')
         vet_name = request.form.get('vet_name')
@@ -203,30 +235,14 @@ def medical():
         service_location = request.form.get('service_location')
 
         service.schedule_service(
-            session['user_id'], service_type, vet_name, clinic_name,
+            session['user_id'], pet_id, service_type, vet_name, clinic_name,
             appointment_time, service_location
         )
         flash("預約成功", "success")
-        return redirect(url_for('medical'))
+        return redirect(url_for('medical_view', pet_id=pet_id))
 
-    if 'user_id' in session:
-        user_id = session['user_id']
-        
-        filters = {
-            "service_type": request.args.get("service_type"),
-            "clinic_name": request.args.get("clinic_name"),
-            "appointment_date": request.args.get("appointment_date")
-        }
-        filters = {k: v for k, v in filters.items() if v}
-
-        services = service.list_user_services(user_id, filters)
-
-        for s in services:
-            s['_id'] = str(s['_id'])
-    else:
-        services = []
-
-    return render_template('medical.html', services=services)
+    pet_id = request.args.get("pet_id")
+    return render_template('medical_appointment.html', pet_id=pet_id)
 
 # 刪除預約
 @app.route('/medical/cancel/<service_id>', methods=['POST'])
@@ -241,7 +257,9 @@ def cancel_medical(service_id):
         flash("預約已成功取消", "success")
     else:
         flash("取消失敗，請稍後再試", "danger")
-    return redirect(url_for('medical'))
+
+    pet_id = request.form.get("pet_id", "")
+    return redirect(url_for('medical_view', pet_id=pet_id))
 
 # 修改預約
 @app.route('/medical/edit/<service_id>', methods=['POST'])
@@ -249,6 +267,8 @@ def edit_medical(service_id):
     if 'user_id' not in session:
         flash("請先登入", "warning")
         return redirect(url_for('index'))
+
+    pet_id = request.form.get('pet_id')
 
     service_type = request.form.get('service_type')
     vet_name = request.form.get('vet_name')
@@ -265,16 +285,95 @@ def edit_medical(service_id):
     )
 
     flash("預約已更新", "success")
-    return redirect(url_for('medical'))
+    return redirect(url_for('medical_view', pet_id=pet_id))
 
 @app.route('/supplies')
 def supplies():
     return render_template('supplies.html')
 
-#In[4] 活動預約
+#In[8] 寵物活動與事件公告
+from models.event import EventManager
+
 @app.route('/event')
 def event():
-    return render_template('event.html')
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    em = EventManager(db)
+
+    selected_category = request.args.get("category")
+
+    if selected_category and selected_category != "全部":
+        all_events = em.get_all_events_by_category(selected_category)
+    else:
+        all_events = em.get_all_events()
+
+    joined_events = em.get_user_signed_events(session['user_id'])
+    joined_ids = {str(e['_id']) for e in joined_events}
+
+    return render_template(
+        'pet_event.html',
+        events=all_events,
+        joined_events=joined_events,
+        joined_ids=joined_ids,
+        selected_category=selected_category or "全部"
+    )
+
+@app.route('/event/signup/<event_id>', methods=['POST'])
+def event_signup(event_id):
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    em = EventManager(db)
+    success = em.signup_event(session['user_id'], event_id)
+
+    if success:
+        flash("報名成功", "success")
+    else:
+        flash("你已報名過此活動", "info")
+
+    return redirect(url_for('event'))
+
+@app.route('/event/cancel/<event_id>', methods=['POST'])
+def event_cancel(event_id):
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    em = EventManager(db)
+    success = em.cancel_signup(session['user_id'], event_id)
+
+    if success:
+        flash("已取消報名", "info")
+    else:
+        flash("取消失敗或尚未報名", "danger")
+
+    return redirect(url_for('event'))
+
+@app.route('/event/create', methods=['GET', 'POST'])
+def event_create():
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    if request.method == 'POST':
+        data = {
+            "event_name": request.form['event_name'],
+            "event_time": request.form['event_time'],
+            "event_location": request.form['event_location'],
+            "event_description": request.form['event_description'],
+            "event_organizer": request.form['event_organizer'],
+            "max_participants": int(request.form['max_participants']),
+            "category": request.form['category']
+        }
+        em = EventManager(db)
+        em.create_event(data)
+        flash("活動新增成功", "success")
+        return redirect(url_for('event'))
+
+    return render_template('event_create.html')
 
 # AI智能助理
 @app.route("/api/messages", methods=["POST"])

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>新增活動</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #f7f7f7;">
+  <div class="container mt-5">
+    <div class="card shadow rounded-4 p-4">
+      <h2 class="mb-4 text-center">新增寵物活動</h2>
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">活動名稱</label>
+          <input type="text" name="event_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">活動時間</label>
+          <input type="datetime-local" name="event_time" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">活動地點</label>
+          <input type="text" name="event_location" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">活動簡介</label>
+          <textarea name="event_description" class="form-control" rows="3" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">主辦單位</label>
+          <input type="text" name="event_organizer" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">活動類型</label>
+          <select name="category" class="form-select" required>
+            <option value="聚會">聚會</option>
+            <option value="比賽">比賽</option>
+            <option value="慈善義賣">慈善義賣</option>
+            <option value="講座">講座</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">最大參加人數</label>
+          <input type="number" name="max_participants" class="form-control" required min="1">
+        </div>
+        <div class="text-end">
+          <button type="submit" class="btn btn-success">送出活動</button>
+          <a href="{{ url_for('event') }}" class="btn btn-secondary">返回活動列表</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

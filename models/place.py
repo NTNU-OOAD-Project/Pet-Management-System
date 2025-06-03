@@ -15,15 +15,25 @@ class Place:
         self._id = str(place_dict.get("_id")) if "_id" in place_dict else None
         self.color = color
         self.icon = icon
-
+    
     def get_popup_html(self):
-        return (
-            f"<b>場所名稱:</b> {self.place_name}<br>"
-            f"<b>地址:</b> {self.location}<br>"
-            f"<b>設施:</b> {', '.join(self.facilities)}<br>"
-            f"<b>開放時間:</b> {self.open_hours}<br>"
-            f"<button onclick=\"showPlaceDetail('{self._id}')\">詳細</button>"
-        )
+        if self.place_type == "醫院":
+            return (
+                f"<b>場所名稱:</b> {self.place_name}<br>"
+                f"<b>地址:</b> {self.location}<br>"
+                f"<b>設施:</b> {', '.join(self.facilities)}<br>"
+                f"<b>開放時間:</b> {self.open_hours}<br>"
+                f'<a href="/medical/appointment?clinic={self.place_name}">預約診所</a>'
+            )
+        else:
+            return (
+                f"<b>場所名稱:</b> {self.place_name}<br>"
+                f"<b>地址:</b> {self.location}<br>"
+                f"<b>設施:</b> {', '.join(self.facilities)}<br>"
+                f"<b>開放時間:</b> {self.open_hours}<br>"
+                f"<button onclick=\"showPlaceDetail('{self._id}')\">詳細</button>"
+            )
+
 
 class PlaceManager:
     COLOR_ICON_MAP = {

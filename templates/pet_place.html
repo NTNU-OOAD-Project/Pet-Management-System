@@ -31,36 +31,18 @@
 <body>
   <div class="d-flex">
 <!-- 側邊欄 -->
-<nav class="sidebar p-4" style="height: 150vh; background: #222;">
-  <div class="logo mb-4 text-white text-center">
-    <i class="fa-solid fa-paw fa-2x mb-2"></i>
-    <a href="{{ url_for('index') }}" class="logo-text d-block mb-2">
-      <i class="fa-solid fa-paw me-2"></i>PetSync
-    </a>
-  </div>
-  <ul class="nav flex-column">
-    <li class="nav-item">
-      <a class="nav-link text-white" href="{{ url_for('login_page') }}">
-        <i class="fa-solid fa-user me-2"></i>登入 / 註冊
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white active" href="{{ url_for('pets') }}">
-        <i class="fa-solid fa-dog me-2"></i>我的寵物
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white" href="{{ url_for('place_display') }}">
-        <i class="fa-solid fa-location-dot me-2"></i>寵物場所
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link text-white" href="pet_event.html">
-        <i class="fa-solid fa-calendar-days me-2"></i>寵物活動
-      </a>
-    </li>
-  </ul>
-</nav>
+    <nav class="sidebar p-4">
+      <div class="logo mb-4 text-white text-center">
+        <i class="fa-solid fa-paw fa-2x mb-2"></i>
+        <h4 class="fw-bold">PetSync</h4>
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login_page') }}"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('pets') }}"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('place_display') }}"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('event') }}"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>        
+      </ul>
+    </nav>
 
     <!-- 主內容 -->
     <main class="main-content p-5 flex-grow-1">

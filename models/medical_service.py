@@ -5,9 +5,10 @@ class MedicalService:
     def __init__(self, db):
         self.collection = db["medical_services"]
 
-    def schedule_service(self, user_id, service_type, vet_name, clinic_name, appointment_time, service_location):
+    def schedule_service(self, user_id, pet_id, service_type, vet_name, clinic_name, appointment_time, service_location):
         new_service = {
             "user_id": user_id,
+            "pet_id": pet_id,
             "service_type": service_type,
             "vet_name": vet_name,
             "clinic_name": clinic_name,
@@ -17,8 +18,8 @@ class MedicalService:
         result = self.collection.insert_one(new_service)
         return str(result.inserted_id)
 
-    def list_user_services(self, user_id, filters=None):
-        query = {"user_id": user_id}
+    def list_pet_services(self, pet_id, filters=None):
+        query = { "pet_id": pet_id }
         
         if filters:
             if "service_type" in filters and filters["service_type"]:

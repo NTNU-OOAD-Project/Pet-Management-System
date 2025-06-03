@@ -46,7 +46,7 @@
         <a href="{{ url_for('health') }}">健康紀錄</a>
         <a href="{{ url_for('diet') }}">飲食管理</a>
         <a href="{{ url_for('reminder') }}">照護提醒</a>
-        <a href="{{ url_for('medical') }}">醫療預約</a>
+        <a href="{{ url_for('medical_view') }}">醫療預約</a>
         <a href="{{ url_for('supplies') }}">用品存貨</a>
         <a href="{{ url_for('place_view') }}">寵物友善場所</a>
         <a href="{{ url_for('event') }}">活動專區</a>
@@ -118,7 +118,7 @@
             </div>
             <div class="text-end mt-2">
                 <button type="submit" class="btn btn-outline-primary">篩選</button>
-                <a href="{{ url_for('medical') }}" class="btn btn-outline-secondary">清除</a>
+                <a href="{{ url_for('medical_view') }}" class="btn btn-outline-secondary">清除</a>
             </div>
         </form>
 
