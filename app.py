@@ -108,6 +108,7 @@ def place_detail(place_id):
         }
         return jsonify({"status": "success", "data": data})
     return jsonify({"status": "fail", "msg": "Place not found"})
+
 # 場所分類
 @app.route('/api/places/filter/<place_type>')
 def filter_places(place_type):

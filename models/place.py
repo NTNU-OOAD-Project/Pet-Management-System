@@ -26,25 +26,29 @@ class Place:
         )
 
 class PlaceManager:
-    
     COLOR_ICON_MAP = {
         "公園":    ("green", "tree"),
         "醫院":    ("red", "plus-sign"),
         "餐廳":    ("orange", "cutlery"),
         "垃圾桶":  ("blue", "trash")
     }
-        
     def __init__(self, db):
         self.db = db
 
     def get_all_places(self):
         places = list(self.db["places"].find({}))
-        return [Place(p) for p in places]
+        return [Place(
+            p,
+            *self.COLOR_ICON_MAP.get(p.get("place_type"), ("blue", "info-sign"))
+        ) for p in places]
 
     def get_place_by_id(self, place_id):
         place = self.db["places"].find_one({"_id": ObjectId(place_id)})
-        return Place(place) if place else None
-    
+        return Place(
+            place,
+            *self.COLOR_ICON_MAP.get(place.get("place_type"), ("blue", "info-sign"))
+        ) if place else None
+
     def get_places_by_type(self, place_type):
         q = {} if place_type == "全部" else {"place_type": place_type}
         places = list(self.db["places"].find(q))
@@ -53,9 +57,13 @@ class PlaceManager:
             *self.COLOR_ICON_MAP.get(p.get("place_type"), ("blue", "info-sign"))
         ) for p in places]
 
-    def generate_folium_map(self, center=[25.033964, 121.564468], zoom_start=14):
+    # 加一個可選參數 place_type
+    def generate_folium_map(self, center=[25.033964, 121.564468], zoom_start=14, place_type="全部"):
         m = folium.Map(location=center, zoom_start=zoom_start)
-        places = self.get_all_places()
+        if place_type == "全部":
+            places = self.get_all_places()
+        else:
+            places = self.get_places_by_type(place_type)
         for p in places:
             folium.Marker(
                 location=[p.latitude, p.longitude],
