@@ -169,15 +169,38 @@ def reminder():
 #In[5] 預約寵物醫療服務
 from models.medical_service import MedicalService
 
-# 新增預約
-@app.route('/medical', methods=['GET', 'POST'])
-def medical():
-    service = MedicalService(db)
-    if request.method == 'POST':
-        if 'user_id' not in session:
-            flash("請先登入才能預約", "warning")
-            return redirect(url_for('index'))
+# 顯示和新增預約
+@app.route('/medical/view', methods=['GET'])
+def medical_view():
+    if 'user_id' not in session:
+        flash("請先登入查看預約", "warning")
+        return redirect(url_for('login_page'))
 
+    service = MedicalService(db)
+    user_id = session['user_id']
+
+    # 過濾條件
+    filters = {
+        "service_type": request.args.get("service_type"),
+        "clinic_name": request.args.get("clinic_name"),
+        "appointment_date": request.args.get("appointment_date")
+    }
+    filters = {k: v for k, v in filters.items() if v}
+
+    services = service.list_user_services(user_id, filters)
+    for s in services:
+        s['_id'] = str(s['_id'])
+
+    return render_template('medical_view.html', services=services)
+
+@app.route('/medical/appointment', methods=['GET', 'POST'])
+def medical_appointment():
+    if 'user_id' not in session:
+        flash("請先登入才能預約", "warning")
+        return redirect(url_for('login_page'))
+
+    if request.method == 'POST':
+        service = MedicalService(db)
         service_type = request.form.get('service_type')
         vet_name = request.form.get('vet_name')
         clinic_name = request.form.get('clinic_name')
@@ -190,26 +213,9 @@ def medical():
             appointment_time, service_location
         )
         flash("預約成功", "success")
-        return redirect(url_for('medical'))
+        return redirect(url_for('medical_view'))
 
-    if 'user_id' in session:
-        user_id = session['user_id']
-        
-        filters = {
-            "service_type": request.args.get("service_type"),
-            "clinic_name": request.args.get("clinic_name"),
-            "appointment_date": request.args.get("appointment_date")
-        }
-        filters = {k: v for k, v in filters.items() if v}
-
-        services = service.list_user_services(user_id, filters)
-
-        for s in services:
-            s['_id'] = str(s['_id'])
-    else:
-        services = []
-
-    return render_template('medical.html', services=services)
+    return render_template('medical_appointment.html')
 
 # 刪除預約
 @app.route('/medical/cancel/<service_id>', methods=['POST'])
@@ -224,7 +230,7 @@ def cancel_medical(service_id):
         flash("預約已成功取消", "success")
     else:
         flash("取消失敗，請稍後再試", "danger")
-    return redirect(url_for('medical'))
+    return redirect(url_for('medical_view'))
 
 # 修改預約
 @app.route('/medical/edit/<service_id>', methods=['POST'])
@@ -248,7 +254,7 @@ def edit_medical(service_id):
     )
 
     flash("預約已更新", "success")
-    return redirect(url_for('medical'))
+    return redirect(url_for('medical_view'))
 
 @app.route('/supplies')
 def supplies():
