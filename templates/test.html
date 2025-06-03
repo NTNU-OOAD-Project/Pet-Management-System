@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>照護提醒 - 寵物日常管理系統</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script>
+    function addReminderRow() {
+      const table = document.getElementById("reminder-table-body");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td><input type="time" class="form-control" name="time[]"></td>
+        <td><input type="text" class="form-control" name="message[]" placeholder="如：洗澡、剪指甲"></td>
+        <td class="text-center">
+          <div class="form-check form-switch d-flex justify-content-center">
+            <input class="form-check-input" type="checkbox"  name="daily[]"  
+          </div>
+        </td>
+        <td>
+          <input type="hidden" name="record_id[]" value="">
+          <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button>
+        </td>
+      `;
+      table.appendChild(row);
+    }
+
+    function deleteRow(button) {
+      button.closest("tr").remove();
+    }
+  </script>
+</head>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.daily-toggle').forEach(input => {
+      input.addEventListener('change', function () {
+        const recordId = this.dataset.id;
+        const newDaily = this.checked;
+
+        fetch('/api/reminder/daily', {
+            method: 'PATCH',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+           body: JSON.stringify({
+            record_id: recordId,
+            daily: newDaily
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) alert("更新失敗：" + data.error);
+        })
+        .catch(err => alert("錯誤：" + err));
+      });
+    });
+  });
+</script>
+
+<body style="background-color: #f8f9fa;">
+  <div class="container mt-5">
+    <div class="card p-4 shadow rounded-4">
+      <h2 class="mb-4 text-center">🕒 編輯照護提醒</h2>
+      <form action="{{ url_for('save_care_reminder') }}" method="POST">
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>時間</th>
+              <th>事件</th>
+              <th>每天</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="reminder-table-body">
+            {% for r in reminders %}
+            <tr>
+              <td><input type="time" class="form-control" name="time[]" value="{{ r.time_str }}"></td>
+              <td><input type="text" class="form-control" name="message[]" value="{{ r.message }}"></td>
+              <td class="text-center">
+                <div class="form-check form-switch d-flex justify-content-center">
+                  <input class="form-check-input daily-toggle" type="checkbox" data-id="{{ r._id }}" name="daily[]" value="{{ loop.index0 }}" {% if r.daily %}checked{% endif %}>
+                </div>
+              </td>
+              <td>
+                <input type="hidden" name="record_id[]" value="{{ r._id }}">
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button>
+              </td>
+            </tr>
+            {% endfor %}
+
+            {% if reminders|length == 0 %}
+            <tr>
+              <td><input type="time" class="form-control" name="time[]"></td>
+              <td><input type="text" class="form-control" name="message[]" placeholder="如：洗澡、剪指甲"></td>
+              <td class="text-center">
+                <div class="form-check form-switch d-flex justify-content-center">
+                  <input class="form-check-input" type="checkbox" data-id="{{ r._id }}" name="daily[]" value="{{ loop.index0 }}" {% if r.daily %}checked{% endif %}>
+                </div>
+              </td>
+              <td>
+                <input type="hidden" name="record_id[]" value="">
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button>
+              </td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between mt-4">
+          <button type="button" class="btn btn-outline-secondary" onclick="addReminderRow()">➕ 新增提醒</button>
+          <button type="submit" class="btn btn-primary">💾 儲存提醒</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById("save-btn").addEventListener("click", function (e) {
+    e.preventDefault(); // 防止表單直接提交
+
+    const times = document.getElementsByName("time[]");
+    const messages = document.getElementsByName("message[]");
+    const dailies = document.getElementsByName("daily[]");
+    const ids = document.getElementsByName("record_id[]");
+
+    const data = [];
+
+    for (let i = 0; i < times.length; i++) {
+      const entry = {
+        time_str: times[i].value,
+        message: messages[i].value,
+        daily: dailies[i].checked,
+        active: true  // 你可以根據需求決定是否加入
+      };
+
+      if (ids[i].value) {
+        entry._id = ids[i].value;
+      }
+
+      data.push(entry);
+    }
+
+    const petId = new URLSearchParams(window.location.search).get("pet_id");
+
+    fetch(`/api/care_reminder/save_batch?pet_id=${petId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(result => {
+      if (result.success) {
+        alert("儲存成功！");
+        location.reload(); // 或導回列表頁
+      } else {
+        alert("儲存失敗：" + result.msg);
+      }
+    })
+    .catch(err => {
+      alert("發生錯誤：" + err);
+    });
+  });
+});
+</script>
+</body>
+</html>

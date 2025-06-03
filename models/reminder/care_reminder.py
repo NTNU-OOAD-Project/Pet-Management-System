@@ -3,11 +3,12 @@ from services.email_service import send_email
 
 
 class CareReminder:
-    def __init__(self, message, time, date, type):
+    def __init__(self, message, time, date, type, pet_id):
         self.message = message
         self.time = time
         self.date = date
         self.type = type
+        self.pet_id = pet_id
 
     def is_due_now(self, current_time):
         from datetime import datetime

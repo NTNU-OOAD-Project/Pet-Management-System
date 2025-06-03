@@ -3,6 +3,7 @@ from bson import ObjectId
 from models.record.diet_record import DietRecord
 from models.record.health_record import HealthRecord
 from models.record.inventory_record import InventoryRecord
+from models.record.remind_record import CareReminderRecord
 from models.record.base import Record
 from services.inventory_service import InventoryService
 
@@ -23,21 +24,23 @@ class RecordManager:
         record_dict = record.to_dict()
         record_type = record_dict.get("type")
 
-        if record_type in ["diet", "health"]:
+        if record.to_dict().get("type") == "inventory":
+            InventoryService.apply_inventory_record(record, db)
+        else:
             pet_id = record_dict.get("pet_id")
             if not pet_id:
                 raise ValueError("紀錄中缺少 pet_id，無法儲存到指定寵物下")
             field_map = {
                 "diet": "diet_records",
-                "health": "health_records"
+                "health": "health_records",
+                "remind": "remind_records"
             }
             field = field_map.get(record_type)
+            print(field)
             db.users.update_one(
                 {"pets.pet_id": pet_id},
                 {"$push": {f"pets.$.{field}": record_dict}}
             )
-        elif record.to_dict().get("type") == "inventory":
-            InventoryService.apply_inventory_record(record, db)
 
 
     #新增紀錄
@@ -113,6 +116,11 @@ class RecordManager:
                 {"_id": ObjectId(user_id), "pets.pet_id": parent_id},
                 {"$pull": {"pets.$.health_records": {"_id": ObjectId(record_id)}}}
             )
+        elif type_str == "remind":
+            db.users.update_one(
+                {"_id": ObjectId(user_id), "pets.pet_id": parent_id},
+                {"$pull": {"pets.$.remind_records": {"_id": ObjectId(record_id)}}}
+            )
 
         elif type_str == "inventory":
             # 套用反向庫存變動
@@ -137,17 +145,7 @@ class RecordManager:
     def find_record_by_id(self, record_id: str, type_str: str, db):
         obj_id = ObjectId(record_id)
 
-        if type_str in ["diet", "health"]:
-            user = db.users.find_one({f"pets.{type_str}_records._id": obj_id})
-            if not user:
-                return None
-
-            for pet in user["pets"]:
-                for record in pet.get(f"{type_str}_records", []):
-                    if record["_id"] == obj_id:
-                        return record, str(user["_id"]), pet["pet_id"]
-
-        elif type_str == "inventory":
+        if type_str == "inventory":
             user = db.users.find_one({"inventory.records._id": obj_id})
             if not user:
                 return None
@@ -156,6 +154,16 @@ class RecordManager:
                 for record in item.get("records", []):
                     if record["_id"] == obj_id:
                         return record, str(user["_id"]), item["_id"]
+
+        else:
+            user = db.users.find_one({f"pets.{type_str}_records._id": obj_id})
+            if not user:
+                return None
+
+            for pet in user["pets"]:
+                for record in pet.get(f"{type_str}_records", []):
+                    if record["_id"] == obj_id:
+                        return record, str(user["_id"]), pet["pet_id"]
 
         return None
 
@@ -174,15 +182,13 @@ class RecordManager:
                     return item.get("records", [])
             raise ValueError("找不到該項目的 inventory")
 
-        elif type_str in ["diet", "health"]:
+        else:
             for pet in user.get("pets", []):
                 if pet["pet_id"] == id:
                     return pet.get(f"{type_str}_records", [])
 
             raise ValueError("找不到該寵物")
 
-        else:
-            raise ValueError(f"不支援的紀錄類型：{type_str}")
 
 
 
@@ -190,6 +196,7 @@ class RecordManager:
         record_types = {
             "diet": DietRecord,
             "health": HealthRecord,
-            "inventory": InventoryRecord
+            "inventory": InventoryRecord,
+            "remind": CareReminderRecord
         }
         return record_types.get(type_str)

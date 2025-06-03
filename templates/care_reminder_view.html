@@ -2,41 +2,76 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>照護提醒檢視</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>照護提醒</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    th:nth-child(1), td:nth-child(1) { width: 20%; white-space: nowrap; }
+    th:nth-child(2), td:nth-child(2) { width: 50%; }
+    th:nth-child(3), td:nth-child(3) { width: 30%; }
+  </style>
 </head>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.reminder-toggle').forEach(input => {
+    input.addEventListener('change', function () {
+      const recordId = this.dataset.id;
+      const newState = this.checked;
+
+      fetch('/api/reminder/active', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          record_id: recordId,
+          active: newState
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) alert("更新失敗：" + data.error);
+      })
+      .catch(err => alert("錯誤：" + err));
+    });
+  });
+});
+</script>
 <body style="background-color: #eaf7ff;">
   <div class="container mt-5">
     <div class="card p-4 shadow rounded-4">
-      <h2 class="mb-4 text-center">🔔 照護提醒一覽</h2>
-      <table class="table table-striped table-bordered text-center">
-        <thead class="table-dark">
-          <tr>
-            <th>提醒類型</th>
-            <th>時間</th>
-            <th>頻率</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- 後端會動態插入資料 -->
-          <tr>
-            <td>洗澡</td>
-            <td>10:00</td>
-            <td>每週</td>
-          </tr>
-          <tr>
-            <td>剪指甲</td>
-            <td>15:30</td>
-            <td>每月</td>
-          </tr>
-        </tbody>
-      </table>
-
+      <h2 class="mb-4">照護提醒</h2>
+        <table class="table table-striped table-bordered text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>時間</th>
+              <th>事件</th>
+              <th>開關</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in reminders %}
+            <tr>
+              <td>
+                {% if r.daily %}每日 {% endif %}
+                <span class="fw-bold">{{ r.time_str }}</span>
+              </td>
+              <td>{{ r.message }}</td>
+              <td>
+                <div class="form-check form-switch d-flex justify-content-center">
+                  <input type="checkbox" class="form-check-input reminder-toggle" data-id="{{ r._id }}"  {% if r.active %}checked{% endif %}>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       <div class="d-flex justify-content-between mt-4">
-        <a href="care_reminder.html" class="btn btn-outline-secondary">🔙 返回修改</a>
+        <a href="{{ url_for('care_reminder_edit' , pet_id= pet_id) }}" class="btn btn-outline-secondary"> 修改 </a>
         <a href="{{ url_for('pets') }}" class="btn btn-outline-primary">🏠 返回我的寵物</a>
       </div>
     </div>
   </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

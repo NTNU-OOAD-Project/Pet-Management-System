@@ -1,24 +1,71 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>照護提醒 - 寵物日常管理系統</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="background-color: #f8f9fa;">
+  <div class="container mt-5">
+    <div class="card p-4 shadow rounded-4">
+      <h2 class="mb-4 text-center">🕒 編輯照護提醒</h2>
+      <form>
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>時間</th>
+              <th>事件</th>
+              <th>每天</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="reminder-table-body">
+            {% for r in reminders %}
+            <tr>
+              <input type="hidden" name="pet_id[]" value="{{ pet_id }}">
+              <input type="hidden" id="petId" value="{{ pet_id }}">
+              <td><input type="time" class="form-control" name="time[]" value="{{ r.time_str }}"></td>
+              <td><input type="text" class="form-control" name="message[]" value="{{ r.message }}"></td>
+              <td class="text-center">
+                <div class="form-check form-switch d-flex justify-content-center">
+                  <input class="form-check-input" type="checkbox" name="daily[]" {% if r.daily %}checked{% endif %}>
+                </div>
+              </td>
+              <td>
+                <input type="hidden" name="record_id[]" value="{{ r._id }}">
+                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button type="button" class="btn btn-outline-secondary" onclick="addReminderRow()">➕ 新增提醒</button>
+            <button type="button" class="btn btn-primary" id="save-btn">💾 儲存提醒</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     function addReminderRow() {
       const table = document.getElementById("reminder-table-body");
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td><input type="text" class="form-control" name="type[]" placeholder="如：洗澡、剪指甲"></td>
         <td><input type="time" class="form-control" name="time[]"></td>
-        <td>
-          <select class="form-select" name="frequency[]">
-            <option value="每天">每天</option>
-            <option value="每週">每週</option>
-            <option value="每月">每月</option>
-          </select>
+        <td><input type="text" class="form-control" name="message[]" placeholder="如：洗澡、剪指甲"></td>
+        <td class="text-center">
+          <div class="form-check form-switch d-flex justify-content-center">
+            <input class="form-check-input" type="checkbox" name="daily[]">
+          </div>
         </td>
-        <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button></td>
+        <td>
+          <input type="hidden" name="pet_id[]" value="{{  pet_id  }}">
+          <input type="hidden" name="pet_id" value="{{  pet_id  }}">
+          <input type="hidden" name="record_id[]" value="">
+          <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button>
+        </td>
       `;
       table.appendChild(row);
     }
@@ -26,41 +73,53 @@
     function deleteRow(button) {
       button.closest("tr").remove();
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById("save-btn").addEventListener("click", function (e) {
+        e.preventDefault();
+        alert("儲存按鈕被點擊");
+        const rows = document.querySelectorAll('#reminder-table-body tr');
+         updates = [];
+        
+        rows.forEach(row => {
+          const timeInput = row.querySelector('input[name="time[]"]');
+          const msgInput = row.querySelector('input[name="message[]"]');
+          const dailyInput = row.querySelector('input[name="daily[]"]');
+          const idInput = row.querySelector('input[name="record_id[]"]');
+          const petId = row.querySelector('input[name="pet_id[]"]');
+          
+          const entry = { 
+            _id: idInput?.value,
+            time_str: timeInput?.value,
+            message: msgInput?.value,
+            daily: dailyInput?.checked || false,
+            active: true,
+            pet_id: petId?.value
+          };
+          
+
+          updates.push(entry);
+
+        });
+        const saveUrl = "{{ url_for('save_care_reminder') }}";
+        const bakeUrl = "{{ url_for('care_reminder_page') }}";
+        fetch(saveUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ updates })
+        })
+        .then(res => res.json())
+        .then(result => {
+          if (result.success) {
+            alert("儲存成功！");
+            window.location.href = `/care_reminder?pet_id=${result.pet_id}`;
+          } else {
+            alert("儲存失敗：" + result.msg);
+          }
+        })
+      });
+    });
   </script>
-</head>
-<body style="background-color: #f8f9fa;">
-  <div class="container mt-5">
-    <div class="card p-4 shadow rounded-4">
-      <h2 class="mb-4 text-center">🕒 新增照護提醒</h2>
-      <form action="care_reminder_view.html" method="GET">
-        <table class="table table-bordered text-center align-middle">
-          <thead class="table-light">
-            <tr>
-              <th>提醒類型</th>
-              <th>時間</th>
-              <th>頻率</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody id="reminder-table-body">
-            <tr>
-              <td><input type="text" class="form-control" name="type[]" placeholder="如：洗澡、剪指甲"></td>
-              <td><input type="time" class="form-control" name="time[]"></td>
-              <td>
-                <select class="form-select" name="frequency[]">
-                  <option value="每天">每天</option>
-                  <option value="每週">每週</option>
-                  <option value="每月">每月</option>
-                </select>
-              </td>
-              <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button></td>
-            </tr>
-          </tbody>
-        </table>
-        <button type="button" class="btn btn-outline-secondary mb-3" onclick="addReminderRow()">➕ 新增提醒</button>
-        <button type="submit" class="btn btn-primary w-100">儲存提醒</button>
-      </form>
-    </div>
-  </div>
 </body>
 </html>
+

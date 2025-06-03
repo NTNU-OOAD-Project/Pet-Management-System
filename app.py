@@ -6,8 +6,9 @@ from models.place import PlaceMap
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 from services.record_manager import RecordManager
+import scheduler
 import os
-
+test_pet_id = "683ef68cf6adcf4d87450d5b"
 app = Flask(__name__)
 CORS(app)
 app.secret_key = 'your_secret_key'
@@ -48,6 +49,7 @@ def login():
         user_info = user.get_user_by_email(email)
         session['user_id'] = str(user_info['_id'])
         session['user_name'] = user_info['name']
+
         flash('登入成功', 'success')
         return redirect(url_for('index'))
     else:
@@ -127,15 +129,10 @@ def pets():
 # 寵物清單
 @app.route('/api/pets/list')
 def pet_list():
-    user_id = session.get('user_id')
-    if not user_id:
-        return jsonify({'success': False, 'msg': '未登入'}), 401
-
-    try:
-        pets = PetManager(db).get_pets_of_user(user_id)
-        return jsonify({'success': True, 'pets': pets})
-    except Exception as e:
-        return jsonify({'success': False, 'msg': str(e)}), 500
+    if 'user_id' not in session:
+        return jsonify({'success': False, 'msg': '未登入'})
+    pets = PetManager(db).get_pets_of_user(session['user_id'])
+    return jsonify({'success': True, 'pets': pets})
 # 新增寵物
 @app.route('/api/pets/add', methods=['POST'])
 def add_pet():
@@ -170,7 +167,7 @@ from bson import ObjectId
 def health():
     pet_id = request.args.get('pet_id')
     user_id = session.get('user_id')
-    pet_id = "683d8682e35c1796af94e22b"
+    pet_id = test_pet_id      #測試用(目前寵物的list沒有讀到)
     if not user_id:
         return "未登入", 401
     if not pet_id:
@@ -376,10 +373,306 @@ def delete_inventory():
         return jsonify({"success": False, "msg": str(e)})
 
 
-####################################################################################################
+#In[] 寵物飲食紀錄
+##################################################################################################################
 @app.route('/diet')
-def diet():
-    return render_template('diet.html')
+def diet_view():
+    pet_id = request.args.get('pet_id')
+    user_id = session.get('user_id')
+
+    
+    pet_id = test_pet_id                 # 臨時測試
+
+    if not user_id:
+        return "未登入", 401
+    if not pet_id:
+        return "缺少 pet_id", 400
+
+    user = db.users.find_one({'_id': ObjectId(user_id)})
+    if not user:
+        return "找不到使用者", 404
+
+    # 找出該寵物
+    pet = next((p for p in user.get("pets", []) if p["pet_id"] == pet_id), None)
+    if not pet:
+        return "找不到寵物", 404
+
+    diet_records = pet.get("diet_records", [])
+
+    return render_template("health_record_view.html", diet_records=diet_records)
+
+
+#編輯頁面
+@app.route('/diet/edit')
+def diet_edit():
+    from bson import ObjectId
+
+    pet_id = request.args.get('pet_id')
+    user_id = session.get('user_id')
+
+    if not user_id:
+        return "未登入", 401
+    if not pet_id:
+        return "缺少 pet_id", 400
+
+    user = db.users.find_one({'_id': ObjectId(user_id)})
+    if not user:
+        return "找不到使用者", 404
+
+    pet = next((p for p in user.get("pets", []) if p["pet_id"] == pet_id), None)
+    if not pet:
+        return "找不到寵物", 404
+
+    diet_records = pet.get("diet_records", [])
+    return render_template("diet_edit.html", diet_records=diet_records, pet_id=pet_id)
+
+
+
+#儲存紀錄(確認編輯)
+@app.route('/api/diet/save_batch', methods=['POST'])
+def save_diet_records_batch():
+    user_id = session.get("user_id")
+    pet_id = request.args.get('pet_id')
+    data = request.get_json()  # 接收一個列表
+
+    if not user_id or not isinstance(data, list):
+        return jsonify({"success": False, "msg": "格式錯誤或未登入"}), 400
+
+    record_manager = RecordManager()
+    created, updated = 0, 0
+    for entry in data:
+        record_id = entry.get("_id")
+        try:
+            if record_id:
+                try:
+                    record_manager.update_record(
+                        record_id=ObjectId(record_id),
+                        type_str="diet",
+                        update_fields=entry,
+                        db=db
+                    )
+                    updated += 1
+                    continue
+                except ValueError:
+                    pass  # 如果找不到記錄則當作新增
+
+            # 新增
+            entry["pet_id"] = pet_id
+            record_manager.add_record_by_type(
+                type_str="diet",
+                data=entry,
+                db=db
+            )
+            created += 1
+
+        except Exception as e:
+            print(f"處理失敗: {e}")
+            continue
+
+    return jsonify({
+        "success": True,
+        "created": created,
+        "updated": updated
+    })
+
+
+#刪除紀錄
+@app.route("/api/diet/delete", methods=["POST"])
+def delete_diet_record():
+    user_id = session.get("user_id")
+    data = request.get_json()
+    record_id = data.get("record_id")
+
+    if not user_id:
+        return jsonify({"success": False, "msg": "未登入"}), 401
+    if not record_id:
+        return jsonify({"success": False, "msg": "缺少記錄 ID"}), 400
+
+    try:
+        record_manager = RecordManager()
+        record_manager.delete_record(ObjectId(record_id), "diet", db)
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)}), 500
+    
+
+
+#In[] 寵物飲食紀錄
+##################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+#In[] 小鈴鐺
+##################################################################################################################
+#前端做定期檢查
+from services.notification_service import NotificationService
+@app.route('/api/notification_count')
+def notification_count():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"count": 0})
+
+    ns = NotificationService(db)
+    count = ns.get_unread_count(user_id)
+    return jsonify({"count": "+99" if count > 99 else count})
+
+#查看提醒清單
+from services.notification_service import NotificationService
+
+@app.route('/api/notifications')
+def get_notifications():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify([])
+
+    ns = NotificationService(db)
+    notifications = ns.get_all_notifications(user_id)
+    return jsonify(notifications)
+#全部已讀
+@app.route('/api/notifications/mark_all_read', methods=['POST'])
+def mark_all_notifications_as_read():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"success": False}), 401
+
+    ns = NotificationService(db)
+    ns.mark_all_as_read(user_id)
+    return jsonify({"success": True})
+#點擊已讀
+@app.route('/api/notifications/<notification_id>/read', methods=['POST'])
+def mark_notification_as_read(notification_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"success": False}), 401
+
+    ns = NotificationService(db)
+    ns.mark_as_read(notification_id)
+    return jsonify({"success": True})
+
+
+
+
+
+#In[] 照護提醒
+##################################################################################################################
+from flask import Blueprint, request, render_template
+from bson import ObjectId
+
+@app.route("/care_reminder", methods=["GET"])
+def care_reminder_page():
+    pet_id = request.args.get("pet_id")
+    pet_id = test_pet_id      #測試用(目前寵物的list沒有讀到)
+
+    if not pet_id:
+        return "缺少 pet_id", 400
+
+    user = db.users.find_one({"pets.pet_id": pet_id})
+    if not user:
+        return "找不到對應的寵物", 404
+
+    for pet in user["pets"]:
+        if pet["pet_id"] == pet_id:
+            reminders = pet.get("remind_records", [])
+            return render_template("care_reminder_view.html", reminders=reminders, pet_id = pet_id)
+    return render_template("test.html", reminders=[])
+
+#開關提醒
+@app.route('/api/reminder/active', methods=['PATCH'])
+def update_active_state():
+    data = request.get_json()
+    record_id = data.get("record_id")
+    active = data.get("active")
+
+    if not record_id or active is None:
+        return jsonify({"success": False, "error": "缺少參數"}), 400
+
+    result = db.users.update_one(
+        { "pets.remind_records._id": ObjectId(record_id) },
+        { "$set": { "pets.$[].remind_records.$[r].active": active } },
+        array_filters=[{ "r._id": ObjectId(record_id) }]
+    )
+
+    if result.modified_count == 0:
+        return jsonify({"success": False, "error": "未更新任何資料"}), 404
+
+    return jsonify({"success": True})
+
+#編輯畫面
+@app.route("/care_reminder/edit")
+def care_reminder_edit():
+    pet_id = request.args.get("pet_id")
+    user_id = session.get("user_id")
+    if not user_id:
+        return "找不到使用者", 404
+
+    # ⬇ 這行是關鍵：用 user_id 找到整份使用者資料
+    user = db.users.find_one({"_id": ObjectId(user_id)})
+
+    if not user:
+        return "找不到使用者", 404
+
+    for pet in user.get("pets", []):
+        if str(pet["pet_id"]) == pet_id:
+            reminders = pet.get("remind_records", [])
+            return render_template("care_reminder.html", reminders=reminders, pet_id=pet_id )
+
+    return "找不到寵物", 404
+
+
+# 儲存提醒資料
+@app.route("/api/save-reminders", methods=["POST"])
+def save_care_reminder():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({"success": False, "error": "請先登入"}), 401
+
+    data = request.get_json()
+    updates = data.get("updates", [])
+    print("哈摟",updates)
+    record_manager = RecordManager()
+    updated = 0
+
+    for entry in updates:
+        try:
+            record_id = entry.get("_id")
+            pet_id = entry.get("pet_id")
+            if not record_id:
+                record_manager.add_record_by_type(
+                    type_str="remind",
+                    data=entry,
+                    db=db
+                )
+            else:
+                record_manager.update_record(
+                    record_id=record_id,
+                    type_str="remind",
+                    update_fields=entry,
+                    db=db
+                )
+            updated += 1
+        except Exception as e:
+            print("新增錯誤：", e)
+
+    return jsonify({
+        "success": True,
+        "updated": updated,
+        "pet_id":pet_id
+    })
+
+
+
+
+
+##################################################################################################################
+
 
 @app.route('/reminder')
 def reminder():
