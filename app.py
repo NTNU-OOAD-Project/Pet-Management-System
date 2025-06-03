@@ -275,9 +275,88 @@ def supplies():
     return render_template('supplies.html')
 
 #In[8] 寵物活動與事件公告
+from models.event import EventManager
+
 @app.route('/event')
 def event():
-    return render_template('event.html')
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    em = EventManager(db)
+
+    selected_category = request.args.get("category")
+
+    if selected_category and selected_category != "全部":
+        all_events = em.get_all_events_by_category(selected_category)
+    else:
+        all_events = em.get_all_events()
+
+    joined_events = em.get_user_signed_events(session['user_id'])
+    joined_ids = {str(e['_id']) for e in joined_events}
+
+    return render_template(
+        'pet_event.html',
+        events=all_events,
+        joined_events=joined_events,
+        joined_ids=joined_ids,
+        selected_category=selected_category or "全部"
+    )
+
+@app.route('/event/signup/<event_id>', methods=['POST'])
+def event_signup(event_id):
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    em = EventManager(db)
+    success = em.signup_event(session['user_id'], event_id)
+
+    if success:
+        flash("報名成功", "success")
+    else:
+        flash("你已報名過此活動", "info")
+
+    return redirect(url_for('event'))
+
+@app.route('/event/cancel/<event_id>', methods=['POST'])
+def event_cancel(event_id):
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    em = EventManager(db)
+    success = em.cancel_signup(session['user_id'], event_id)
+
+    if success:
+        flash("已取消報名", "info")
+    else:
+        flash("取消失敗或尚未報名", "danger")
+
+    return redirect(url_for('event'))
+
+@app.route('/event/create', methods=['GET', 'POST'])
+def event_create():
+    if 'user_id' not in session:
+        flash("請先登入", "warning")
+        return redirect(url_for('login_page'))
+
+    if request.method == 'POST':
+        data = {
+            "event_name": request.form['event_name'],
+            "event_time": request.form['event_time'],
+            "event_location": request.form['event_location'],
+            "event_description": request.form['event_description'],
+            "event_organizer": request.form['event_organizer'],
+            "max_participants": int(request.form['max_participants']),
+            "category": request.form['category']
+        }
+        em = EventManager(db)
+        em.create_event(data)
+        flash("活動新增成功", "success")
+        return redirect(url_for('event'))
+
+    return render_template('event_create.html')
 
 # AI智能助理
 @app.route("/api/messages", methods=["POST"])
