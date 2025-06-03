@@ -176,10 +176,13 @@ def medical_view():
         flash("請先登入查看預約", "warning")
         return redirect(url_for('login_page'))
 
-    service = MedicalService(db)
-    user_id = session['user_id']
+    pet_id = request.args.get("pet_id")
+    if not pet_id:
+        flash("請選擇要查看的寵物", "warning")
+        return redirect(url_for('pets'))
 
-    # 過濾條件
+    service = MedicalService(db)
+
     filters = {
         "service_type": request.args.get("service_type"),
         "clinic_name": request.args.get("clinic_name"),
@@ -187,11 +190,11 @@ def medical_view():
     }
     filters = {k: v for k, v in filters.items() if v}
 
-    services = service.list_user_services(user_id, filters)
+    services = service.list_pet_services(pet_id, filters)
     for s in services:
         s['_id'] = str(s['_id'])
 
-    return render_template('medical_view.html', services=services)
+    return render_template('medical_view.html', services=services, pet_id=pet_id)
 
 @app.route('/medical/appointment', methods=['GET', 'POST'])
 def medical_appointment():
@@ -201,6 +204,12 @@ def medical_appointment():
 
     if request.method == 'POST':
         service = MedicalService(db)
+
+        pet_id = request.form.get('pet_id')
+        if not pet_id:
+            flash("缺少寵物資訊", "danger")
+            return redirect(url_for('pets'))
+
         service_type = request.form.get('service_type')
         vet_name = request.form.get('vet_name')
         clinic_name = request.form.get('clinic_name')
@@ -209,13 +218,14 @@ def medical_appointment():
         service_location = request.form.get('service_location')
 
         service.schedule_service(
-            session['user_id'], service_type, vet_name, clinic_name,
+            session['user_id'], pet_id, service_type, vet_name, clinic_name,
             appointment_time, service_location
         )
         flash("預約成功", "success")
-        return redirect(url_for('medical_view'))
+        return redirect(url_for('medical_view', pet_id=pet_id))
 
-    return render_template('medical_appointment.html')
+    pet_id = request.args.get("pet_id")
+    return render_template('medical_appointment.html', pet_id=pet_id)
 
 # 刪除預約
 @app.route('/medical/cancel/<service_id>', methods=['POST'])
@@ -230,7 +240,9 @@ def cancel_medical(service_id):
         flash("預約已成功取消", "success")
     else:
         flash("取消失敗，請稍後再試", "danger")
-    return redirect(url_for('medical_view'))
+
+    pet_id = request.form.get("pet_id", "")
+    return redirect(url_for('medical_view', pet_id=pet_id))
 
 # 修改預約
 @app.route('/medical/edit/<service_id>', methods=['POST'])
@@ -238,6 +250,8 @@ def edit_medical(service_id):
     if 'user_id' not in session:
         flash("請先登入", "warning")
         return redirect(url_for('index'))
+
+    pet_id = request.form.get('pet_id')
 
     service_type = request.form.get('service_type')
     vet_name = request.form.get('vet_name')
@@ -254,13 +268,13 @@ def edit_medical(service_id):
     )
 
     flash("預約已更新", "success")
-    return redirect(url_for('medical_view'))
+    return redirect(url_for('medical_view', pet_id=pet_id))
 
 @app.route('/supplies')
 def supplies():
     return render_template('supplies.html')
 
-#In[4] 活動預約
+#In[8] 寵物活動與事件公告
 @app.route('/event')
 def event():
     return render_template('event.html')

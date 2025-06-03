@@ -12,6 +12,7 @@
       <h2 class="mb-4 text-center">📋 醫療預約紀錄檢視</h2>
 
       <form method="GET" class="mb-4">
+        <input type="hidden" name="pet_id" value="{{ pet_id }}">
         <div class="row g-2">
           <div class="col-md-4">
             <label class="form-label">服務類型</label>
@@ -33,7 +34,7 @@
         </div>
         <div class="text-end mt-3">
           <button type="submit" class="btn btn-outline-primary">篩選</button>
-          <a href="{{ url_for('medical_view') }}" class="btn btn-outline-secondary">清除</a>
+          <a href="{{ url_for('medical_view', pet_id=pet_id) }}" class="btn btn-outline-secondary">清除</a>
         </div>
       </form>
 
@@ -57,6 +58,7 @@
                 <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-{{ service._id }}">查看詳情</button>
                 <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editModal-{{ service._id }}">修改預約</button>
                 <form method="POST" action="{{ url_for('cancel_medical', service_id=service._id) }}" onsubmit="return confirm('確定要取消這筆預約嗎？');">
+                  <input type="hidden" name="pet_id" value="{{ pet_id }}">
                   <button class="btn btn-danger">取消預約</button>
                 </form>
               </div>
@@ -92,6 +94,7 @@
       <div class="modal fade" id="editModal-{{ service._id }}" tabindex="-1" aria-labelledby="editModalLabel{{ service._id }}" aria-hidden="true">
         <div class="modal-dialog">
           <form method="POST" action="{{ url_for('edit_medical', service_id=service._id) }}" class="modal-content">
+            <input type="hidden" name="pet_id" value="{{ pet_id }}">
             <div class="modal-header">
               <h5 class="modal-title" id="editModalLabel{{ service._id }}">修改預約</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -128,7 +131,7 @@
       {% endfor %}
 
       <div class="d-flex justify-content-between mt-4">
-        <a href="{{ url_for('medical_appointment') }}" class="btn btn-outline-secondary">➕ 新增預約</a>
+        <a href="{{ url_for('medical_appointment', pet_id=pet_id) }}" class="btn btn-outline-secondary">➕ 新增預約</a>
         <a href="{{ url_for('pets') }}" class="btn btn-outline-primary">🏠 返回我的寵物</a>
       </div>
     </div>

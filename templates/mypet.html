@@ -92,7 +92,7 @@
           </div>
           <!-- 醫療預約 -->
           <div class="col-md-6" data-aos="zoom-in" data-aos-delay="300">
-            <a href="{{ url_for('medical_view') }}" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+            <a href="#" id="medical-card" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
               <div class="icon-box mb-3"><i class="fa-solid fa-hospital"></i></div>
               <h5 class="card-title">醫療預約</h5>
               <p class="card-text">快速安排診療時間，並查看預約紀錄。</p>
@@ -293,6 +293,17 @@
         }, 1000);
       } else {
         resultDiv.innerHTML = `<span class="text-danger">${result.msg || '更新失敗'}</span>`;
+      }
+    });
+
+    // 根據pet_id跳轉寵物醫療服務
+    document.getElementById('medical-card').addEventListener('click', function(){
+      const select = document.getElementById('pet-select');
+      const pet_id = select.value;
+      if (pet_id) {
+        window.location.href = `/medical/view?pet_id=${pet_id}`;
+      } else {
+        alert("請先選擇一隻寵物！");
       }
     });
   </script>

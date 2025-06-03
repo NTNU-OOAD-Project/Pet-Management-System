@@ -11,6 +11,7 @@
       <h2 class="mb-4 text-center">🏥 預約寵物醫療服務</h2>
       
       <form action="{{ url_for('medical_appointment') }}" method="POST">
+        <input type="hidden" name="pet_id" value="{{ pet_id }}">
         <table class="table table-bordered text-center align-middle">
           <thead class="table-light">
             <tr>
@@ -41,7 +42,7 @@
       </form>
 
       <div class="text-center mt-4">
-        <a href="{{ url_for('medical_view') }}" class="btn btn-outline-secondary mb-3">🔄 返回預約紀錄檢視</a>
+        <a href="{{ url_for('medical_view', pet_id=pet_id) }}" class="btn btn-outline-secondary mb-3">🔄 返回預約紀錄檢視</a>
       </div>
     </div>
   </div>
