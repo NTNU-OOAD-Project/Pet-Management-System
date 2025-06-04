@@ -140,16 +140,16 @@ def filter_places(place_type):
     return jsonify({"map_html": map_html})
 
 # 預約場所
-@app.route('/place/reserve', methods=['POST'])
-def place_reserve():
-    if 'user_id' not in session:
-        return jsonify({'status': 'fail', 'msg': '請先登入'})
-    place_id = request.json.get('place_id')
-    reserve_info = request.json.get('reserve_info')  # {date, time, extra_info...}
-    user_id = session['user_id']
-    place_map = PlaceMap(db)
-    place_map.reserve_spot(place_id, user_id, reserve_info)
-    return jsonify({'status': 'success', 'msg': '預約成功！'})
+# @app.route('/place/reserve', methods=['POST'])
+# def place_reserve():
+#     if 'user_id' not in session:
+#         return jsonify({'status': 'fail', 'msg': '請先登入'})
+#     place_id = request.json.get('place_id')
+#     reserve_info = request.json.get('reserve_info')  # {date, time, extra_info...}
+#     user_id = session['user_id']
+#     place_map = PlaceMap(db)
+#     place_map.reserve_spot(place_id, user_id, reserve_info)
+#     return jsonify({'status': 'success', 'msg': '預約成功！'})
 
 #In[3] 寵物管理 =======================================================================
 
