@@ -40,7 +40,8 @@
         <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login_page') }}"><i class="fa-solid fa-user me-2"></i>登入 / 註冊</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('pets') }}"><i class="fa-solid fa-dog me-2"></i>我的寵物</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('place_display') }}"><i class="fa-solid fa-location-dot me-2"></i>寵物場所</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('event') }}"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>        
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('event') }}"><i class="fa-solid fa-calendar-days me-2"></i>寵物活動</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('supply_view') }}"><i class="fa-solid fa-calendar-days me-2"></i>用品存貨</a></li>        
       </ul>
     </nav>
 
@@ -106,7 +107,7 @@
           </div>
           <!-- 用品存貨 -->
           <div class="col-md-6" data-aos="zoom-in" data-aos-delay="400">
-            <a href="supply_inventory.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+            <a href="{{ url_for('supply_view') }}" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
               <div class="icon-box mb-3"><i class="fa-solid fa-box-open"></i></div>
               <h5 class="card-title">用品存貨</h5>
               <p class="card-text">追蹤飼料、尿布、清潔用品等剩餘數量。</p>
