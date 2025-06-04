@@ -11,12 +11,13 @@ from services.email_service import EmailService
 from models.observer.email_notifier import EmailNotifier
 from services.inventory_service import InventoryService
 from apscheduler.schedulers.background import BackgroundScheduler
+from services.remind_service import RemindService
 import os
 test_pet_id="684043a4cc38234b72d80aa2"
 app = Flask(__name__)
 CORS(app)
 app.secret_key = 'your_secret_key'
-
+email_service = EmailService()
 #.env file
 load_dotenv()
 
@@ -32,7 +33,41 @@ messages_collection = db["messages"]
 record_manager = RecordManager() 
 
 def check_all_reminders():
-    print("🔁 每分鐘執行提醒檢查...")
+    try:
+        print("📧 執行排程")
+
+        users = db.users.find({})
+        for user in users:
+            user_email = user.get("email", "")
+
+            # 初始化觀察者
+            notifier = EmailNotifier( email_service, user_email,db)
+            RemindService.observers = [notifier ]
+
+            for pet in user.get("pets", []):
+                updated = False
+                for i, care_remind in enumerate(pet.get("remind_records", [])):
+                    from models.record.remind_record import CareReminderRecord
+                    reminder = CareReminderRecord.from_dict(care_remind)
+                    old_active = reminder.active
+
+                    # 檢查提醒
+                    RemindService.check_and_notify(reminder)
+
+                    # 如果狀態改變就回寫
+                    if reminder.active != old_active:
+                        pet["remind_records"][i]["active"] = reminder.active
+                        updated = True
+
+                if updated:
+                    db.users.update_one(
+                        {"_id": user["_id"], "pets.pet_id": pet["pet_id"]},
+                        {"$set": {"pets.$.remind_records": pet["remind_records"]}}
+                    )
+    except Exception as e:
+        print("❌ 排程錯誤：", e)
+
+
 
 @app.route('/')
 def index():
@@ -60,13 +95,12 @@ def login():
         flash('登入成功', 'success')
 
         # 初始化通知者
-        email_service = EmailService()
-        notifier = EmailNotifier(email_service, email)
+
+        notifier = EmailNotifier(email_service, email,db)
         # 註冊觀察者
         InventoryService.observers.append(notifier)
+        RemindService.observers.append(notifier)
         return redirect(url_for('index'))
-    
-
     else:
         flash(msg, 'danger')
         return redirect(url_for('login_page'))  # 登入失敗也回 login 頁
@@ -829,15 +863,11 @@ def get_message():
         return jsonify({"error": str(e)}), 500
 
 #In[4] Main function
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-######################################################################################
 
 if __name__ == "__main__":
     scheduler = BackgroundScheduler()
     scheduler.add_job(check_all_reminders, 'interval', minutes=1)
-    scheduler.start()
     
+    print("🧩 排程任務：", scheduler.get_jobs())
+    scheduler.start()
     app.run(debug=True)
