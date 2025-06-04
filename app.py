@@ -13,8 +13,11 @@ from models.medical_service import MedicalService # 醫療場所預約
 from models.place import PlaceManager # 場所管理
 from models.record.diet_record import DietRecord # 寵物飲食紀錄
 from models.event import EventManager # 寵物活動與事件管理
-# from models.services.email_service import EmailService # 寄送郵件提醒
-from models.inventory_manager import InventoryManager
+from models.services.email_service import EmailService
+from models.Observer.email_notifier import EmailNotifier # 寄送郵件提醒
+from models.inventory_manager import InventoryManager # 寵物用品庫存管理
+from models.services.inventory_service import InventoryService 
+from models.inventory import Inventory # 寵物用品庫存
 
 from bson import ObjectId
 
@@ -59,7 +62,14 @@ def login():
         session['user_id'] = str(user_info['_id'])
         session['user_name'] = user_info['name']
         flash('登入成功', 'success')
+        
+        # 初始化通知者
+        email_service = EmailService()
+        notifier = EmailNotifier(email_service, email)
+        # 註冊觀察者
+        InventoryService.observers.append(notifier)
         return redirect(url_for('index'))
+        
     else:
         flash(msg, 'danger')
         return redirect(url_for('login_page'))  # 登入失敗也回 login 頁
@@ -579,27 +589,27 @@ def update_active_state():
         return jsonify({"success": False, "error": "未更新任何資料"}), 404
 
     # 如果啟用提醒，寄送 Email
-    if active:
-        user_doc = db.users.find_one({"pets.remind_records._id": record_id}, {"email": 1, "pets.$": 1})
-        if user_doc:
-            email = user_doc.get("email")
-            pet = user_doc.get("pets", [])[0]  # 符合條件的寵物
-            reminders = pet.get("remind_records", [])
-            reminder = next((r for r in reminders if r["_id"] == record_id), None)
-            if reminder and email:
-                subject = f"寵物照護提醒: {reminder.get('message', '')}"
-                body = f"您好，\n\n您的寵物有新的照護提醒：\n\n"\
-                       f"提醒內容：{reminder.get('message')}\n"\
-                       f"時間：{reminder.get('time_str')}\n"\
-                       f"每日提醒：{'是' if reminder.get('daily') else '否'}\n\n"\
-                       "請準時照顧您的寵物！"
+    # if active:
+    #     user_doc = db.users.find_one({"pets.remind_records._id": record_id}, {"email": 1, "pets.$": 1})
+    #     if user_doc:
+    #         email = user_doc.get("email")
+    #         pet = user_doc.get("pets", [])[0]  # 符合條件的寵物
+    #         reminders = pet.get("remind_records", [])
+    #         reminder = next((r for r in reminders if r["_id"] == record_id), None)
+    #         if reminder and email:
+    #             subject = f"寵物照護提醒: {reminder.get('message', '')}"
+    #             body = f"您好，\n\n您的寵物有新的照護提醒：\n\n"\
+    #                    f"提醒內容：{reminder.get('message')}\n"\
+    #                    f"時間：{reminder.get('time_str')}\n"\
+    #                    f"每日提醒：{'是' if reminder.get('daily') else '否'}\n\n"\
+    #                    "請準時照顧您的寵物！"
 
-                email_service = EmailService()
-                success = email_service.send_email(email, subject, body)
-                if not success:
-                    print(f"寄送提醒郵件失敗，收件人：{email}")
+    #             email_service = EmailService()
+    #             success = email_service.send_email(email, subject, body)
+    #             if not success:
+    #                 print(f"寄送提醒郵件失敗，收件人：{email}")
                 
-                print(f"提醒 record_id={record_id} 狀態 active={active}，寄信對象 email={email}")
+    #             print(f"提醒 record_id={record_id} 狀態 active={active}，寄信對象 email={email}")
     return jsonify({"success": True})
 
 
@@ -852,6 +862,46 @@ def api_low_stock_alert():
         low_stock_items = inventory_manager.get_low_stock_items(user_id)
         count = len(low_stock_items)
         return jsonify({"success": True, "count": count, "items": low_stock_items})
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)}), 500
+
+@app.route("/api/supply/adjust_threshold_full", methods=["POST"])
+def adjust_threshold_full():
+    try:
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"success": False, "msg": "未登入"}), 403
+
+        data = request.get_json()
+        item_name = data.get("item_name")
+        new_threshold = data.get("new_threshold")
+
+        if not item_name or new_threshold is None:
+            return jsonify({"success": False, "msg": "缺少參數"}), 400
+
+        # 找出該使用者
+        user = db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            return jsonify({"success": False, "msg": "找不到使用者"}), 404
+
+        # 找出該項目
+        inventory_list = user.get("inventory", [])
+        for item_data in inventory_list:
+            if item_data.get("item_name") == item_name:
+                inventory_obj = Inventory.from_dict(item_data)
+                break
+        else:
+            return jsonify({"success": False, "msg": "找不到該項目"}), 404
+
+        # 更新 threshold
+        inventory_obj.threshold = int(new_threshold)
+
+        # 先刪除，再加入
+        inventory_obj.delete_from_user_inventory(db, user_id)
+        inventory_obj.add_to_user_inventory(db, user_id)
+
+        return jsonify({"success": True})
+
     except Exception as e:
         return jsonify({"success": False, "msg": str(e)}), 500
 
