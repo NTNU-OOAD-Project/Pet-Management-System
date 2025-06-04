@@ -5,6 +5,9 @@ class WebDashboardNotifier:
         self.notification_service = NotificationService(db)
         self.user_id = user_id
 
-    def notifyLowStock(self, food, amount):
-        message = f"[庫存提醒] {food} 庫存過低，目前僅剩 {amount}。"
+    def notify_low_stock(self, inventory):
+        message = (
+            f"[庫存提醒] {inventory.item_name}庫存量:{inventory.quantity} "
+            f"低於警戒線:{inventory.threshold}！"
+        )
         self.notification_service.add_notification(self.user_id, message, type="LOW_STOCK")

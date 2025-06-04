@@ -44,6 +44,9 @@
   <div class="container">
     <h2 class="mb-4 text-center">健康紀錄</h2>
     <form id="healthRecordForm">
+      <!-- 新增隱藏欄位帶入 pet_id -->
+      <input type="hidden" id="petId" name="petId" value="{{ pet_id }}">
+
       <div class="mb-3">
         <label for="petBreed" class="form-label">寵物品種</label>
         <input type="text" class="form-control" id="petBreed" name="petBreed" placeholder="例如：虎斑貓" required />
@@ -73,7 +76,8 @@
         <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addMedBtn">＋新增藥物</button>
       </div>
 
-      <button type="button" class="btn btn-primary w-100" onclick="window.location.href='health_record_view.html'">儲存紀錄</button>
+      <!-- 修改按鈕 type 由 button 改為 submit -->
+      <button type="submit" class="btn btn-primary w-100">儲存紀錄</button>
     </form>
   </div>
 
@@ -114,12 +118,16 @@
       medList.appendChild(createMedItem());
     });
 
+    // 取得 petId 隱藏欄位值
+    const petId = document.getElementById('petId').value;
+
     // 表單送出處理
     document.getElementById('healthRecordForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
       // 組裝資料物件
       const data = {
+        pet_id: petId,  // 這裡必須帶上 pet_id
         petBreed: this.petBreed.value.trim(),
         petName: this.petName.value.trim(),
         petAge: Number(this.petAge.value),
@@ -136,13 +144,23 @@
         }
       });
 
-      console.log('送出資料:', data);
-
-      // TODO: 這裡之後會連接後端API做資料儲存
-      alert('健康紀錄已儲存（示範用，尚未連接後端）');
-      this.reset();
-      medList.innerHTML = '';
-      medList.appendChild(createMedItem());
+      fetch('/api/health/update', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(resp => {
+        if (resp.success) {
+          alert('健康紀錄已儲存');
+          window.location.href = `/health?pet_id=${petId}`;
+        } else {
+          alert('儲存失敗：' + resp.msg);
+        }
+      })
+      .catch(err => {
+        alert('發生錯誤：' + err);
+      });
     });
   </script>
 </body>

@@ -1,13 +1,11 @@
-from datetime import datetime
 from abc import ABC, abstractmethod
+from datetime import datetime
 
 class Record(ABC):
-    _id_counter = 1
-
-    def __init__(self, date=None):
-        self.id = Record._id_counter
-        Record._id_counter += 1
+    def __init__(self, date=None, _id=None):
+        from datetime import datetime
         self.date = date or datetime.now()
+        self._id = _id  # Optional: for MongoDB if needed
 
     @abstractmethod
     def view_record(self):
@@ -19,4 +17,9 @@ class Record(ABC):
 
     @abstractmethod
     def to_dict(self):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def from_dict(cls, data: dict):
         pass

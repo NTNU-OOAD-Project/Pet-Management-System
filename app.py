@@ -1,11 +1,12 @@
 #In[0] Initialization =======================================================================
-from flask import Flask, render_template, session, jsonify, request, flash, redirect, url_for
+from flask import Flask, session, request, render_template, jsonify, flash, redirect, url_for, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from datetime import datetime, timezone
-from services.record_manager import RecordManager
-import scheduler
+from models.services.record_manager import RecordManager
+from bson import ObjectId
+# import scheduler
 import os
 
 app = Flask(__name__)
@@ -175,14 +176,12 @@ def update_pet(pet_id):
 
 #In[4] 寵物健康紀錄 =======================================================================
 
-from bson import ObjectId
 @app.route('/health')
 def health():
     pet_id = request.args.get('pet_id')
     user_id = session.get('user_id')
-    pet_id = test_pet_id      #測試用(目前寵物的list沒有讀到)
     if not user_id:
-        return "未登入", 401
+        return redirect(url_for('login_page'))  # 或回傳 401
     if not pet_id:
         return "缺少 pet_id", 400
 
@@ -190,14 +189,14 @@ def health():
     if not user:
         return "找不到使用者", 404
 
-    # 找出目前的寵物物件
     pet = next((p for p in user.get("pets", []) if p["pet_id"] == pet_id), None)
     if not pet:
         return "找不到寵物", 404
 
     health_records = pet.get("health_records", [])
     health = health_records[-1] if health_records else {}
-    return render_template("health_record_view.html", health=health)
+
+    return render_template("health_record_view.html", health=health, pet=pet, pet_id=pet_id)
 
 
 @app.route("/health/edit")
@@ -205,26 +204,21 @@ def health_edit():
     pet_id = request.args.get("pet_id")
     user_id = session.get("user_id")
     if not pet_id or not user_id:
-        return redirect(url_for("pets"))  # 或導向登入頁
-    try:
-        user = db.users.find_one({"_id": ObjectId(user_id)})
-        if not user:
-            return redirect(url_for("pets"))
-
-        for pet in user.get("pets", []):
-            if pet["pet_id"] == pet_id:
-                health_records = pet.get("health_records", [])
-                if not health_records:
-                    return render_template("health_record.html", health=None)
-
-                latest = health_records[-1]
-                latest["_id"] = str(latest.get("_id", ""))
-                return render_template("health_record.html", record=latest)
-
         return redirect(url_for("pets"))
 
-    except Exception as e:
-        return f"Error: {e}", 500
+    user = db.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return redirect(url_for("pets"))
+
+    pet = next((p for p in user.get("pets", []) if p["pet_id"] == pet_id), None)
+    if not pet:
+        return redirect(url_for("pets"))
+
+    health_records = pet.get("health_records", [])
+    latest = health_records[-1] if health_records else None
+
+    # 帶入 pet 與最新健康紀錄、pet_id
+    return render_template("health_record.html", pet=pet, record=latest, pet_id=pet_id)
     
 
 @app.route("/api/health/update", methods=["POST"])
@@ -236,7 +230,7 @@ def update_health_record():
         record_id = data.get("_id")
         if not record_id:
             return jsonify({"success": False, "msg": "缺少紀錄 ID (_id)"})
-        record_manager.update_record(
+        RecordManager.update_record(
             record_id=ObjectId(record_id),
             type_str="health",
             update_fields=data,
@@ -253,7 +247,7 @@ def diet_view():
     user_id = session.get('user_id')
 
     
-    pet_id = test_pet_id                 # 臨時測試
+    # pet_id = test_pet_id                 # 臨時測試
 
     if not user_id:
         return "未登入", 401
@@ -276,8 +270,7 @@ def diet_view():
 
 #編輯頁面
 @app.route('/diet/edit')
-def diet_edit():
-    from bson import ObjectId
+def diet_edit():    
 
     pet_id = request.args.get('pet_id')
     user_id = session.get('user_id')
@@ -374,7 +367,7 @@ from bson import ObjectId
 @app.route("/care_reminder", methods=["GET"])
 def care_reminder_page():
     pet_id = request.args.get("pet_id")
-    pet_id = test_pet_id      #測試用(目前寵物的list沒有讀到)
+    # pet_id = test_pet_id      #測試用(目前寵物的list沒有讀到)
 
     if not pet_id:
         return "缺少 pet_id", 400

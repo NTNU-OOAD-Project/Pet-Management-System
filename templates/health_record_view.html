@@ -14,32 +14,37 @@
     <div class="card p-4 shadow-sm">
       <dl class="row">
         <dt class="col-sm-3">寵物品種</dt>
-        <dd class="col-sm-9">柴犬</dd>
+        <dd class="col-sm-9">{{ pet.species }}</dd>
 
         <dt class="col-sm-3">寵物名稱</dt>
-        <dd class="col-sm-9">小黑</dd>
+        <dd class="col-sm-9">{{ pet.name }}</dd>
 
         <dt class="col-sm-3">年齡</dt>
-        <dd class="col-sm-9">3 歲</dd>
+        <dd class="col-sm-9">{{ pet.age }}</dd>
 
         <dt class="col-sm-3">身體狀況</dt>
-        <dd class="col-sm-9">健康良好</dd>
+        <dd class="col-sm-9">{{ health.details or '無資料' }}</dd>
 
         <dt class="col-sm-3">上次疫苗接種日期</dt>
-        <dd class="col-sm-9">2025-04-15</dd>
+        <dd class="col-sm-9">{{ health.vaccine or '無資料' }}</dd>
 
         <dt class="col-sm-3">藥物清單</dt>
         <dd class="col-sm-9">
           <ul>
-            <li>驅蟲藥：每月一次</li>
-            <li>關節保健品：每日兩次</li>
+            {% if health.medications %}
+              {% for med in health.medications %}
+                <li>{{ med }}</li>
+              {% endfor %}
+            {% else %}
+              <li>無藥物資料</li>
+            {% endif %}
           </ul>
         </dd>
       </dl>
     </div>
 
     <div class="mt-4">
-      <a href="health_record.html" class="btn btn-outline-primary me-2"><i class="fa-solid fa-arrow-left"></i> 返回編輯</a>
+      <a href="{{ url_for('health_edit') }}?pet_id={{ pet_id }}" class="btn btn-outline-primary me-2"><i class="fa-solid fa-arrow-left"></i> 編輯寵物健康資料</a>
       <a href="{{ url_for('pets') }}" class="btn btn-primary"><i class="fa-solid fa-house"></i> 回到我的寵物</a>
     </div>
   </div>
