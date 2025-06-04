@@ -20,19 +20,20 @@
           </tr>
         </thead>
         <tbody>
-          <!-- 將來可用 JS 動態生成資料 -->
-          <tr>
-            <td>罐頭</td>
-            <td>2025-05-30</td>
-            <td>2025-06-30</td>
-            <td>5</td>
-          </tr>
-          <tr>
-            <td>餅乾</td>
-            <td>2025-05-29</td>
-            <td>2025-07-01</td>
-            <td>10</td>
-          </tr>
+          {% if diet_records %}
+            {% for record in diet_records %}
+              <tr>
+                <td>{{ record.food_type or '無' }}</td>
+                <td>{{ record.start_date or '無' }}</td>
+                <td>{{ record.expiry_date or '無' }}</td>
+                <td>{{ record.quantity or '無' }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="4">目前無飲食紀錄</td>
+            </tr>
+          {% endif %}
         </tbody>
       </table>
 

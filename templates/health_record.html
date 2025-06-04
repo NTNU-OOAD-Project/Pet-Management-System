@@ -44,39 +44,77 @@
   <div class="container">
     <h2 class="mb-4 text-center">健康紀錄</h2>
     <form id="healthRecordForm">
-      <!-- 新增隱藏欄位帶入 pet_id -->
+      <!-- 隱藏欄位帶入 pet_id -->
       <input type="hidden" id="petId" name="petId" value="{{ pet_id }}">
 
       <div class="mb-3">
         <label for="petBreed" class="form-label">寵物品種</label>
-        <input type="text" class="form-control" id="petBreed" name="petBreed" placeholder="例如：虎斑貓" required />
+        <input
+          type="text"
+          class="form-control"
+          id="petBreed"
+          name="petBreed"
+          placeholder="例如：虎斑貓"
+          required
+          value="{{ record.petBreed if record and record.petBreed else '' }}"
+        />
       </div>
       <div class="mb-3">
         <label for="petName" class="form-label">寵物名稱</label>
-        <input type="text" class="form-control" id="petName" name="petName" required />
+        <input
+          type="text"
+          class="form-control"
+          id="petName"
+          name="petName"
+          required
+          value="{{ record.petName if record and record.petName else '' }}"
+        />
       </div>
       <div class="mb-3">
         <label for="petAge" class="form-label">年齡（歲）</label>
-        <input type="number" class="form-control" id="petAge" name="petAge" min="0" max="50" placeholder="例如：3" required />
+        <input
+          type="number"
+          class="form-control"
+          id="petAge"
+          name="petAge"
+          min="0"
+          max="50"
+          placeholder="例如：3"
+          required
+          value="{{ record.petAge if record and record.petAge else '' }}"
+        />
       </div>
       <div class="mb-3">
         <label for="healthStatus" class="form-label">身體狀況</label>
-        <textarea class="form-control" id="healthStatus" name="healthStatus" rows="3" placeholder="描述寵物的身體狀況" required></textarea>
+        <textarea
+          class="form-control"
+          id="healthStatus"
+          name="healthStatus"
+          rows="3"
+          placeholder="描述寵物的身體狀況"
+          required
+        >{{ record.healthStatus if record and record.healthStatus else '' }}</textarea>
       </div>
       <div class="mb-3">
         <label for="lastVaccineDate" class="form-label">上次疫苗接種日期</label>
-        <input type="date" class="form-control" id="lastVaccineDate" name="lastVaccineDate" required />
+        <input
+          type="date"
+          class="form-control"
+          id="lastVaccineDate"
+          name="lastVaccineDate"
+          required
+          value="{{ record.lastVaccineDate if record and record.lastVaccineDate else '' }}"
+        />
       </div>
 
       <div class="mb-3">
         <label class="form-label">藥物清單</label>
         <div id="medList">
-          <!-- 動態新增藥物項目 -->
+          <!-- 藥物輸入欄位動態產生 -->
         </div>
         <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addMedBtn">＋新增藥物</button>
       </div>
 
-      <!-- 修改按鈕 type 由 button 改為 submit -->
       <button type="submit" class="btn btn-primary w-100">儲存紀錄</button>
     </form>
   </div>
@@ -85,7 +123,7 @@
     const medList = document.getElementById('medList');
     const addMedBtn = document.getElementById('addMedBtn');
 
-    // 用來產生藥物輸入欄位的函式
+    // 建立藥物輸入欄位函式
     function createMedItem(medName = '') {
       const medDiv = document.createElement('div');
       medDiv.className = 'med-list-item';
@@ -111,23 +149,29 @@
       return medDiv;
     }
 
-    // 新增第一筆藥物欄位
-    medList.appendChild(createMedItem());
+    // 從後端帶入的藥物清單
+    const initialMeds = {{ (record.medications | default([])) | tojson }};
+    console.log(initialMeds);
+
+    if (initialMeds.length > 0) {
+      initialMeds.forEach(med => {
+        medList.appendChild(createMedItem(med));
+      });
+    } else {
+      medList.appendChild(createMedItem());
+    }
 
     addMedBtn.addEventListener('click', () => {
       medList.appendChild(createMedItem());
     });
 
-    // 取得 petId 隱藏欄位值
     const petId = document.getElementById('petId').value;
 
-    // 表單送出處理
     document.getElementById('healthRecordForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
-      // 組裝資料物件
       const data = {
-        pet_id: petId,  // 這裡必須帶上 pet_id
+        pet_id: petId,
         petBreed: this.petBreed.value.trim(),
         petName: this.petName.value.trim(),
         petAge: Number(this.petAge.value),
@@ -136,7 +180,6 @@
         medications: []
       };
 
-      // 收集所有藥物名稱
       const meds = medList.querySelectorAll('input[type="text"]');
       meds.forEach(input => {
         if (input.value.trim() !== '') {
