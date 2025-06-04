@@ -241,36 +241,40 @@ def update_health_record():
         return jsonify({"success": False, "msg": str(e)})
 
 #In[5] 寵物飲食 =======================================================================
+from flask import session, request, render_template, redirect, url_for
+from bson import ObjectId
+
 @app.route('/diet')
 def diet_view():
     pet_id = request.args.get('pet_id')
     user_id = session.get('user_id')
 
-    
-    # pet_id = test_pet_id                 # 臨時測試
-
+    # 未登入，重導至登入頁面（比較友善的作法）
     if not user_id:
-        return "未登入", 401
-    if not pet_id:
-        return "缺少 pet_id", 400
+        return redirect(url_for('login_page'))
 
+    # 沒有帶 pet_id，導回寵物列表頁或顯示錯誤頁
+    if not pet_id:
+        return "缺少 pet_id", 400  # 或 redirect(url_for('pets'))
+
+    # 查詢使用者
     user = db.users.find_one({'_id': ObjectId(user_id)})
     if not user:
         return "找不到使用者", 404
 
-    # 找出該寵物
-    pet = next((p for p in user.get("pets", []) if p["pet_id"] == pet_id), None)
+    # 查詢寵物
+    pet = next((p for p in user.get("pets", []) if p.get("pet_id") == pet_id), None)
     if not pet:
         return "找不到寵物", 404
 
     diet_records = pet.get("diet_records", [])
 
-    return render_template("health_record_view.html", diet_records=diet_records)
-
+    # 傳入模板的資料可依模板需求調整
+    return render_template("food_record_view.html", diet_records=diet_records, pet=pet, pet_id=pet_id)
 
 #編輯頁面
 @app.route('/diet/edit')
-def diet_edit():    
+def diet_edit():
 
     pet_id = request.args.get('pet_id')
     user_id = session.get('user_id')
@@ -289,7 +293,7 @@ def diet_edit():
         return "找不到寵物", 404
 
     diet_records = pet.get("diet_records", [])
-    return render_template("diet_edit.html", diet_records=diet_records, pet_id=pet_id)
+    return render_template("food_record.html", diet_records=diet_records, pet_id=pet_id, pet=pet)
 
 
 
