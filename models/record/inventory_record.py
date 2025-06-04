@@ -6,7 +6,7 @@ class InventoryRecord(Record):
     def __init__(self, item_name, delta_quantity, reason, user_id=None, date=None, _id=None):
         super().__init__(date)
         self.item_name = item_name              # 品項名稱
-        self.delta_quantity = delta_quantity    # 加(+)、減(-)
+        self.delta_quantity = int(delta_quantity)    # 加(+)、減(-)
         self.reason = reason                    # 例如：進貨、食用、報廢
         self.user_id = user_id
         self.date = datetime.fromisoformat(date) if isinstance(date, str) else date or datetime.now()              

@@ -79,7 +79,7 @@
         e.preventDefault();
         alert("儲存按鈕被點擊");
         const rows = document.querySelectorAll('#reminder-table-body tr');
-         updates = [];
+        updates = [];
         
         rows.forEach(row => {
           const timeInput = row.querySelector('input[name="time[]"]');
@@ -102,8 +102,8 @@
 
         });
         const saveUrl = "{{ url_for('save_care_reminder') }}";
-        const bakeUrl = "{{ url_for('care_reminder_page') }}";
         fetch(saveUrl, {
+          pet_id:"{{  pet_id  }}",
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ updates })

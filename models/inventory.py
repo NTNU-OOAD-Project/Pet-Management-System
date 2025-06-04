@@ -3,8 +3,8 @@ from bson import ObjectId
 class Inventory:
     def __init__(self, item_name, quantity=0, threshold=10, records=None):
         self.item_name = item_name
-        self.quantity = quantity
-        self.threshold = threshold
+        self.quantity = int(quantity)
+        self.threshold = int(threshold)
         self.records = records if records is not None else []  # 儲存 InventoryRecord 的 list
 
     def is_below_threshold(self) -> bool:

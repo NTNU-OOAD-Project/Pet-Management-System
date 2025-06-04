@@ -164,7 +164,7 @@
         const result = await res.json();
         if (result.success) {
           alert("健康紀錄已更新！");
-          window.location.href = `/health?pet_id=${data.pet_id}`;  // 導回檢視頁面
+          window.location.href = `/health?pet_id={{ pet_id }}`;  // 導回檢視頁面
         } else {
           alert("更新失敗：" + (result.msg || ''));
         }

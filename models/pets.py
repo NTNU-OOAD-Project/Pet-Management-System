@@ -39,7 +39,6 @@ class PetManager:
                 {'_id': ObjectId(user_id)},
                 {'$push': {'pets': pet_data}}
             )
-
             health_data = {
                 "type": "health",
                 "pet_id": pet_data['pet_id'],
@@ -68,13 +67,3 @@ class PetManager:
             {'$set': {f'pets.$.{k}': v for k, v in update_data.items()}}
         )
         return result.modified_count > 0
-
-    def find_pet_by_id(self, pet_id: str, db):
-        user = db.users.find_one({"pets.pet_id": pet_id})
-        if not user:
-            return None
-
-        for pet in user.get("pets", []):
-            if pet.get("pet_id") == pet_id:
-                return pet
-        return None

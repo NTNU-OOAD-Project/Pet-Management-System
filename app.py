@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from services.record_manager import RecordManager
 import scheduler
 import os
-test_pet_id = "683ef68cf6adcf4d87450d5b"
+test_pet_id="683fe8e6b807a45dddf2ebbc"
 app = Flask(__name__)
 CORS(app)
 app.secret_key = 'your_secret_key'
@@ -49,7 +49,6 @@ def login():
         user_info = user.get_user_by_email(email)
         session['user_id'] = str(user_info['_id'])
         session['user_name'] = user_info['name']
-
         flash('登入成功', 'success')
         return redirect(url_for('index'))
     else:
@@ -379,8 +378,6 @@ def delete_inventory():
 def diet_view():
     pet_id = request.args.get('pet_id')
     user_id = session.get('user_id')
-
-    
     pet_id = test_pet_id                 # 臨時測試
 
     if not user_id:
@@ -399,7 +396,7 @@ def diet_view():
 
     diet_records = pet.get("diet_records", [])
 
-    return render_template("health_record_view.html", diet_records=diet_records)
+    return render_template("food_record_view.html", records=diet_records,pet_id=pet_id)
 
 
 #編輯頁面
@@ -424,7 +421,7 @@ def diet_edit():
         return "找不到寵物", 404
 
     diet_records = pet.get("diet_records", [])
-    return render_template("diet_edit.html", diet_records=diet_records, pet_id=pet_id)
+    return render_template("food_record.html", records=diet_records, pet_id=pet_id)
 
 
 
@@ -432,48 +429,42 @@ def diet_edit():
 @app.route('/api/diet/save_batch', methods=['POST'])
 def save_diet_records_batch():
     user_id = session.get("user_id")
-    pet_id = request.args.get('pet_id')
-    data = request.get_json()  # 接收一個列表
-
-    if not user_id or not isinstance(data, list):
+    pet_id = request.args.get("pet_id")
+    data = request.get_json()
+    updates = data.get("updates", [])
+    if not user_id or not isinstance(updates, list):
         return jsonify({"success": False, "msg": "格式錯誤或未登入"}), 400
-
     record_manager = RecordManager()
-    created, updated = 0, 0
-    for entry in data:
-        record_id = entry.get("_id")
+    updated = 0
+    for entry in updates:
         try:
-            if record_id:
-                try:
-                    record_manager.update_record(
-                        record_id=ObjectId(record_id),
-                        type_str="diet",
-                        update_fields=entry,
-                        db=db
-                    )
-                    updated += 1
-                    continue
-                except ValueError:
-                    pass  # 如果找不到記錄則當作新增
-
-            # 新增
-            entry["pet_id"] = pet_id
-            record_manager.add_record_by_type(
+            record_id = entry.get("_id")
+            pet_id = entry.get("pet_id")
+            if not record_id:
+                record_manager.add_record_by_type(
                 type_str="diet",
                 data=entry,
                 db=db
             )
-            created += 1
-
+            else:
+                record_id = ObjectId(record_id)
+                record_manager.update_record(
+                    record_id=record_id,
+                    type_str="diet",
+                    update_fields=entry,
+                    db=db
+                )
+            updated += 1
         except Exception as e:
             print(f"處理失敗: {e}")
             continue
 
     return jsonify({
         "success": True,
-        "created": created,
-        "updated": updated
+        "updated": updated,
+        "pet_id":pet_id
     })
+
 
 
 #刪除紀錄
@@ -495,19 +486,6 @@ def delete_diet_record():
     except Exception as e:
         return jsonify({"success": False, "msg": str(e)}), 500
     
-
-
-#In[] 寵物飲食紀錄
-##################################################################################################################
-
-
-
-
-
-
-
-
-
 
 
 #In[] 小鈴鐺
@@ -631,12 +609,12 @@ def care_reminder_edit():
 @app.route("/api/save-reminders", methods=["POST"])
 def save_care_reminder():
     user_id = session.get("user_id")
+    pet_id = request.args.get("pet_id")
     if not user_id:
         return jsonify({"success": False, "error": "請先登入"}), 401
 
     data = request.get_json()
     updates = data.get("updates", [])
-    print("哈摟",updates)
     record_manager = RecordManager()
     updated = 0
 

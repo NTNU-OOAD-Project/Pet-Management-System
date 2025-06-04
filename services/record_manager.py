@@ -23,7 +23,6 @@ class RecordManager:
     def save_single_to_db(self, record: Record, db):
         record_dict = record.to_dict()
         record_type = record_dict.get("type")
-
         if record.to_dict().get("type") == "inventory":
             InventoryService.apply_inventory_record(record, db)
         else:
@@ -36,7 +35,6 @@ class RecordManager:
                 "remind": "remind_records"
             }
             field = field_map.get(record_type)
-            print(field)
             db.users.update_one(
                 {"pets.pet_id": pet_id},
                 {"$push": {f"pets.$.{field}": record_dict}}
@@ -46,13 +44,12 @@ class RecordManager:
     #新增紀錄
     def add_record(self, record: Record, db):
         self.save_single_to_db(record, db)
-
         if record.to_dict().get("type") == "diet":
             # 從 pet_id 查找對應 user_id
             pet_id = record.pet_id
             user = db.users.find_one({"pets.pet_id": pet_id}, {"_id": 1})
             if not user:
-                raise ValueError(f"找不到對應 pet_id={pet_id} 的使用者")
+                raise ValueError(f"找不到對應 pet_id={str(pet_id)} 的使用者")
             user_id = str(user["_id"])
 
             # 建立庫存紀錄
@@ -69,16 +66,15 @@ class RecordManager:
         record_data = self.find_record_by_id(record_id, type_str, db)
         if not record_data:
             raise ValueError(f"找不到 ID 為 {record_id} 的 {type_str} 紀錄")
-
-        record, user_id, parent_id = record_data  # parent_id 是 pet_id 或 item_name
+        record = record_data  # parent_id 是 pet_id 或 item_name
 
         # 刪除原紀錄（處理庫存反向）
         self.delete_record(record_id, type_str, db)
-
         # 更新資料合併
+        record = record_data[0]
         updated_data = {**record, **update_fields}
         updated_data.pop("_id", None)
-
+        
         # 建立新紀錄物件並新增
         record_class = self._get_record_class(type_str)
         updated_record = record_class.from_dict(updated_data)
@@ -93,18 +89,15 @@ class RecordManager:
             raise ValueError(f"找不到 ID 為 {record_id} 的 {type_str} 紀錄")
 
         record, user_id, parent_id = record_data  # parent_id 是 pet_id 或 item_name
-        from bson import ObjectId
-
         if type_str == "diet":
             # 補回食物
             inv_record = InventoryRecord(
                 item_name=record["food_name"],
-                delta_quantity=record["amount"],
+                delta_quantity=int(record["amount"]),
                 reason="diet 刪除補回",
                 user_id=user_id
             )
             self.add_record(inv_record, db)
-
             # 從該寵物的 diet_records 中刪除
             db.users.update_one(
                 {"_id": ObjectId(user_id), "pets.pet_id": parent_id},
@@ -154,18 +147,16 @@ class RecordManager:
                 for record in item.get("records", []):
                     if record["_id"] == obj_id:
                         return record, str(user["_id"]), item["_id"]
-
         else:
-            user = db.users.find_one({f"pets.{type_str}_records._id": obj_id})
-            if not user:
-                return None
+            users = db.users.find()
+            for user in users:
+                for pet in user.get("pets", []):
+                    records = pet.get(f"{type_str}_records", [])
+                    for record in records:
+                        if record["_id"] == obj_id:
+                            return record, str(user["_id"]), pet["pet_id"]
+            return None
 
-            for pet in user["pets"]:
-                for record in pet.get(f"{type_str}_records", []):
-                    if record["_id"] == obj_id:
-                        return record, str(user["_id"]), pet["pet_id"]
-
-        return None
 
     #(從id(pet_id、inventory_id)、type >> 所有資料)
     def view_by_type(self, db, id: str, type_str: str, user_id: str):
