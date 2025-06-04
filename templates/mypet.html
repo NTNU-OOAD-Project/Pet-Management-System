@@ -74,16 +74,23 @@
           </a>
         </div>
           <!-- 飲食管理 -->
-          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
-            <a href="food_record.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
-              <div class="icon-box mb-3"><i class="fa-solid fa-bone"></i></div>
-              <h5 class="card-title">飲食管理</h5>
-              <p class="card-text">記錄每日飲食與偏好，建立餵食計畫。</p>
-            </a>
-          </div>
+        <div class="col-md-4" data-aos="zoom-in">
+          <a id="diet-link" href="#" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+            <div class="icon-box mb-3"><i class="fa-solid fa-bone"></i></div>
+            <h5 class="card-title">飲食紀錄</h5>
+            <p class="card-text">記錄每日飲食與偏好，建立餵食計畫。</p>
+          </a>
+        </div>
           <!-- 照護提醒 -->
-          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+          <!--div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
             <a href="care_reminder.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+              <div class="icon-box mb-3"><i class="fa-solid fa-bell"></i></div>
+              <h5 class="card-title">照護提醒</h5>
+              <p class="card-text">設定洗澡、剪指甲、驅蟲等定期提醒。</p>
+            </a>
+          </div-->
+          <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+            <a id="care-reminder-link" href="#" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
               <div class="icon-box mb-3"><i class="fa-solid fa-bell"></i></div>
               <h5 class="card-title">照護提醒</h5>
               <p class="card-text">設定洗澡、剪指甲、驅蟲等定期提醒。</p>
@@ -222,6 +229,8 @@
     }
     const petSelect = document.getElementById('pet-select');
     const healthLink = document.getElementById('health-link');
+    const careReminderLink = document.getElementById('care-reminder-link');
+    const dietLink = document.getElementById('diet-link');
 
     function updateHealthLink() {
       const selectedPetId = petSelect.value;
@@ -232,9 +241,28 @@
       }
     }
 
+    function updateDietLink() {
+      const petId = petSelect.value;
+      if (petId) {
+        dietLink.href = `/diet?pet_id=${petId}`;
+      } else {
+        dietLink.href = '#';
+      }
+    }
+
+    function updateCareReminderLink() {
+      const petId = petSelect.value;
+      if (petId) {
+        careReminderLink.href = `/care_reminder?pet_id=${petId}`;
+      } else {
+        careReminderLink.href = '#';
+      }
+    }
+
     // 監聽下拉選單改變
     petSelect.addEventListener('change', () => {
       updateHealthLink();
+      updateCareReminderLink();
     });
 
     // 載入寵物後預設設定連結
@@ -255,9 +283,14 @@
           petSelect.value = petsData[0].pet_id;
           document.getElementById('edit-pet-btn').disabled = false;
           updateHealthLink();  // 載入後設定健康紀錄連結
+          updateCareReminderLink(); // 載入後設定照護提醒連結
+          updateDietLink();    // 載入後設定飲食功能連結
+
         } else {
           document.getElementById('edit-pet-btn').disabled = true;
           healthLink.href = '#';
+          dietLink.href = '#';
+          careReminderLink.href = '#';
         }
       }
     }
