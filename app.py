@@ -7,6 +7,10 @@ from dotenv import load_dotenv
 from datetime import datetime, timezone
 from services.record_manager import RecordManager
 from models.inventory import Inventory
+from services.email_service import EmailService
+from models.observer.email_notifier import EmailNotifier
+from services.inventory_service import InventoryService
+from apscheduler.schedulers.background import BackgroundScheduler
 import os
 test_pet_id="684043a4cc38234b72d80aa2"
 app = Flask(__name__)
@@ -17,6 +21,7 @@ app.secret_key = 'your_secret_key'
 load_dotenv()
 
 # MongoDB Configuration
+
 MONGODB_URI = os.getenv('MONGODB_URI')
 MONGODB_DB = os.getenv('MONGODB_DB')
 
@@ -25,6 +30,9 @@ db = client[MONGODB_DB]
 
 messages_collection = db["messages"]
 record_manager = RecordManager() 
+
+def check_all_reminders():
+    print("🔁 每分鐘執行提醒檢查...")
 
 @app.route('/')
 def index():
@@ -50,10 +58,19 @@ def login():
         session['user_id'] = str(user_info['_id'])
         session['user_name'] = user_info['name']
         flash('登入成功', 'success')
+
+        # 初始化通知者
+        email_service = EmailService()
+        notifier = EmailNotifier(email_service, email)
+        # 註冊觀察者
+        InventoryService.observers.append(notifier)
         return redirect(url_for('index'))
+    
+
     else:
         flash(msg, 'danger')
         return redirect(url_for('login_page'))  # 登入失敗也回 login 頁
+    
 
 # 登出
 @app.route('/logout')
@@ -507,6 +524,7 @@ def save_diet_records_batch():
             record_id = entry.get("_id")
             pet_id = entry.get("pet_id")
             if not record_id:
+                print(2)
                 record_manager.add_record_by_type(
                 type_str="diet",
                 data=entry,
@@ -552,55 +570,6 @@ def delete_diet_record():
     except Exception as e:
         return jsonify({"success": False, "msg": str(e)}), 500
     
-
-
-#In[] 小鈴鐺
-##################################################################################################################
-#前端做定期檢查
-from services.notification_service import NotificationService
-@app.route('/api/notification_count')
-def notification_count():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"count": 0})
-
-    ns = NotificationService(db)
-    count = ns.get_unread_count(user_id)
-    return jsonify({"count": "+99" if count > 99 else count})
-
-#查看提醒清單
-from services.notification_service import NotificationService
-
-@app.route('/api/notifications')
-def get_notifications():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify([])
-
-    ns = NotificationService(db)
-    notifications = ns.get_all_notifications(user_id)
-    return jsonify(notifications)
-#全部已讀
-@app.route('/api/notifications/mark_all_read', methods=['POST'])
-def mark_all_notifications_as_read():
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"success": False}), 401
-
-    ns = NotificationService(db)
-    ns.mark_all_as_read(user_id)
-    return jsonify({"success": True})
-#點擊已讀
-@app.route('/api/notifications/<notification_id>/read', methods=['POST'])
-def mark_notification_as_read(notification_id):
-    user_id = session.get("user_id")
-    if not user_id:
-        return jsonify({"success": False}), 401
-
-    ns = NotificationService(db)
-    ns.mark_as_read(notification_id)
-    return jsonify({"success": True})
-
 
 
 
@@ -861,4 +830,14 @@ def get_message():
 
 #In[4] Main function
 if __name__ == '__main__':
+    app.run(debug=True)
+
+
+######################################################################################
+
+if __name__ == "__main__":
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(check_all_reminders, 'interval', minutes=1)
+    scheduler.start()
+    
     app.run(debug=True)

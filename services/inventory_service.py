@@ -20,6 +20,7 @@ class InventoryService:
             matched.setdefault("records", []).append(record.to_dict())
         else:
             matched = {
+                "time_str": record.time_str,
                 "item_name": record.item_name,
                 "quantity": record.delta_quantity,
                 "threshold": 0,

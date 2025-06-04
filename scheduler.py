@@ -19,6 +19,7 @@ email_service = EmailService()
 
 # === 任務: 照護提醒 ===
 def check_all_reminders():
+    print("🔁 [排程] 執行 check_all_reminders")
     users = db.users.find({})
     for user in users:
         user_id = str(user["_id"])

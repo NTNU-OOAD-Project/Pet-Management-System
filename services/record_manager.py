@@ -53,7 +53,9 @@ class RecordManager:
             user_id = str(user["_id"])
 
             # 建立庫存紀錄
+            print(1)
             inv_record = InventoryRecord(
+                time_str=record.time_str,
                 item_name=record.food_name,
                 delta_quantity=-record.amount,
                 reason="食用",
@@ -67,10 +69,9 @@ class RecordManager:
         if not record_data:
             raise ValueError(f"找不到 ID 為 {record_id} 的 {type_str} 紀錄")
         record = record_data  # parent_id 是 pet_id 或 item_name
-
         # 刪除原紀錄（處理庫存反向）
         self.delete_record(record_id, type_str, db)
-        # 更新資料合併
+
         record = record_data[0]
         updated_data = {**record, **update_fields}
         updated_data.pop("_id", None)
@@ -93,6 +94,7 @@ class RecordManager:
         if type_str == "diet":
             # 補回食物
             inv_record = InventoryRecord(
+                time_str=record["time_str"],
                 item_name=record["food_name"],
                 delta_quantity=int(record["amount"]),
                 reason="diet 刪除補回",
