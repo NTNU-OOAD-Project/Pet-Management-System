@@ -24,6 +24,7 @@ class Place:
                 f"<b>設施:</b> {', '.join(self.facilities)}<br>"
                 f"<b>開放時間:</b> {self.open_hours}<br>"
                 f'<a href="/medical/appointment?clinic={self.place_name}">預約診所</a>'
+                # f'<a href="/medical/appointment?clinic_name={clinic_q}&service_location={loc_q}" target="_blank" class="btn btn-sm btn-danger mt-1">預約診所</a>'
             )
         else:
             return (
@@ -31,7 +32,7 @@ class Place:
                 f"<b>地址:</b> {self.location}<br>"
                 f"<b>設施:</b> {', '.join(self.facilities)}<br>"
                 f"<b>開放時間:</b> {self.open_hours}<br>"
-                f"<button onclick=\"showPlaceDetail('{self._id}')\">詳細</button>"
+                
             )
 
 
