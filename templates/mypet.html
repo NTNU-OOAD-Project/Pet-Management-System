@@ -66,13 +66,13 @@
         </div>
         <div class="row g-4">
           <!-- 健康紀錄 -->
-          <div class="col-md-4" data-aos="zoom-in">
-            <a href="health_record.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
-              <div class="icon-box mb-3"><i class="fa-solid fa-heartbeat"></i></div>
-              <h5 class="card-title">健康紀錄</h5>
-              <p class="card-text">追蹤疫苗、身體狀況與健康報告。</p>
-            </a>
-          </div>
+        <div class="col-md-4" data-aos="zoom-in">
+          <a id="health-link" href="#" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
+            <div class="icon-box mb-3"><i class="fa-solid fa-heartbeat"></i></div>
+            <h5 class="card-title">健康紀錄</h5>
+            <p class="card-text">追蹤疫苗、身體狀況與健康報告。</p>
+          </a>
+        </div>
           <!-- 飲食管理 -->
           <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
             <a href="food_record.html" class="card shadow-sm border-0 h-100 text-center p-3 text-decoration-none text-dark">
@@ -220,6 +220,48 @@
         }
       }
     }
+    const petSelect = document.getElementById('pet-select');
+    const healthLink = document.getElementById('health-link');
+
+    function updateHealthLink() {
+      const selectedPetId = petSelect.value;
+      if (selectedPetId) {
+        healthLink.href = `/health?pet_id=${selectedPetId}`;
+      } else {
+        healthLink.href = '#';
+      }
+    }
+
+    // 監聽下拉選單改變
+    petSelect.addEventListener('change', () => {
+      updateHealthLink();
+    });
+
+    // 載入寵物後預設設定連結
+    async function loadPets() {
+      const res = await fetch('/api/pets/list');
+      const data = await res.json();
+      if (data.success) {
+        petsData = data.pets;
+        petSelect.innerHTML = '';
+        petsData.forEach((pet) => {
+          const opt = document.createElement('option');
+          opt.value = pet.pet_id;
+          opt.textContent = pet.name;
+          petSelect.appendChild(opt);
+        });
+
+        if (petsData.length) {
+          petSelect.value = petsData[0].pet_id;
+          document.getElementById('edit-pet-btn').disabled = false;
+          updateHealthLink();  // 載入後設定健康紀錄連結
+        } else {
+          document.getElementById('edit-pet-btn').disabled = true;
+          healthLink.href = '#';
+        }
+      }
+    }
+
     loadPets();
 
     document.getElementById('pet-select').addEventListener('change', function(){
