@@ -1,37 +1,83 @@
 pet-management-system/
+│  .env
+│  .gitignore
+│  app.py #主要功能
+│  README.md
+│  requirements.txt
+│  
+├─models
+│  │  event.py
+│  │  food_inventory.py
+│  │  inventory.py
+│  │  inventory_manager.py
+│  │  medical_service.py
+│  │  pets.py
+│  │  place.py
+│  │  record_manager.py
+│  │  user.py
+│  │
+│  ├─interfaces
+│  │      low_stock_observer.py
+│  │      remind_time_up.py
+│  │
+│  ├─Observer
+│  │  │  email_notifier.py
+│  │  └─  web_dashboard_notifier.py
+│  │
+│  ├─record
+│  │  │  base.py
+│  │  │  diet_record.py
+│  │  │  health_record.py
+│  │  │  inventory_record.py
+│  │  └─ remind_record.py
+│  ├─reminder
+│  │      care_reminder.py
+│  │
+│  ├─services
+│  │  │  email_service.py
+│  │  │  inventory_service.py
+│  │  │  notification_service.py
+│  │  │  record_manager.py
+│  │  │  reminder_service.py
+│  │  └─  remind_service.py
 │
-├── app.py
-│   # Flask 應用主入口，所有 route、API 進入點
+├─static
+│  │  style.css
+│  │  styles.css
+│  │
+│  ├─ai_assistant
+│  │      ai_assistant.html
+│  │      Assistant.js
+│  │      core.js
+│  │      main.js
+│  │      Message.js
+│  │      purify.min.js
+│  │      script.js
+│  │
+│  └─image
+│          ai_chat.png
 │
-├── config.py
-│   # 放置資料庫連線設定、其他系統設定檔（例如 MongoDB 連線參數）
-│
-├── models/
-│   # 物件導向各類別
-│   ├── observer.py        # 實作 Observer/Subject（觀察者設計模式）基底類別
-│   ├── user.py            # User 相關物件與邏輯（如註冊、登入、用戶資料CRUD）
-│   ├── pet.py             # Pet 寵物物件與邏輯
-│   ├── health_record.py   # 寵物健康紀錄物件
-│   ├── diet_record.py     # 寵物飲食紀錄物件
-│   ├── care_reminder.py   # 照護提醒物件，支援 Observer
-│   ├── medical_service.py # 醫療預約服務相關物件
-│   ├── place.py           # 場所、地圖顯示、詳細、預約等功能封裝
-│   ├── event.py           # 活動/事件公告物件
-│   └── pet_supplies.py    # 寵物用品（庫存管理/提醒）物件
-│
-├── templates/
-│   # 所有前端 HTML 模板，與 Flask Jinja2 結合
-│   ├── index.html         # 首頁（登入畫面或導覽頁）
-│   ├── register.html      # 用戶註冊頁面
-│   ├── dashboard.html     # 用戶主控台
-│   ├── pet.html           # 寵物管理頁
-│   ├── health.html        # 健康紀錄管理頁
-│   ├── diet.html          # 飲食紀錄管理頁
-│   ├── reminder.html      # 照護提醒頁
-│   ├── medical.html       # 醫療預約頁
-│   ├── supplies.html      # 用品庫存管理頁
-│   ├── place.html         # 場所/地圖/預約/詳細功能頁（folium 或 leaflet）
-│   └── event.html         # 活動/公告頁
-│
-└── static/
-    └── style.css          # 共用 CSS 樣式表（也可以直接寫在每個 html <style>，自訂）
+├─templates
+│      ai_activity.html
+│      care_reminder.html
+│      care_reminder_view.html
+│      event_create.html
+│      ex.html
+│      ex2.html
+│      food_record.html
+│      food_record_view.html
+│      health_record.html
+│      health_record_view.html
+│      index.html
+│      login.html
+│      medical.html
+│      medical_appointment.html
+│      medical_view.html
+│      mypet.html
+│      notifications.html
+│      pet_event.html
+│      pet_place.html
+│      register.html
+│      supply_inventory.html
+│      supply_view.html
+└─      temp.html
