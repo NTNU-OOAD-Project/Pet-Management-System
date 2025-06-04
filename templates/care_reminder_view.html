@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>照護提醒檢視</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body style="background-color: #eaf7ff;">
   <div class="container mt-5">
@@ -12,31 +12,64 @@
       <table class="table table-striped table-bordered text-center">
         <thead class="table-dark">
           <tr>
-            <th>提醒類型</th>
+            <th>提醒內容</th>
             <th>時間</th>
-            <th>頻率</th>
+            <th>是否每日</th>
+            <th>啟用</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- 後端會動態插入資料 -->
+        <tbody id="reminder-table-body">
+          {% for reminder in reminders %}
           <tr>
-            <td>洗澡</td>
-            <td>10:00</td>
-            <td>每週</td>
+            <td>{{ reminder.message }}</td>
+            <td>{{ reminder.time_str }}</td>
+            <td>{{ '是' if reminder.daily else '否' }}</td>
+            <td>
+              <input type="checkbox" class="toggle-active" data-id="{{ reminder._id }}" {% if reminder.active %}checked{% endif %}>
+            </td>
           </tr>
+          {% else %}
           <tr>
-            <td>剪指甲</td>
-            <td>15:30</td>
-            <td>每月</td>
+            <td colspan="4">無任何提醒</td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
 
       <div class="d-flex justify-content-between mt-4">
-        <a href="care_reminder.html" class="btn btn-outline-secondary">🔙 返回修改</a>
+        <a href="{{ url_for('care_reminder_edit') }}?pet_id={{ pet_id }}" class="btn btn-outline-secondary">🔙 新增照護提醒</a>
         <a href="{{ url_for('pets') }}" class="btn btn-outline-primary">🏠 返回我的寵物</a>
       </div>
     </div>
   </div>
+
+  <script>
+    // 事件代理，避免動態元素無法綁定問題
+    document.getElementById('reminder-table-body').addEventListener('change', function(event) {
+      if(event.target.classList.contains('toggle-active')) {
+        const checkbox = event.target;
+        const recordId = checkbox.dataset.id;
+        const active = checkbox.checked;
+
+        fetch('/api/reminder/active', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ record_id: recordId, active: active })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            alert('更新失敗: ' + data.error);
+            // 錯誤時恢復 checkbox 狀態
+            checkbox.checked = !active;
+          }
+        })
+        .catch(() => {
+          alert('更新失敗，請稍後再試');
+          checkbox.checked = !active;
+        });
+      }
+    });
+  </script>
 </body>
 </html>

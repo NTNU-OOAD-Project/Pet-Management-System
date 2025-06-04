@@ -17,7 +17,8 @@ class User:
             "email": email,
             "phone": phone,
             "password": hashed_pw,
-            "pets": []
+            "pets": [],
+            "inventory": []
         }
         result = self.collection.insert_one(user)
         return True, str(result.inserted_id)

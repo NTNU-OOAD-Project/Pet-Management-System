@@ -2,56 +2,135 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>用品存貨紀錄</title>
+  <title>📦 用品存貨紀錄</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script>
-    function addSupplyRow() {
-      const table = document.getElementById("supply-table-body");
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td><input type="text" class="form-control" name="item_name[]"></td>
-        <td><input type="number" class="form-control" name="stock[]" min="0"></td>
-        <td><input type="number" class="form-control" name="usage_per_time[]" min="0"></td>
-        <td><input type="text" class="form-control" name="frequency[]"></td>
-        <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button></td>
-      `;
-      table.appendChild(row);
-    }
-
-    function deleteRow(button) {
-      button.closest("tr").remove();
-    }
-  </script>
+  <style>
+    .item-card { min-height: 100px; }
+    .hidden { display: none; }
+  </style>
 </head>
-<body style="background-color: #fcfdfd;">
-  <div class="container mt-5">
-    <div class="card p-4 shadow rounded-4">
-      <h2 class="mb-4 text-center">📦 用品存貨紀錄</h2>
-      <form action="supply_view.html" method="GET">
-        <table class="table table-bordered text-center align-middle">
+<body style="background-color: #f8f9fa;">
+
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- 📦 左側：用品清單 -->
+    <div class="col-md-6">
+      <div class="card shadow p-3 rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">📦 用品存貨紀錄</h5>
+          <button class="btn btn-sm btn-success" onclick="addItem()">➕ 新增</button>
+        </div>
+        <div id="item-list">
+          <!-- 用品項目會加在這裡 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 📋 右側：詳細紀錄 -->
+    <div class="col-md-6">
+      <div class="card shadow p-3 rounded-4 hidden" id="record-panel">
+        <h5 class="mb-3"><span id="record-item-name">項目名稱</span> 的存貨紀錄</h5>
+
+        <!-- 紀錄表格 -->
+        <table class="table table-bordered text-center">
           <thead class="table-light">
             <tr>
-              <th>項目名稱</th>
-              <th>目前庫存</th>
-              <th>每次使用量</th>
-              <th>使用頻率</th>
+              <th>日期時間</th>
+              <th>數量</th>
+              <th>備註</th>
               <th>操作</th>
             </tr>
           </thead>
-          <tbody id="supply-table-body">
-            <tr>
-              <td><input type="text" class="form-control" name="item_name[]"></td>
-              <td><input type="number" class="form-control" name="stock[]" min="0"></td>
-              <td><input type="number" class="form-control" name="usage_per_time[]" min="0"></td>
-              <td><input type="text" class="form-control" name="frequency[]"></td>
-              <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button></td>
-            </tr>
+          <tbody id="record-table-body">
+            <!-- 紀錄列 -->
           </tbody>
         </table>
-        <button type="button" class="btn btn-outline-secondary mb-3" onclick="addSupplyRow()">➕ 新增項目</button>
-        <button type="submit" class="btn btn-primary w-100">儲存紀錄</button>
-      </form>
+
+        <!-- 新增紀錄表單 -->
+        <div class="mt-3">
+          <h6>新增存貨紀錄</h6>
+          <div class="row g-2">
+            <div class="col-6">
+              <input type="datetime-local" class="form-control" id="new-date">
+            </div>
+            <div class="col-3">
+              <input type="number" class="form-control" id="new-quantity" placeholder="數量">
+            </div>
+            <div class="col-3">
+              <input type="text" class="form-control" id="new-note" placeholder="備註">
+            </div>
+            <div class="col-12 text-end">
+              <button class="btn btn-sm btn-primary" onclick="addRecord()">新增紀錄</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
+
   </div>
+</div>
+
+<script>
+  let itemId = 1;
+  let currentItem = null;
+
+  function addItem() {
+    const container = document.getElementById("item-list");
+    const div = document.createElement("div");
+    div.className = "card mb-2 p-3 item-card";
+    div.innerHTML = `
+      <div class="row align-items-center">
+        <div class="col-5"><input type="text" class="form-control" placeholder="項目名稱"></div>
+        <div class="col-3"><input type="number" class="form-control" placeholder="庫存/警戒值"></div>
+        <div class="col-4 text-end">
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="showRecord(this)">📓紀錄</button>
+          <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(this)">❌刪除</button>
+        </div>
+      </div>
+    `;
+    div.dataset.itemId = itemId++;
+    container.appendChild(div);
+  }
+
+  function deleteItem(button) {
+    button.closest(".item-card").remove();
+    document.getElementById("record-panel").classList.add("hidden");
+  }
+
+  function showRecord(button) {
+    const itemCard = button.closest(".item-card");
+    const itemName = itemCard.querySelector("input[type='text']").value || "未命名項目";
+    currentItem = itemCard.dataset.itemId;
+    document.getElementById("record-item-name").textContent = itemName;
+    document.getElementById("record-panel").classList.remove("hidden");
+    document.getElementById("record-table-body").innerHTML = ""; // 清空紀錄
+  }
+
+  function addRecord() {
+    const tbody = document.getElementById("record-table-body");
+    const date = document.getElementById("new-date").value;
+    const qty = document.getElementById("new-quantity").value;
+    const note = document.getElementById("new-note").value;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${date}</td>
+      <td>${qty}</td>
+      <td>${note}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-secondary me-1">編輯</button>
+        <button class="btn btn-sm btn-outline-danger" onclick="this.closest('tr').remove()">刪除</button>
+      </td>
+    `;
+    tbody.appendChild(row);
+
+    // 清空輸入欄
+    document.getElementById("new-date").value = "";
+    document.getElementById("new-quantity").value = "";
+    document.getElementById("new-note").value = "";
+  }
+</script>
 </body>
 </html>

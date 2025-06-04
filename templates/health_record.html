@@ -44,8 +44,9 @@
   <div class="container">
     <h2 class="mb-4 text-center">健康紀錄</h2>
     <form id="healthRecordForm">
-      <!-- 隱藏欄位帶入 pet_id -->
+      <!-- 隱藏欄位帶入 pet_id 與 _id -->
       <input type="hidden" id="petId" name="petId" value="{{ pet_id }}">
+      <input type="hidden" id="recordId" name="_id" value="{{ record._id|string if record and record._id else '' }}">
 
       <div class="mb-3">
         <label for="petBreed" class="form-label">寵物品種</label>
@@ -123,7 +124,6 @@
     const medList = document.getElementById('medList');
     const addMedBtn = document.getElementById('addMedBtn');
 
-    // 建立藥物輸入欄位函式
     function createMedItem(medName = '') {
       const medDiv = document.createElement('div');
       medDiv.className = 'med-list-item';
@@ -150,7 +150,7 @@
     }
 
     // 從後端帶入的藥物清單
-    const initialMeds = {{ (record.medications | default([])) | tojson }};
+    const initialMeds = JSON.parse('{{ record.medications | tojson | safe }}');
     console.log(initialMeds);
 
     if (initialMeds.length > 0) {
@@ -166,11 +166,13 @@
     });
 
     const petId = document.getElementById('petId').value;
+    const recordId = document.getElementById('recordId').value;
 
     document.getElementById('healthRecordForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const data = {
+        _id: recordId,
         pet_id: petId,
         petBreed: this.petBreed.value.trim(),
         petName: this.petName.value.trim(),

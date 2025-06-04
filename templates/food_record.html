@@ -1,41 +1,51 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>飲食管理 - 寵物日常管理系統</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>新增寵物飲食紀錄 - 寵物日常管理系統</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body style="background-color: #e6f0ff;">
   <div class="container mt-5">
     <div class="card shadow p-4 rounded-4">
-      <h2 class="mb-4 text-center">🐾 飲食管理紀錄</h2>
+      <h2 class="mb-4 text-center">🐾 新增寵物飲食紀錄</h2>
 
-      <form id="foodForm">
+      <!-- 寵物選擇 -->
+      <div class="mb-3">
+        <label for="petSelect" class="form-label">選擇寵物</label>
+        <select class="form-select" id="petSelect" name="pet_id" form="foodForm" required>
+          {% for pet in pets %}
+            <option value="{{ pet.pet_id }}">{{ pet.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <form id="foodForm" method="POST" action="{{ url_for('add_diet') }}">
         <div id="foodItems">
           <div class="food-entry row g-3 align-items-end mb-3">
             <div class="col-md-3">
-              <label class="form-label">食品種類</label>
-              <select class="form-select" name="food_type[]">
+              <label class="form-label" for="foodType0">食品種類</label>
+              <select class="form-select" name="food_type[]" id="foodType0" required>
                 <option value="罐頭">罐頭</option>
                 <option value="餅乾">餅乾</option>
               </select>
             </div>
             <div class="col-md-3">
-              <label class="form-label">開始使用日期</label>
-              <input type="date" class="form-control" name="start_date[]">
+              <label class="form-label" for="startDate0">開始使用日期</label>
+              <input type="date" class="form-control" name="start_date[]" id="startDate0" />
             </div>
             <div class="col-md-3">
-              <label class="form-label">到期日</label>
-              <input type="date" class="form-control" name="end_date[]">
+              <label class="form-label" for="endDate0">到期日</label>
+              <input type="date" class="form-control" name="end_date[]" id="endDate0" />
             </div>
             <div class="col-md-2">
-              <label class="form-label">數量</label>
-              <input type="number" class="form-control" name="quantity[]" min="1">
+              <label class="form-label" for="quantity0">數量</label>
+              <input type="number" class="form-control" name="quantity[]" id="quantity0" min="1" required />
             </div>
             <div class="col-md-1">
-              <button type="button" class="btn btn-danger remove-entry">刪除</button>
+              <button type="button" class="btn btn-danger remove-entry" aria-label="刪除該食品紀錄">刪除</button>
             </div>
           </div>
         </div>
@@ -49,26 +59,46 @@
   </div>
 
   <script>
+    const container = document.getElementById("foodItems");
+
     document.getElementById("addFood").addEventListener("click", function () {
-      const container = document.getElementById("foodItems");
+      // 複製第一個區塊
       const newEntry = container.firstElementChild.cloneNode(true);
-      newEntry.querySelectorAll("input").forEach(input => input.value = "");
+
+      // 清空所有 input 和 select 的值，並更新 id 與 label for 方便無障礙
+      const idx = container.children.length;
+      newEntry.querySelectorAll("input, select").forEach(input => {
+        input.value = "";
+        // 更新 id
+        if (input.name === "food_type[]") {
+          input.id = "foodType" + idx;
+        } else if (input.name === "start_date[]") {
+          input.id = "startDate" + idx;
+        } else if (input.name === "end_date[]") {
+          input.id = "endDate" + idx;
+        } else if (input.name === "quantity[]") {
+          input.id = "quantity" + idx;
+        }
+      });
+
+      // 更新對應 label 的 for 屬性
+      newEntry.querySelectorAll("label").forEach(label => {
+        if (label.htmlFor.startsWith("foodType")) label.htmlFor = "foodType" + idx;
+        else if (label.htmlFor.startsWith("startDate")) label.htmlFor = "startDate" + idx;
+        else if (label.htmlFor.startsWith("endDate")) label.htmlFor = "endDate" + idx;
+        else if (label.htmlFor.startsWith("quantity")) label.htmlFor = "quantity" + idx;
+      });
+
       container.appendChild(newEntry);
     });
 
-    document.getElementById("foodItems").addEventListener("click", function (e) {
+    container.addEventListener("click", function (e) {
       if (e.target.classList.contains("remove-entry")) {
-        const entries = document.querySelectorAll(".food-entry");
+        const entries = container.querySelectorAll(".food-entry");
         if (entries.length > 1) {
           e.target.closest(".food-entry").remove();
         }
       }
-    });
-
-    document.getElementById("foodForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-      // 這裡未來可串接後端 API
-      window.location.href = "food_record_view.html";
     });
   </script>
 </body>
