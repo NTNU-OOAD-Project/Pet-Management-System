@@ -1,126 +1,152 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <title>照護提醒 - 寵物日常管理系統</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <title>📦 用品存貨紀錄</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .item-card { min-height: 100px; }
+    .hidden { display: none; }
+  </style>
 </head>
 <body style="background-color: #f8f9fa;">
-  <div class="container mt-5">
-    <div class="card p-4 shadow rounded-4">
-      <h2 class="mb-4 text-center">🕒 編輯照護提醒</h2>
-      <form>
-        <table class="table table-bordered text-center align-middle">
+
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- 📦 左側：用品清單 -->
+    <div class="col-md-6">
+      <div class="card shadow p-3 rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">📦 用品存貨紀錄</h5>
+          <button class="btn btn-sm btn-success" onclick="addItem()">➕ 新增</button>
+        </div>
+        <div id="item-list">
+          <!-- 用品項目會加在這裡 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 📋 右側：詳細紀錄 -->
+    <div class="col-md-6">
+      <div class="card shadow p-3 rounded-4 hidden" id="record-panel">
+        <h5 class="mb-3"><span id="record-item-name">項目名稱</span> 的存貨紀錄</h5>
+
+        <!-- 紀錄表格 -->
+        <table class="table table-bordered text-center">
           <thead class="table-light">
             <tr>
-              <th>時間</th>
-              <th>事件</th>
-              <th>每天</th>
+              <th>日期時間</th>
+              <th>數量</th>
+              <th>備註</th>
               <th>操作</th>
             </tr>
           </thead>
-          <tbody id="reminder-table-body">
-            {% for r in reminders %}
-            <tr>
-              <input type="hidden" name="pet_id[]" value="{{ pet_id }}">
-              <input type="hidden" id="petId" value="{{ pet_id }}">
-              <td><input type="time" class="form-control" name="time[]" value="{{ r.time_str }}"></td>
-              <td><input type="text" class="form-control" name="message[]" value="{{ r.message }}"></td>
-              <td class="text-center">
-                <div class="form-check form-switch d-flex justify-content-center">
-                  <input class="form-check-input" type="checkbox" name="daily[]" {% if r.daily %}checked{% endif %}>
-                </div>
-              </td>
-              <td>
-                <input type="hidden" name="record_id[]" value="{{ r._id }}">
-                <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button>
-              </td>
-            </tr>
-            {% endfor %}
+          <tbody id="record-table-body">
+            <!-- 紀錄列 -->
           </tbody>
         </table>
 
-        <div class="d-flex justify-content-between mt-4">
-            <button type="button" class="btn btn-outline-secondary" onclick="addReminderRow()">➕ 新增提醒</button>
-            <button type="button" class="btn btn-primary" id="save-btn">💾 儲存提醒</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    function addReminderRow() {
-      const table = document.getElementById("reminder-table-body");
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td><input type="time" class="form-control" name="time[]"></td>
-        <td><input type="text" class="form-control" name="message[]" placeholder="如：洗澡、剪指甲"></td>
-        <td class="text-center">
-          <div class="form-check form-switch d-flex justify-content-center">
-            <input class="form-check-input" type="checkbox" name="daily[]">
+        <!-- 新增紀錄表單 -->
+        <div class="mt-3">
+          <h6>新增存貨紀錄</h6>
+          <div class="row g-2">
+            <div class="col-6">
+              <input type="datetime-local" class="form-control" id="new-date">
+            </div>
+            <div class="col-3">
+              <input type="number" class="form-control" id="new-quantity" placeholder="數量">
+            </div>
+            <div class="col-3">
+              <input type="text" class="form-control" id="new-note" placeholder="備註">
+            </div>
+            <div class="col-12 text-end">
+              <button class="btn btn-sm btn-primary" onclick="addRecord()">新增紀錄</button>
+            </div>
           </div>
-        </td>
-        <td>
-          <input type="hidden" name="pet_id[]" value="{{  pet_id  }}">
-          <input type="hidden" name="pet_id" value="{{  pet_id  }}">
-          <input type="hidden" name="record_id[]" value="">
-          <button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button>
-        </td>
-      `;
-      table.appendChild(row);
-    }
+        </div>
 
-    function deleteRow(button) {
-      button.closest("tr").remove();
-    }
+      </div>
+    </div>
 
-    document.addEventListener('DOMContentLoaded', function () {
-      document.getElementById("save-btn").addEventListener("click", function (e) {
-        e.preventDefault();
-        alert("儲存按鈕被點擊");
-        const rows = document.querySelectorAll('#reminder-table-body tr');
-         updates = [];
-        
-        rows.forEach(row => {
-          const timeInput = row.querySelector('input[name="time[]"]');
-          const msgInput = row.querySelector('input[name="message[]"]');
-          const dailyInput = row.querySelector('input[name="daily[]"]');
-          const idInput = row.querySelector('input[name="record_id[]"]');
-          const petId = row.querySelector('input[name="pet_id[]"]');
-          
-          const entry = { 
-            _id: idInput?.value,
-            time_str: timeInput?.value,
-            message: msgInput?.value,
-            daily: dailyInput?.checked || false,
-            active: true,
-            pet_id: petId?.value
-          };
-          
+  </div>
+</div>
 
-          updates.push(entry);
+<script>
+  let itemId = 1;
+  let currentItem = null;
 
-        });
-        const saveUrl = "{{ url_for('save_care_reminder') }}";
-        const bakeUrl = "{{ url_for('care_reminder_page') }}";
-        fetch(saveUrl, {
-          pet_id:"{{  pet_id  }}",
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ updates })
-        })
-        .then(res => res.json())
-        .then(result => {
-          if (result.success) {
-            alert("儲存成功！");
-            window.location.href = `/care_reminder?pet_id=${result.pet_id}`;
-          } else {
-            alert("儲存失敗：" + result.msg);
-          }
-        })
-      });
-    });
-  </script>
+  function addItem() {
+    const container = document.getElementById("item-list");
+    const div = document.createElement("div");
+    div.className = "card mb-2 p-3 item-card";
+    div.innerHTML = `
+      <div class="row align-items-center">
+        <div class="col-5"><input type="text" class="form-control" placeholder="項目名稱"></div>
+        <div class="col-3"><input type="number" class="form-control" placeholder="庫存/警戒值"></div>
+        <div class="col-4 text-end">
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="showRecord(this)">📓紀錄</button>
+          <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(this)">❌刪除</button>
+        </div>
+      </div>
+    `;
+    div.dataset.itemId = itemId++;
+    container.appendChild(div);
+  }
+
+  function deleteItem(button) {
+    button.closest(".item-card").remove();
+    document.getElementById("record-panel").classList.add("hidden");
+  }
+
+  function showRecord(button) {
+    const itemCard = button.closest(".item-card");
+    const itemName = itemCard.querySelector("input[type='text']").value || "未命名項目";
+    currentItem = itemCard.dataset.itemId;
+    document.getElementById("record-item-name").textContent = itemName;
+    document.getElementById("record-panel").classList.remove("hidden");
+    document.getElementById("record-table-body").innerHTML = ""; // 清空紀錄
+  }
+
+  function addRecord() {
+    const tbody = document.getElementById("record-table-body");
+    const date = document.getElementById("new-date").value;
+    const qty = document.getElementById("new-quantity").value;
+    const note = document.getElementById("new-note").value;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${date}</td>
+      <td>${qty}</td>
+      <td>${note}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-secondary me-1">編輯</button>
+        <button class="btn btn-sm btn-outline-danger" onclick="this.closest('tr').remove()">刪除</button>
+      </td>
+    `;
+    tbody.appendChild(row);
+
+    // 清空輸入欄
+    document.getElementById("new-date").value = "";
+    document.getElementById("new-quantity").value = "";
+    document.getElementById("new-note").value = "";
+  }
+  function adjustThreshold(itemName, increase) {
+    fetch("/api/supply/adjust_threshold", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ item_name: itemName, increase: increase })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        location.reload(); // 或手動更新 DOM 數值
+      } else {
+        alert("❌ 調整失敗：" + data.msg);
+      }
+    })
+    .catch(err => alert("🚫 錯誤：" + err));
+  }
+</script>
 </body>
 </html>
-

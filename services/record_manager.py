@@ -84,6 +84,7 @@ class RecordManager:
 
     #刪除紀錄
     def delete_record(self, record_id: ObjectId, type_str: str, db):
+        
         record_data = self.find_record_by_id(record_id, type_str, db)
         if not record_data:
             raise ValueError(f"找不到 ID 為 {record_id} 的 {type_str} 紀錄")
@@ -139,14 +140,13 @@ class RecordManager:
         obj_id = ObjectId(record_id)
 
         if type_str == "inventory":
-            user = db.users.find_one({"inventory.records._id": obj_id})
-            if not user:
-                return None
-
-            for item in user["inventory"]:
-                for record in item.get("records", []):
-                    if record["_id"] == obj_id:
-                        return record, str(user["_id"]), item["_id"]
+            users = db.users.find()
+            for user in users:
+                for inventory in user.get("inventory", []):
+                    records = inventory.get(f"records", [])
+                    for record in records:
+                        if record["_id"] == obj_id:
+                            return record, str(user["_id"]), inventory["item_name"]
         else:
             users = db.users.find()
             for user in users:

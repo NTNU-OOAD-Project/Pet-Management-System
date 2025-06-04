@@ -69,7 +69,6 @@
       const recordId = recordIdInput?.value;
 
       if (!recordId) {
-        // 若是新加入尚未儲存的列，直接移除即可
         row.remove();
         return;
       }
@@ -84,7 +83,7 @@
       .then(res => res.json())
       .then(result => {
         if (result.success) {
-          row.remove(); // 刪除成功就從畫面移除
+          row.remove();
         } else {
           alert("刪除失敗：" + result.msg);
         }

@@ -6,9 +6,9 @@ from models.place import PlaceMap
 from dotenv import load_dotenv
 from datetime import datetime, timezone
 from services.record_manager import RecordManager
-import scheduler
+from models.inventory import Inventory
 import os
-test_pet_id="683fe8e6b807a45dddf2ebbc"
+test_pet_id="684043a4cc38234b72d80aa2"
 app = Flask(__name__)
 CORS(app)
 app.secret_key = 'your_secret_key'
@@ -250,57 +250,68 @@ def supply_view():
     inventory_data = []
 
     for inv in inventories:
-        _id = str(inv.get("_id"))
         item_name = inv.get("item_name")
         quantity = inv.get("quantity")
         threshold = inv.get("threshold")
 
         inventory_data.append({
-            "_id": _id,
             "item_name": item_name,
             "quantity": quantity,
             "threshold": threshold,
         })
 
-    return render_template("supply_view.html", inventory_list=inventory_data)
+    return render_template("supply_inventory.html", inventory_list=inventory_data)
 
 
-#歷史紀錄清單
-@app.route("/supply/history")
-def supply_history():
-    user_id = session.get("user_id")
-    inventory_id = request.args.get("inventory_id") 
-
-    if not user_id or not inventory_id:
-        return "缺少參數或未登入", 400
-
+@app.route("/api/supply/records", methods=["GET"])
+def get_inventory_records():
     try:
-        records = RecordManager().view_by_type(db, inventory_id, "inventory", user_id)
-    except ValueError as e:
-        return str(e), 404
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"success": False, "msg": "使用者未登入"})
 
-    parsed_records = []
+        item_name = request.args.get("item_name")
+        if not item_name:
+            return jsonify({"success": False, "msg": "缺少 item_name"})
 
-    for record in records:
-        parsed_records.append({
-            "record_id": str(record.get("_id", "")),
-            "delta_quantity": record.get("delta_quantity"),
-            "reason": record.get("reason"),
-            "date": record.get("date"),
-            "user_id": str(record.get("user_id", ""))
-        })
+        # 從使用者資料中找 item
+        user_data = db.users.find_one({"_id": ObjectId(user_id)})
+        if not user_data:
+            return jsonify({"success": False, "msg": "找不到使用者"})
 
-    return render_template("supply_history.html", records=parsed_records, inventory_id=inventory_id)
+        inventory = user_data.get("inventory", [])
+        for item in inventory:
+            if item.get("item_name") == item_name:
+                records = item.get("records", [])
+                
+                # 篩選欄位 + ObjectId 轉字串
+                cleaned = []
+                for r in records:
+                    cleaned.append({
+                        "item_name": item_name,
+                        "_id": str(r.get("_id", "")),
+                        "delta_quantity": r.get("delta_quantity", 0),
+                        "reason": r.get("reason", ""),
+                        "time_str": r.get("time_str", "")
+                    })
+
+                return jsonify({"success": True, "records": cleaned})
+
+        return jsonify({"success": True, "records": []})
+
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)})
 
 #刪除歷史紀錄
 @app.route('/api/supply/delete', methods=['POST'])
 def delete_supply_record():
+    user_id = session.get("user_id")
+    if not user_id:
+        return jsonify({'success': False, 'msg': '未登入'}), 403
     data = request.get_json()
     record_id = data.get("record_id")
-
     if not record_id:
         return jsonify({'success': False, 'msg': '缺少 record_id'}), 400
-
     try:
         record_manager.delete_record(ObjectId(record_id), "inventory", db)
         return jsonify({'success': True})
@@ -323,30 +334,23 @@ def supply_edit():
     except Exception as e:
         return f"發生錯誤：{str(e)}", 500
     
-#儲存編輯
-@app.route("/api/supply/update", methods=["POST"])
-def update_supply_record():
-    data = request.get_json()
-    record_id = data.get("record_id")
-    update_fields = {
-        "reason": data.get("reason"),
-        "delta_quantity": data.get("delta_quantity"),
-        "date": data.get("date")
-    }
 
-    try:
-        record_manager.update_record(ObjectId(record_id), "inventory", update_fields, db)
-        return jsonify({"success": True})
-    except Exception as e:
-        return jsonify({"success": False, "msg": str(e)})
-
-#新增庫存
+#新增
 @app.route("/api/supply/add", methods=["POST"])
 def add_inventory_record():
     data = request.get_json()
+
     try:
+        # 從 session 中取得 user_id 並覆蓋前端傳來的值（或加入）
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"success": False, "msg": "使用者未登入"})
+
+        data["user_id"] = user_id  # 強制設為登入者的 ID
+
         record_manager.add_record_by_type("inventory", data, db)
         return jsonify({"success": True})
+
     except Exception as e:
         return jsonify({"success": False, "msg": str(e)})
 
@@ -371,6 +375,68 @@ def delete_inventory():
     except Exception as e:
         return jsonify({"success": False, "msg": str(e)})
 
+#警戒線
+
+@app.route("/api/supply/adjust_threshold_full", methods=["POST"])
+def adjust_threshold_full():
+    try:
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"success": False, "msg": "未登入"}), 403
+
+        data = request.get_json()
+        item_name = data.get("item_name")
+        new_threshold = data.get("new_threshold")
+
+        if not item_name or new_threshold is None:
+            return jsonify({"success": False, "msg": "缺少參數"}), 400
+
+        # 找出該使用者
+        user = db.users.find_one({"_id": ObjectId(user_id)})
+        if not user:
+            return jsonify({"success": False, "msg": "找不到使用者"}), 404
+
+        # 找出該項目
+        inventory_list = user.get("inventory", [])
+        for item_data in inventory_list:
+            if item_data.get("item_name") == item_name:
+                inventory_obj = Inventory.from_dict(item_data)
+                break
+        else:
+            return jsonify({"success": False, "msg": "找不到該項目"}), 404
+
+        # 更新 threshold
+        inventory_obj.threshold = int(new_threshold)
+
+        # 先刪除，再加入
+        inventory_obj.delete_from_user_inventory(db, user_id)
+        inventory_obj.add_to_user_inventory(db, user_id)
+
+        return jsonify({"success": True})
+
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)}), 500
+    
+
+
+@app.route("/api/supply/delete_item", methods=["POST"])
+def delete_inventory_item():
+    try:
+        user_id = session.get("user_id")
+        if not user_id:
+            return jsonify({"success": False, "msg": "未登入"}), 403
+        data = request.get_json()
+        item_name = data.get("item_name")
+        if not item_name:
+            return jsonify({"success": False, "msg": "缺少 item_name"}), 400
+
+        inv = Inventory(item_name=item_name)
+        inv.delete_from_user_inventory(db, user_id)
+
+        return jsonify({"success": True})
+
+    except Exception as e:
+        return jsonify({"success": False, "msg": str(e)}), 500
 
 #In[] 寵物飲食紀錄
 ##################################################################################################################
@@ -648,15 +714,8 @@ def save_care_reminder():
 
 
 
-
-##################################################################################################################
-
-
-@app.route('/reminder')
-def reminder():
-    return render_template('reminder.html')
-
 #In[5] 預約寵物醫療服務
+##################################################################################################################
 from models.medical_service import MedicalService
 
 # 新增預約

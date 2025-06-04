@@ -2,56 +2,279 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>用品存貨紀錄</title>
+  <title>🎞️ 用品存貨紀錄</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script>
-    function addSupplyRow() {
-      const table = document.getElementById("supply-table-body");
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td><input type="text" class="form-control" name="item_name[]"></td>
-        <td><input type="number" class="form-control" name="stock[]" min="0"></td>
-        <td><input type="number" class="form-control" name="usage_per_time[]" min="0"></td>
-        <td><input type="text" class="form-control" name="frequency[]"></td>
-        <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button></td>
-      `;
-      table.appendChild(row);
-    }
-
-    function deleteRow(button) {
-      button.closest("tr").remove();
-    }
-  </script>
+  <style>
+    .item-card { min-height: 100px; }
+    .hidden { display: none; }
+    .wide-cell th, .wide-cell td { padding: 0.5rem 0.75rem; }
+    .col-ratio-name { width: 25%; }
+    .col-ratio-date { width: 25%; }
+    .col-ratio-qty { width: 25%; }
+    .col-ratio-note { width: 25%; }
+  </style>
 </head>
-<body style="background-color: #fcfdfd;">
-  <div class="container mt-5">
-    <div class="card p-4 shadow rounded-4">
-      <h2 class="mb-4 text-center">📦 用品存貨紀錄</h2>
-      <form action="supply_view.html" method="GET">
-        <table class="table table-bordered text-center align-middle">
+<body style="background-color: #f8f9fa;">
+
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- 🎞️ 工具列表 -->
+    <div class="col-md-6">
+      <div class="card shadow p-3 rounded-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">📦 用品存貨紀錄</h5>
+            <div class="col-5 text-end">
+              <a href="{{ url_for('pets') }}" class="btn btn-sm btn-primary"><i class="fa-solid fa-house"></i> 回到我的寵物</a>
+            </div>
+          <div class="col-2">
+            <button class="btn btn-sm btn-success" onclick="showAddPanel()">➕ 新增</button>
+          </div>
+        </div>
+
+        <div id="item-list">
+          {% for r in inventory_list %}
+            <div class="card p-3 mb-3 item-card">
+              <div class="row align-items-center">
+                <div class="col-3">
+                  <input type="text" class="form-control" value="{{ r.item_name }}" readonly>
+                </div>
+                <div class="col-2">
+                  <input type="text" class="form-control" value="{{ r.quantity }}" readonly>
+                </div>
+                <div class="col-3 d-flex align-items-center gap-2">
+                  <input type="number"
+                        class="form-control text-center"
+                        id="threshold-{{ loop.index }}"
+                        value="{{ r.threshold }}"
+                        data-item="{{ r.item_name }}">
+                  <button class="btn btn-sm btn-outline-primary"
+                          onclick="submitThreshold('{{ loop.index }}')">
+                    更新
+                  </button>
+                </div>
+                <div class="col-3 text-end">
+                  <button class="btn btn-sm btn-outline-primary me-1" onclick="showRecord(this, '{{ r.item_name }}')">紀錄</button>
+                  <button class="btn btn-sm btn-outline-danger" onclick="deleteInventoryItem('{{ r.item_name }}', this)">刪除</button>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- 📋 詳細紀錄 -->
+    <div class="col-md-6">
+      <div class="card shadow p-3 rounded-4 hidden" id="record-panel">
+        <h5 class="mb-3"><span id="record-item-name">項目名稱</span> 的存貨紀錄</h5>
+        <table class="table table-bordered text-center">
           <thead class="table-light">
             <tr>
-              <th>項目名稱</th>
-              <th>目前庫存</th>
-              <th>每次使用量</th>
-              <th>使用頻率</th>
-              <th>操作</th>
+              <th style="width: 30%;" class="col-ratio-date">日期時間</th>
+              <th style="width: 20%;" class="col-ratio-qty">數量</th>
+              <th style="width: 30%;" class="col-ratio-note">備註</th>
+              <th style="width: 19%;" >操作</th> <!-- 新增 -->
             </tr>
           </thead>
-          <tbody id="supply-table-body">
+          <tbody id="record-table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- 📥 新增視窗 -->
+      <div class="card shadow p-3 rounded-4 hidden" id="add-panel">
+        <h6>新增存貨紀錄</h6>
+        <table class="table table-bordered text-center wide-cell">
+          <thead>
             <tr>
-              <td><input type="text" class="form-control" name="item_name[]"></td>
-              <td><input type="number" class="form-control" name="stock[]" min="0"></td>
-              <td><input type="number" class="form-control" name="usage_per_time[]" min="0"></td>
-              <td><input type="text" class="form-control" name="frequency[]"></td>
-              <td><button type="button" class="btn btn-danger btn-sm" onclick="deleteRow(this)">刪除</button></td>
+              <th class="col-ratio-name">名稱</th>
+              <th class="col-ratio-date">日期</th>
+              <th class="col-ratio-qty">數量</th>
+              <th class="col-ratio-note">備註</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" class="form-control" id="new-item" placeholder="項目名稱"></td>
+              <td><input type="date" class="form-control" id="new-date"></td>
+              <td><input type="number" class="form-control" id="new-quantity" placeholder="數量"></td>
+              <td><input type="text" class="form-control" id="new-note" placeholder="備註"></td>
             </tr>
           </tbody>
         </table>
-        <button type="button" class="btn btn-outline-secondary mb-3" onclick="addSupplyRow()">➕ 新增項目</button>
-        <button type="submit" class="btn btn-primary w-100">儲存紀錄</button>
-      </form>
+        <div class="text-end">
+          <button class="btn btn-sm btn-primary" onclick="addRecord()">新增紀錄</button>
+        </div>
+      </div>
     </div>
+
   </div>
+</div>
+
+<script>
+  let itemId = 1;
+  let currentItem = null;
+
+  function showAddPanel() {
+    document.getElementById("record-panel").classList.add("hidden");
+    document.getElementById("add-panel").classList.remove("hidden");
+  }
+
+  function addRecord() {
+    const dateStr = document.getElementById("new-date").value;
+    const qty = document.getElementById("new-quantity").value;
+    const name = document.getElementById("new-item").value;
+    const note = document.getElementById("new-note").value;
+
+    // 組合成 JSON 資料
+    const recordData = {
+      user_id:"",
+      item_name: name,
+      time_str: dateStr,
+      delta_quantity: parseInt(qty),
+      reason: note
+    };
+
+    // 發送 POST 請求到後端
+    fetch("/api/supply/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(recordData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("✅ 新增成功！");
+        // 將資料加到畫面中
+        const tbody = document.getElementById("record-table-body");
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${dateStr}</td>
+          <td>${qty}</td>
+          <td>${note}</td>
+        `;
+        tbody.appendChild(row);
+
+        // 清空輸入欄位
+        document.getElementById("new-date").value = "";
+        document.getElementById("new-quantity").value = "";
+        document.getElementById("new-item").value = "";
+        document.getElementById("new-note").value = "";
+      } else {
+        alert("❌ 新增失敗：" + data.msg);
+      }
+    });
+  }
+
+  function showRecord(button, itemName) {
+    document.getElementById("add-panel").classList.add("hidden");
+    document.getElementById("record-panel").classList.remove("hidden");
+    document.getElementById("record-item-name").textContent = itemName;
+
+    // 清空舊資料
+    const tbody = document.getElementById("record-table-body");
+    tbody.innerHTML = "";
+
+    // 發送 GET 請求帶上 item_name（用 query string）
+    fetch(`/api/supply/records?item_name=${encodeURIComponent(itemName)}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          data.records.forEach(r => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${r.time_str}</td>
+              <td>${r.delta_quantity}</td>
+              <td>${r.reason}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteRecord('${r._id}', this)">❌ 刪除</button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+        } else {
+          alert("❌ 載入紀錄失敗：" + data.msg);
+        }
+      })
+      .catch(err => {
+        alert("🚫 錯誤：" + err);
+      });
+  }
+  function deleteRecord(recordId, btn) {
+    if (!confirm("確定要刪除這筆紀錄嗎？")) return;
+
+    fetch("/api/supply/delete", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ record_id: recordId })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        // 從畫面移除這筆資料所在的 row
+        const row = btn.closest("tr");
+        row.remove();
+      } else {
+        alert("❌ 刪除失敗：" + data.msg);
+      }
+    })
+    .catch(err => {
+      alert("🚫 錯誤：" + err);
+    });
+  }
+
+  function submitThreshold(index) {
+    const input = document.getElementById(`threshold-${index}`);
+    const itemName = input.getAttribute("data-item");
+    const newThreshold = parseInt(input.value);
+
+    if (isNaN(newThreshold) || newThreshold < 0) {
+      alert("❗請輸入有效的非負整數作為警戒值");
+      return;
+    }
+
+    fetch("/api/supply/adjust_threshold_full", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        item_name: itemName,
+        new_threshold: newThreshold
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("✅ 警戒值已更新");
+      } else {
+        alert("❌ 更新失敗：" + data.msg);
+      }
+    })
+    .catch(err => alert("🚫 錯誤：" + err));
+  }
+  function deleteInventoryItem(itemName, btn) {
+    if (!confirm(`確定要刪除「${itemName}」嗎？`)) return;
+
+    fetch("/api/supply/delete_item", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ item_name: itemName })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        // 從畫面上移除該項目卡片（父層 card）
+        const card = btn.closest(".item-card");
+        if (card) card.remove();
+      } else {
+        alert("❌ 刪除失敗：" + data.msg);
+      }
+    })
+    .catch(err => {
+      alert("🚫 錯誤：" + err);
+    });
+  }
+</script>
 </body>
 </html>
