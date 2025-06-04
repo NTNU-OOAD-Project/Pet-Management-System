@@ -12,7 +12,6 @@
 <body style="background-color: #f8f9fa;">
 
 <div class="container py-5">
-  <a href="/supply" class="btn btn-outline-secondary back-btn">← 返回存貨檢視</a>
   <div class="row g-4">
 
     <!-- 📦 左側：用品清單 -->
@@ -74,7 +73,8 @@
 </div>
 
 <script>
-  let currentEditingId = null; // 目前編輯的庫存_id，null代表新增
+  let itemId = 1;
+  let currentItem = null;
 
   function addItem() {
     const container = document.getElementById("item-list");
@@ -83,135 +83,54 @@
     div.innerHTML = `
       <div class="row align-items-center">
         <div class="col-5"><input type="text" class="form-control" placeholder="項目名稱"></div>
-        <div class="col-3"><input type="number" class="form-control" placeholder="庫存"></div>
-        <div class="col-2"><input type="number" class="form-control" placeholder="警戒值"></div>
-        <div class="col-2 text-end">
-          <button class="btn btn-sm btn-success me-1" onclick="saveItem(this)">💾儲存</button>
+        <div class="col-3"><input type="number" class="form-control" placeholder="庫存/警戒值"></div>
+        <div class="col-4 text-end">
+          <button class="btn btn-sm btn-outline-primary me-1" onclick="showRecord(this)">📓紀錄</button>
           <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(this)">❌刪除</button>
         </div>
       </div>
     `;
+    div.dataset.itemId = itemId++;
     container.appendChild(div);
   }
 
-  function saveItem(button) {
-    const itemCard = button.closest(".item-card");
-    const inputs = itemCard.querySelectorAll("input");
-    const itemName = inputs[0].value.trim();
-    const quantity = parseInt(inputs[1].value);
-    const threshold = parseInt(inputs[2].value);
-
-    if (!itemName || isNaN(quantity) || isNaN(threshold)) {
-      alert("請完整填寫名稱、庫存與警戒值");
-      return;
-    }
-
-    // 取目前是否有_id (data-inventory-id)
-    const inventoryId = itemCard.dataset.inventoryId || null;
-
-    const payload = {
-      item_name: itemName,
-      quantity: quantity,
-      threshold: threshold
-    };
-
-    // 如果有 id，代表編輯，呼叫更新API，否則呼叫新增API
-    if (inventoryId) {
-      payload.inventory_id = inventoryId;
-      fetch("/api/supply/update_inventory", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).then(res => res.json())
-      .then(data => {
-        if(data.success){
-          alert("更新成功");
-          loadInventoryList();
-        } else {
-          alert("更新失敗：" + data.msg);
-        }
-      });
-    } else {
-      fetch("/api/supply/add_inventory", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).then(res => res.json())
-      .then(data => {
-        if(data.success){
-          alert("新增成功");
-          loadInventoryList();
-        } else {
-          alert("新增失敗：" + data.msg);
-        }
-      });
-    }
-  }
-
   function deleteItem(button) {
-    const itemCard = button.closest(".item-card");
-    const inventoryId = itemCard.dataset.inventoryId;
-    if(inventoryId){
-      if(!confirm("確定要刪除此用品嗎？")){
-        return;
-      }
-      fetch("/api/supply/delete_inventory", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({inventory_id: inventoryId})
-      }).then(res => res.json())
-      .then(data => {
-        if(data.success){
-          alert("刪除成功");
-          loadInventoryList();
-        } else {
-          alert("刪除失敗：" + data.msg);
-        }
-      });
-    } else {
-      // 尚未存到資料庫，直接移除
-      itemCard.remove();
-    }
+    button.closest(".item-card").remove();
+    document.getElementById("record-panel").classList.add("hidden");
   }
 
-  // 顯示該項目紀錄（可依需求補充功能）
   function showRecord(button) {
-    alert("此功能尚未實作");
+    const itemCard = button.closest(".item-card");
+    const itemName = itemCard.querySelector("input[type='text']").value || "未命名項目";
+    currentItem = itemCard.dataset.itemId;
+    document.getElementById("record-item-name").textContent = itemName;
+    document.getElementById("record-panel").classList.remove("hidden");
+    document.getElementById("record-table-body").innerHTML = ""; // 清空紀錄
   }
 
-  // 載入使用者庫存列表，動態產生 item-card
-  function loadInventoryList(){
-    fetch("/api/supply/list_inventory")
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById("item-list");
-      container.innerHTML = "";
-      data.inventory.forEach(inv => {
-        const div = document.createElement("div");
-        div.className = "card mb-2 p-3 item-card";
-        div.dataset.inventoryId = inv._id;
-        div.innerHTML = `
-          <div class="row align-items-center">
-            <div class="col-5"><input type="text" class="form-control" value="${inv.item_name}"></div>
-            <div class="col-3"><input type="number" class="form-control" value="${inv.quantity}"></div>
-            <div class="col-2"><input type="number" class="form-control" value="${inv.threshold}"></div>
-            <div class="col-2 text-end">
-              
-              <button class="btn btn-sm btn-success me-1" onclick="saveItem(this)">💾儲存</button>
-              <button class="btn btn-sm btn-outline-danger" onclick="deleteItem(this)">❌刪除</button>
-            </div>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    });
-  }
+  function addRecord() {
+    const tbody = document.getElementById("record-table-body");
+    const date = document.getElementById("new-date").value;
+    const qty = document.getElementById("new-quantity").value;
+    const note = document.getElementById("new-note").value;
 
-  // 頁面載入時取得現有庫存
-  window.onload = function(){
-    loadInventoryList();
-  }
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${date}</td>
+      <td>${qty}</td>
+      <td>${note}</td>
+      <td>
+        <button class="btn btn-sm btn-outline-secondary me-1">編輯</button>
+        <button class="btn btn-sm btn-outline-danger" onclick="this.closest('tr').remove()">刪除</button>
+      </td>
+    `;
+    tbody.appendChild(row);
 
+    // 清空輸入欄
+    document.getElementById("new-date").value = "";
+    document.getElementById("new-quantity").value = "";
+    document.getElementById("new-note").value = "";
+  }
 </script>
 </body>
 </html>
