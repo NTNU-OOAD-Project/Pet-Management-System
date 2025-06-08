@@ -294,7 +294,7 @@ export class Assistant {
   async saveMessageToMongo(conversationId, sender, content, timestamp) {
     try {
       const title = this.conversations[conversationId]?.title || '';
-      await fetch('http://127.0.0.1:5000/api/messages', {
+      await fetch('/api/messages', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -315,7 +315,7 @@ export class Assistant {
 
   async loadMessageFromMongo() {
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/messages', {
+      const res = await fetch('/api/messages', {
         method: 'GET',
         credentials: 'include'
       });
